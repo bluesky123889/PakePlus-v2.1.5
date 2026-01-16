@@ -1,32 +1,4662 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="styles.css" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>PakePlus App</title>
-        <script type="module" src="/main.js" defer></script>
-    </head>
-
-    <body>
-        <main class="container">
-            <h1>Welcome to PakePlus</h1>
-            <form class="row" id="greet-form">
-                <input id="inputValue" placeholder="Enter a something..." />
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>精简笔记应用 - 您的私人知识库</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        
+        :root {
+            --primary-color: #4f46e5;
+            --primary-light: #e0e7ff;
+            --primary-dark: #4338ca;
+            --secondary-color: #f8fafc;
+            --text-color: #334155;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --completed-color: #10b981;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --login-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        body {
+            background-color: #f1f5f9;
+            color: var(--text-color);
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        /* 登录页面样式 */
+        .login-container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        /* 左侧介绍区 */
+        .login-info {
+            flex: 1;
+            background: var(--login-bg);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            animation: float 20s linear infinite;
+        }
+        
+        .login-info-content {
+            position: relative;
+            z-index: 2;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .app-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .app-logo-icon {
+            font-size: 3rem;
+            background: rgba(255, 255, 255, 0.2);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .app-logo-text h1 {
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+        
+        .app-logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .features-list {
+            margin: 40px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            font-size: 1rem;
+        }
+        
+        .feature-icon {
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .feature-text h4 {
+            font-size: 1.1rem;
+            margin-bottom: 3px;
+            font-weight: 600;
+        }
+        
+        .feature-text p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+        
+        .login-footer {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            text-align: center;
+        }
+        
+        /* 右侧登录区 */
+        .login-form-container {
+            flex: 1;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            overflow-y: auto;
+        }
+        
+        .login-form-wrapper {
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            animation: slideInRight 0.6s ease;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .login-header h2 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 14px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.2s;
+            background-color: #f9fafb;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background-color: white;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        
+        .login-btn {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .login-btn:hover:not(:disabled) {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        
+        .login-btn-loading .btn-text {
+            visibility: hidden;
+        }
+        
+        .login-btn-loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 25px;
+            font-size: 0.85rem;
+        }
+        
+        .login-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        
+        .login-link:hover {
+            text-decoration: underline;
+            color: var(--primary-dark);
+        }
+        
+        .error-message {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: var(--error-color);
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .success-message {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 12px 15px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* 主应用容器 */
+        .app-container {
+            display: flex;
+            height: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            overflow: hidden;
+            display: none;
+        }
+        
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 300px;
+            background-color: white;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            z-index: 10;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: var(--primary-color);
+            color: white;
+            position: relative;
+        }
+        
+        .sidebar-header h1 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sidebar-header h1 i {
+            font-size: 1.8rem;
+        }
+        
+        .version-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius);
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: white;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .user-details {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .user-email {
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+        
+        .logout-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .new-note-btn {
+            background-color: white;
+            color: var(--primary-color);
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+        
+        .new-note-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .notes-list-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 搜索框样式 */
+        .search-container {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            background-color: white;
+            position: relative;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            height: 20px;
+            width: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+        
+        .clear-search {
+            position: absolute;
+            right: 38px;
+            top: 10px;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 4px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+        
+        .clear-search.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .clear-search:hover {
+            color: var(--error-color);
+            background-color: rgba(239, 68, 68, 0.1);
+            border-radius: 50%;
+        }
+        
+        .search-stats {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 8px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .search-stats.visible {
+            display: block;
+        }
+        
+        .notes-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        
+        .note-item {
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            background-color: var(--secondary-color);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .note-item:hover {
+            background-color: var(--primary-light);
+            border-left-color: var(--primary-color);
+        }
+        
+        .note-item.active {
+            background-color: var(--primary-light);
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .note-title {
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--text-light);
+        }
+        
+        .note-date {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .edit-time {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .note-word-count {
+            background-color: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.65rem;
+            white-space: nowrap;
+        }
+        
+        /* 主内容区域样式 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .toolbar {
+            padding: 12px 20px;
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .note-title-input {
+            border: none;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-color);
+            width: 100%;
+            padding: 5px 10px;
+            background-color: transparent;
+            transition: all 0.2s;
+        }
+        
+        .note-title-input:focus {
+            outline: none;
+            background-color: var(--primary-light);
+            border-radius: var(--radius);
+        }
+        
+        .toolbar-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .toolbar-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+        
+        .toolbar-btn:hover:not(:disabled) {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+        
+        .toolbar-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .toolbar-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .about-btn, .help-btn, .settings-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .about-btn:hover, .help-btn:hover, .settings-btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+        
+        .editor-container {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .note-editor {
+            width: 100%;
+            height: 100%;
+            border: none;
+            font-size: 1rem;
+            line-height: 1.7;
+            resize: none;
+            background-color: transparent;
+            color: var(--text-color);
+            padding: 5px;
+            font-family: 'Segoe UI', system-ui, monospace;
+            transition: all 0.2s;
+        }
+        
+        .note-editor:focus {
+            outline: none;
+        }
+        
+        .preview-container {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            overflow-y: auto;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .preview-container h1 {
+            margin-top: 0.5em;
+            margin-bottom: 0.3em;
+            font-size: 1.8rem;
+        }
+        
+        .preview-container h2 {
+            margin-top: 0.5em;
+            margin-bottom: 0.3em;
+            font-size: 1.5rem;
+        }
+        
+        .preview-container h3 {
+            margin-top: 0.5em;
+            margin-bottom: 0.3em;
+            font-size: 1.2rem;
+        }
+        
+        .preview-container p {
+            margin-bottom: 0.4em;
+            line-height: 1.5;
+        }
+        
+        .preview-container ul:not(.task-list), 
+        .preview-container ol {
+            margin-left: 1.5em;
+            margin-bottom: 0.5em;
+        }
+        
+        .preview-container ul:not(.task-list) li,
+        .preview-container ol li {
+            margin-bottom: 0.1em;
+        }
+        
+        .preview-container blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 1em;
+            margin-left: 0;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 0.5em;
+        }
+        
+        .preview-container code {
+            background-color: var(--secondary-color);
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+        
+        .preview-container pre {
+            background-color: var(--secondary-color);
+            padding: 10px;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            margin-bottom: 0.5em;
+            font-size: 0.9em;
+        }
+        
+        /* 任务清单样式 */
+        .task-list {
+            list-style-type: none;
+            margin-left: 0;
+            padding-left: 0;
+            margin-bottom: 0.5em;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            padding: 2px 0;
+            min-height: 24px;
+        }
+        
+        .task-checkbox {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+            accent-color: var(--completed-color);
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 1px;
+            transition: all 0.2s;
+        }
+        
+        .task-text {
+            flex: 1;
+            padding-right: 8px;
+            line-height: 1.5;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            min-height: 22px;
+            transition: all 0.2s;
+        }
+        
+        .task-text.completed {
+            text-decoration: line-through;
+            color: var(--text-light);
+        }
+        
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: var(--text-light);
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .empty-state i {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--border-color);
+            animation: pulse 2s infinite;
+        }
+        
+        .empty-state h2 {
+            margin-bottom: 8px;
+            color: var(--text-color);
+            font-size: 1.3rem;
+        }
+        
+        /* 移动端适配 */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        
+        .mobile-menu-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 1024px) {
+            .login-info {
+                display: none;
+            }
+            
+            .login-form-container {
+                padding: 20px;
+            }
+            
+            .login-form-wrapper {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                position: relative;
+            }
+            
+            .sidebar {
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                width: 85%;
+                max-width: 320px;
+                transform: translateX(-100%);
+                box-shadow: var(--shadow);
+            }
+            
+            .sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .note-title-input {
+                font-size: 1.2rem;
+            }
+            
+            .editor-container {
+                padding: 12px;
+            }
+            
+            .note-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 3px;
+            }
+            
+            .toolbar-actions {
+                gap: 4px;
+            }
+            
+            .search-icon {
+                right: 12px;
+                top: 10px;
+            }
+            
+            .clear-search {
+                right: 35px;
+                top: 10px;
+            }
+        }
+        
+        /* 状态消息 */
+        .status-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 100;
+            text-align: center;
+            min-width: 200px;
+            max-width: 80%;
+            pointer-events: none;
+        }
+        
+        .status-message.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        /* 对话框通用样式 */
+        .dialog-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            backdrop-filter: blur(2px);
+        }
+        
+        .dialog-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .dialog-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--radius);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow);
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .dialog-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .dialog-header h3 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+        }
+        
+        .dialog-close-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        
+        .dialog-close-btn:hover {
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
+        }
+        
+        .dialog-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+        
+        .dialog-btn {
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .dialog-btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .dialog-btn.primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .dialog-btn.secondary {
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+        
+        .dialog-btn.secondary:hover {
+            background-color: #e2e8f0;
+        }
+        
+        .dialog-btn.danger {
+            background-color: var(--error-color);
+            color: white;
+        }
+        
+        .dialog-btn.danger:hover {
+            background-color: #dc2626;
+            transform: translateY(-1px);
+        }
+        
+        .dialog-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* 设置对话框样式 */
+        .settings-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+        
+        .settings-tab {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.2s;
+            min-width: 120px;
+            justify-content: center;
+        }
+        
+        .settings-tab:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-1px);
+        }
+        
+        .settings-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .settings-tab.active .tab-icon {
+            color: white;
+        }
+        
+        .tab-icon {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .settings-section {
+            display: none;
+            margin: 20px 0;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .settings-section.active {
+            display: block;
+        }
+        
+        .settings-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 12px;
+            background-color: var(--secondary-color);
+            border-radius: var(--radius);
+            transition: all 0.2s;
+        }
+        
+        .setting-item:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .setting-info {
+            flex: 1;
+        }
+        
+        .setting-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .setting-description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        /* 开关样式 */
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            margin-left: 15px;
+        }
+        
+        .toggle-checkbox {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 26px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-checkbox:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+        
+        .toggle-checkbox:checked + .toggle-slider:before {
+            transform: translateX(24px);
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(20px, 20px) rotate(360deg); }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 删除确认对话框 */
+        .delete-dialog {
+            max-width: 400px;
+        }
+        
+        .delete-dialog h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .delete-dialog p {
+            margin-bottom: 20px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        /* 关于对话框 */
+        .about-features {
+            margin: 20px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        
+        .feature-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .feature-icon {
+            color: var(--primary-color);
+            margin-right: 10px;
+            margin-top: 2px;
+            min-width: 20px;
+        }
+        
+        .about-footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-align: center;
+        }
+        
+        /* 使用说明对话框 */
+        .help-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+        }
+        
+        .help-tab {
+            background-color: var(--secondary-color);
+            border: none;
+            padding: 10px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: var(--text-color);
+            transition: all 0.2s;
+        }
+        
+        .help-tab:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-1px);
+        }
+        
+        .help-tab.active {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+        
+        .help-tab.active .tab-icon {
+            color: white;
+        }
+        
+        .help-section {
+            display: none;
+            margin: 20px 0;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .help-section.active {
+            display: block;
+        }
+        
+        .help-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--primary-light);
+        }
+        
+        .help-item {
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            transition: all 0.2s;
+        }
+        
+        .help-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .help-icon {
+            color: var(--primary-color);
+            margin-right: 8px;
+            margin-top: 2px;
+            min-width: 20px;
+        }
+        
+        .shortcut-key {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin: 0 4px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .symbol-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .symbol-example {
+            background-color: var(--secondary-color);
+            padding: 10px;
+            border-radius: var(--radius);
+            border-left: 3px solid var(--primary-color);
+            transition: all 0.2s;
+        }
+        
+        .symbol-example:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .symbol-example code {
+            font-family: monospace;
+            background-color: white;
+            padding: 2px 4px;
+            border-radius: 3px;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .symbol-example .description {
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        /* 无笔记时隐藏工具栏 */
+        .toolbar.hidden {
+            display: none;
+        }
+        
+        /* 符号选择器样式 */
+        .symbol-selector {
+            position: absolute;
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            min-width: 300px;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        .symbol-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        
+        .symbol-item:last-child {
+            border-bottom: none;
+        }
+        
+        .symbol-item:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .symbol-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .symbol-item.active .symbol-icon {
+            color: white;
+        }
+        
+        .symbol-icon {
+            color: var(--primary-color);
+            width: 20px;
+            text-align: center;
+        }
+        
+        .symbol-text {
+            flex: 1;
+            font-family: 'Segoe UI', system-ui, monospace;
+            font-size: 0.9rem;
+        }
+        
+        .symbol-desc {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .symbol-item.active .symbol-desc {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* 字数统计样式 */
+        .word-count {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            padding: 8px 15px;
+            border-top: 1px solid var(--border-color);
+            background-color: white;
+        }
+        
+        .word-count-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .word-count-label {
+            font-weight: 500;
+        }
+        
+        .word-count-value {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 40px;
+            text-align: right;
+        }
+        
+        /* 搜索结果高亮 */
+        .search-highlight {
+            background-color: rgba(255, 255, 0, 0.3);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+        
+        /* 滚动条优化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--secondary-color);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-light);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div class="login-container" id="loginContainer">
+        <!-- 左侧介绍区 -->
+        <div class="login-info">
+            <div class="login-info-content">
+                <div class="app-logo">
+                    <div class="app-logo-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="app-logo-text">
+                        <h1>精简笔记</h1>
+                        <p>您的私人知识库</p>
+                    </div>
+                </div>
+                
+                <div class="features-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>安全隐私</h4>
+                            <p>所有数据存储在本地，完全保护您的隐私</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-magic"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>智能编辑</h4>
+                            <p>支持Markdown语法，智能补全和符号选择器</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>快速搜索</h4>
+                            <p>实时搜索笔记内容，快速找到所需信息</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>字数统计</h4>
+                            <p>实时统计笔记字数，掌握写作进度</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>多设备同步</h4>
+                            <p>通过浏览器数据同步功能，实现多设备访问</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="login-footer">
+                    <p>© 2026 精简笔记应用 v2.0 | 本地存储，安全可靠</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 右侧登录区 -->
+        <div class="login-form-container">
+            <div class="login-form-wrapper">
+                <div class="login-header">
+                    <h2>欢迎回来</h2>
+                    <p>登录以访问您的私人笔记库</p>
+                </div>
+                
+                <div class="error-message" id="loginError"></div>
+                <div class="success-message" id="loginSuccess"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="username">
+                            <i class="fas fa-user" style="margin-right: 8px;"></i>账号
+                        </label>
+                        <input type="text" class="form-input" id="username" placeholder="请输入您的账号" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="password">
+                            <i class="fas fa-lock" style="margin-right: 8px;"></i>密码
+                        </label>
+                        <input type="password" class="form-input" id="password" placeholder="请输入您的密码" required>
+                    </div>
+                    
+                    <button type="submit" class="login-btn" id="loginBtn">
+                        <span class="btn-text">登录</span>
+                        <i class="fas fa-sign-in-alt"></i>
+                    </button>
+                    
+                    <div class="login-links">
+                        <a class="login-link" id="registerLink">
+                            <i class="fas fa-user-plus" style="margin-right: 5px;"></i>注册账号
+                        </a>
+                        <a class="login-link" id="forgotPasswordLink">
+                            <i class="fas fa-key" style="margin-right: 5px;"></i>忘记密码
+                        </a>
+                        <a class="login-link" id="deleteAccountLink">
+                            <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>注销账号
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 主应用界面 -->
+    <div class="app-container" id="appContainer">
+        <!-- 侧边栏 -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1><i class="fas fa-book"></i> 精简笔记</h1>
+                <div class="version-badge">v2.0</div>
+                
+                <!-- 用户信息 -->
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <div class="user-details">
+                        <div class="user-name" id="userName">用户</div>
+                        <div class="user-email" id="userEmail">未设置邮箱</div>
+                    </div>
+                    <button class="logout-btn" id="logoutBtn" title="退出登录">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+                
+                <button class="new-note-btn" id="newNoteBtn">
+                    <i class="fas fa-plus"></i> 新建笔记
+                </button>
+            </div>
+            
+            <div class="notes-list-container">
+                <!-- 搜索框 -->
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" class="search-input" id="searchInput" placeholder="搜索笔记标题和内容...">
+                        <button class="clear-search" id="clearSearchBtn" title="清除搜索">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <i class="fas fa-search search-icon"></i>
+                        <div class="search-stats" id="searchStats"></div>
+                    </div>
+                </div>
+                
+                <!-- 笔记列表 -->
+                <div class="notes-list" id="notesList">
+                    <!-- 笔记列表将通过JS动态生成 -->
+                </div>
+                
+                <!-- 字数统计 -->
+                <div class="word-count" id="wordCount">
+                    <div class="word-count-item">
+                        <span class="word-count-label">笔记总数:</span>
+                        <span class="word-count-value" id="totalNotes">0</span>
+                    </div>
+                    <div class="word-count-item">
+                        <span class="word-count-label">总字数:</span>
+                        <span class="word-count-value" id="totalWords">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <div class="toolbar" id="toolbar">
+                <input type="text" class="note-title-input" id="noteTitleInput" placeholder="笔记标题">
+                <div class="toolbar-actions">
+                    <button class="toolbar-btn" id="viewToggleBtn" title="切换视图 (Ctrl+E)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="toolbar-btn" id="deleteNoteBtn" title="删除笔记 (Ctrl+D)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                    <button class="toolbar-btn" id="saveNoteBtn" title="保存笔记 (Ctrl+S)">
+                        <i class="fas fa-save"></i>
+                    </button>
+                    <button class="settings-btn" id="settingsBtn" title="设置 (Ctrl+Comma)">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="help-btn" id="helpBtn" title="使用说明 (Ctrl+H)">
+                        <i class="fas fa-question-circle"></i>
+                    </button>
+                    <button class="about-btn" id="aboutBtn" title="关于 (Ctrl+I)">
+                        <i class="fas fa-info-circle"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="editor-container" id="editorContainer">
+                <textarea class="note-editor" id="noteEditor" placeholder="开始输入笔记内容... 支持Markdown格式和任务清单"></textarea>
+                <div class="preview-container" id="previewContainer"></div>
+            </div>
+            
+            <!-- 空状态 -->
+            <div class="empty-state" id="emptyState">
+                <i class="fas fa-sticky-note"></i>
+                <h2>还没有笔记</h2>
+                <p>点击"新建笔记"按钮创建你的第一个笔记</p>
+                <p style="margin-top: 15px; font-size: 0.85rem;">提示：按Ctrl+E切换编辑/预览模式，Ctrl+S保存，Ctrl+F搜索</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 符号选择器 -->
+    <div class="symbol-selector" id="symbolSelector"></div>
+    
+    <!-- 状态消息 -->
+    <div class="status-message" id="statusMessage"></div>
+    
+    <!-- 注册对话框 -->
+    <div class="dialog-overlay" id="registerDialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="closeRegisterBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-user-plus" style="margin-right: 10px;"></i>注册账号</h3>
+            </div>
+            
+            <form id="registerForm">
+                <div class="form-group">
+                    <label class="form-label" for="registerUsername">
+                        <i class="fas fa-user" style="margin-right: 8px;"></i>账号
+                    </label>
+                    <input type="text" class="form-input" id="registerUsername" placeholder="请输入账号（4-20位字符）" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="registerPassword">
+                        <i class="fas fa-lock" style="margin-right: 8px;"></i>密码
+                    </label>
+                    <input type="password" class="form-input" id="registerPassword" placeholder="请输入密码（至少6位）" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="registerConfirmPassword">
+                        <i class="fas fa-lock" style="margin-right: 8px;"></i>确认密码
+                    </label>
+                    <input type="password" class="form-input" id="registerConfirmPassword" placeholder="请再次输入密码" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="registerEmail">
+                        <i class="fas fa-envelope" style="margin-right: 8px;"></i>邮箱 (可选)
+                    </label>
+                    <input type="email" class="form-input" id="registerEmail" placeholder="请输入邮箱（用于找回密码）">
+                </div>
+                
+                <div class="dialog-actions">
+                    <button type="button" class="dialog-btn secondary" id="cancelRegisterBtn">
+                        <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                    </button>
+                    <button type="submit" class="dialog-btn primary" id="confirmRegisterBtn">
+                        <i class="fas fa-check" style="margin-right: 5px;"></i>注册
+                    </button>
+                </div>
             </form>
-            <div class="resultBox">
-                <span>result: </span>
-                <span id="result"></span>
+        </div>
+    </div>
+    
+    <!-- 忘记密码对话框 -->
+    <div class="dialog-overlay" id="forgotPasswordDialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="closeForgotPasswordBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-key" style="margin-right: 10px;"></i>重置密码</h3>
             </div>
-            <div class="invokeBox">
-                <button id="openUrl">open_url_browser</button>
-                <button id="openUrlNew">open_url_new</button>
-                <button id="runCommand">run_command</button>
-                <button id="downloadFile">download_file</button>
-                <button id="getExeDir">get_exe_dir</button>
-                <button id="getEnvVar">get_env_var</button>
-                <button id="findPort">find_port</button>
+            
+            <form id="forgotPasswordForm">
+                <div class="form-group">
+                    <label class="form-label" for="forgotUsername">
+                        <i class="fas fa-user" style="margin-right: 8px;"></i>账号
+                    </label>
+                    <input type="text" class="form-input" id="forgotUsername" placeholder="请输入要重置密码的账号" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="newPassword">
+                        <i class="fas fa-lock" style="margin-right: 8px;"></i>新密码
+                    </label>
+                    <input type="password" class="form-input" id="newPassword" placeholder="请输入新密码（至少6位）" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="confirmNewPassword">
+                        <i class="fas fa-lock" style="margin-right: 8px;"></i>确认新密码
+                    </label>
+                    <input type="password" class="form-input" id="confirmNewPassword" placeholder="请再次输入新密码" required>
+                </div>
+                
+                <div class="error-message" id="forgotPasswordError"></div>
+                
+                <div class="dialog-actions">
+                    <button type="button" class="dialog-btn secondary" id="cancelForgotPasswordBtn">
+                        <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                    </button>
+                    <button type="submit" class="dialog-btn primary" id="confirmForgotPasswordBtn">
+                        <i class="fas fa-check" style="margin-right: 5px;"></i>重置密码
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 注销账号对话框 -->
+    <div class="dialog-overlay" id="deleteAccountDialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="closeDeleteAccountBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-exclamation-triangle" style="margin-right: 10px; color: var(--error-color);"></i>注销账号</h3>
             </div>
-        </main>
-    </body>
+            
+            <div class="error-message" id="deleteAccountError"></div>
+            
+            <p style="margin-bottom: 15px; color: var(--text-color); font-size: 0.95rem;">
+                您即将注销账号 <strong id="deleteAccountName"></strong>。此操作将：
+            </p>
+            
+            <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-light); font-size: 0.95rem;">
+                <li style="margin-bottom: 8px;">永久删除该账号下的所有笔记数据</li>
+                <li style="margin-bottom: 8px;">清除所有个人设置和偏好</li>
+                <li>账号将无法再登录使用</li>
+            </ul>
+            
+            <p style="margin-bottom: 20px; color: var(--error-color); font-size: 0.9rem; font-weight: 600;">
+                <i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i>
+                警告：此操作不可撤销！请谨慎操作。
+            </p>
+            
+            <form id="deleteAccountForm">
+                <div class="form-group">
+                    <label class="form-label" for="deleteAccountPassword">
+                        <i class="fas fa-lock" style="margin-right: 8px;"></i>请输入密码确认
+                    </label>
+                    <input type="password" class="form-input" id="deleteAccountPassword" placeholder="请输入账号密码以确认注销" required>
+                </div>
+                
+                <div class="dialog-actions">
+                    <button type="button" class="dialog-btn secondary" id="cancelDeleteAccountBtn">
+                        <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                    </button>
+                    <button type="submit" class="dialog-btn danger" id="confirmDeleteAccountBtn">
+                        <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>确认注销
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- 删除确认对话框 -->
+    <div class="dialog-overlay" id="deleteConfirm">
+        <div class="dialog-content delete-dialog">
+            <h3><i class="fas fa-trash" style="margin-right: 10px;"></i>删除笔记</h3>
+            <p>确定要删除这个笔记吗？此操作无法撤销。</p>
+            <div class="dialog-actions">
+                <button class="dialog-btn secondary" id="cancelDeleteBtn">
+                    <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                </button>
+                <button class="dialog-btn danger" id="confirmDeleteBtn">
+                    <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>删除
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 关于对话框 -->
+    <div class="dialog-overlay" id="aboutDialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="closeAboutBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-info-circle" style="margin-right: 10px;"></i>精简笔记应用 v2.0</h3>
+            </div>
+            
+            <p style="margin-bottom: 20px;">一款简洁高效的跨平台笔记应用，支持Markdown、任务清单、智能输入等功能。</p>
+            
+            <div class="about-features">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>智能输入</strong> - 支持自动补全Markdown符号，提高编辑效率</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>任务清单</strong> - 支持可勾选的任务列表，可在预览模式下直接操作</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>搜索功能</strong> - 支持按标题和内容搜索笔记，实时高亮显示</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>字数统计</strong> - 显示笔记总字数、笔记总数</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>符号选择器</strong> - 按Tab键调出符号列表，用Tab切换选择，空格键插入</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>本地存储</strong> - 所有数据保存在浏览器本地，保护隐私安全</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>响应式设计</strong> - 完美适配桌面和移动设备</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>实时预览</strong> - 一键切换编辑和预览模式</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>完整快捷键</strong> - 支持Ctrl+E/S/H/N/D/F等快捷键操作</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>视图状态保存</strong> - 为每个笔记独立保存编辑/预览模式状态</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>数据完整性检查</strong> - 启动时检查本地存储数据是否被篡改</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>笔记独立字数统计</strong> - 在笔记列表中显示每个笔记的字数</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>搜索优化</strong> - 修复搜索框按钮位置问题，提升使用体验</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>账号系统</strong> - 支持多用户本地存储，数据隔离安全</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>登录动画</strong> - 优化的登录体验，加载状态指示</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>注销功能</strong> - 支持安全注销账号，保护用户数据隐私</div>
+                </div>
+            </div>
+            
+            <div class="about-footer">
+                <p>© 2026 精简笔记应用 v2.0</p>
+                <p style="margin-top: 8px; font-size: 0.8rem;">提示：所有数据存储在本地浏览器，请定期备份重要笔记</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 设置对话框 -->
+    <div class="dialog-overlay" id="settingsDialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="closeSettingsBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-cog" style="margin-right: 10px;"></i>设置</h3>
+            </div>
+            
+            <!-- 标签页导航 -->
+            <div class="settings-tabs" id="settingsTabs">
+                <button class="settings-tab active" data-tab="editor">
+                    <i class="fas fa-edit tab-icon"></i> 编辑设置
+                </button>
+                <button class="settings-tab" data-tab="input">
+                    <i class="fas fa-keyboard tab-icon"></i> 输入设置
+                </button>
+                <button class="settings-tab" data-tab="security">
+                    <i class="fas fa-shield-alt tab-icon"></i> 安全设置
+                </button>
+                <button class="settings-tab" data-tab="search">
+                    <i class="fas fa-search tab-icon"></i> 搜索设置
+                </button>
+                <button class="settings-tab" data-tab="account">
+                    <i class="fas fa-user tab-icon"></i> 账户设置
+                </button>
+            </div>
+            
+            <!-- 编辑设置部分 -->
+            <div class="settings-section active" id="editor-tab">
+                <h4>编辑设置</h4>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">智能输入</div>
+                        <div class="setting-description">启用后，在新行输入特定符号会自动补全为完整格式</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="smartInputToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">自动保存</div>
+                        <div class="setting-description">编辑内容自动保存，无需手动操作</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="autoSaveToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">Tab键符号选择器</div>
+                        <div class="setting-description">启用后，按Tab键可调出符号列表进行选择</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="tabSymbolSelectorToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">独立笔记视图状态</div>
+                        <div class="setting-description">每个笔记独立保存编辑/预览模式状态</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="independentViewToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- 输入设置部分 -->
+            <div class="settings-section" id="input-tab">
+                <h4>智能输入符号</h4>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">标题符号 (#, ##, ###)</div>
+                        <div class="setting-description">输入 # 后按空格自动补全为标题</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="headingSymbolsToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">列表符号 (-, *, 1.)</div>
+                        <div class="setting-description">输入 - 或 1. 后按空格自动补全为列表</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="listSymbolsToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">任务符号 (- [)</div>
+                        <div class="setting-description">输入 - [ 后按空格自动补全为任务项</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="taskSymbolsToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">引用符号 (>)</div>
+                        <div class="setting-description">输入 > 后按空格自动补全为引用块</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="quoteSymbolsToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- 安全设置部分 -->
+            <div class="settings-section" id="security-tab">
+                <h4>安全设置</h4>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">数据完整性检查</div>
+                        <div class="setting-description">启动时检查本地存储数据是否被篡改</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="integrityCheckToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">自动登出</div>
+                        <div class="setting-description">30分钟无操作后自动登出</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="autoLogoutToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- 搜索设置部分 -->
+            <div class="settings-section" id="search-tab">
+                <h4>搜索设置</h4>
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">实时搜索</div>
+                        <div class="setting-description">输入时实时显示搜索结果</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="realTimeSearchToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">搜索高亮</div>
+                        <div class="setting-description">搜索结果中高亮显示匹配文本</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="searchHighlightToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- 账户设置部分 -->
+            <div class="settings-section" id="account-tab">
+                <h4>账户设置</h4>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">显示用户状态指示器</div>
+                        <div class="setting-description">在侧边栏显示当前用户状态信息</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="userStatusToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">显示应用标题</div>
+                        <div class="setting-description">在侧边栏显示应用标题和图标</div>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" class="toggle-checkbox" id="appTitleToggle" checked>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">自动保存间隔</div>
+                        <div class="setting-description">自动保存笔记的时间间隔</div>
+                    </div>
+                    <select id="saveIntervalSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
+                        <option value="60000">1分钟</option>
+                        <option value="180000" selected>3分钟</option>
+                        <option value="300000">5分钟</option>
+                        <option value="600000">10分钟</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">主题颜色</div>
+                        <div class="setting-description">选择应用的主题颜色</div>
+                    </div>
+                    <select id="themeColorSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
+                        <option value="#4f46e5">默认蓝色</option>
+                        <option value="#10b981">绿色</option>
+                        <option value="#f59e0b">橙色</option>
+                        <option value="#ef4444">红色</option>
+                        <option value="#8b5cf6">紫色</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-title">编辑器字体大小</div>
+                        <div class="setting-description">调整编辑器文本大小</div>
+                    </div>
+                    <select id="fontSizeSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
+                        <option value="14px">小</option>
+                        <option value="16px" selected>中</option>
+                        <option value="18px">大</option>
+                        <option value="20px">特大</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 使用说明对话框 -->
+    <div class="dialog-overlay" id="helpDialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="closeHelpBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-question-circle" style="margin-right: 10px;"></i>使用说明</h3>
+            </div>
+            
+            <!-- 标签页导航 -->
+            <div class="help-tabs" id="helpTabs">
+                <button class="help-tab active" data-tab="shortcuts">
+                    <i class="fas fa-keyboard tab-icon"></i> 快捷键
+                </button>
+                <button class="help-tab" data-tab="search">
+                    <i class="fas fa-search tab-icon"></i> 搜索功能
+                </button>
+                <button class="help-tab" data-tab="wordcount">
+                    <i class="fas fa-chart-bar tab-icon"></i> 字数统计
+                </button>
+                <button class="help-tab" data-tab="smart-input">
+                    <i class="fas fa-magic tab-icon"></i> 智能输入
+                </button>
+                <button class="help-tab" data-tab="symbol-selector">
+                    <i class="fas fa-list tab-icon"></i> 符号选择器
+                </button>
+                <button class="help-tab" data-tab="markdown">
+                    <i class="fas fa-code tab-icon"></i> Markdown语法
+                </button>
+            </div>
+            
+            <!-- 快捷键部分 -->
+            <div class="help-section active" id="shortcuts-tab">
+                <h4>快捷键</h4>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">F</span> - 快速聚焦到搜索框</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">E</span> - 切换编辑/预览模式</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">S</span> - 保存当前笔记</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">H</span> - 打开使用说明</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">Shift</span> + <span class="shortcut-key">N</span> - 新建笔记</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">D</span> - 删除当前笔记</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">,</span> - 打开设置</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">I</span> - 打开关于信息</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><span class="shortcut-key">Tab</span> - 打开符号选择器</div>
+                </div>
+            </div>
+            
+            <!-- 搜索功能部分 -->
+            <div class="help-section" id="search-tab">
+                <h4>搜索功能</h4>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-search"></i></div>
+                    <div><strong>快速搜索</strong> - 在侧边栏底部的搜索框中输入关键词，实时搜索所有笔记</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                    <div><strong>快捷键</strong> - 按 <span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">F</span> 快速聚焦到搜索框</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-bolt"></i></div>
+                    <div><strong>实时搜索</strong> - 输入时实时显示搜索结果，无需按回车</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-highlighter"></i></div>
+                    <div><strong>高亮显示</strong> - 搜索结果中高亮显示匹配的文本</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-filter"></i></div>
+                    <div><strong>搜索范围</strong> - 同时搜索笔记标题和内容</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-chart-bar"></i></div>
+                    <div><strong>统计信息</strong> - 显示搜索到的笔记数量和匹配结果</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-times"></i></div>
+                    <div><strong>清除搜索</strong> - 点击搜索框右侧的X按钮清除搜索关键词</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-cog"></i></div>
+                    <div><strong>设置选项</strong> - 在设置中可以启用/禁用实时搜索和高亮功能</div>
+                </div>
+            </div>
+            
+            <!-- 字数统计部分 -->
+            <div class="help-section" id="wordcount-tab">
+                <h4>字数统计功能</h4>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-chart-bar"></i></div>
+                    <div><strong>全局统计</strong> - 在侧边栏底部显示笔记总数和总字数</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-file-alt"></i></div>
+                    <div><strong>单篇统计</strong> - 在笔记列表中显示每个笔记的单独字数</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-sync"></i></div>
+                    <div><strong>实时更新</strong> - 编辑笔记时字数统计实时更新</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-calculator"></i></div>
+                    <div><strong>计算规则</strong> - 字数统计包括汉字、字母、数字和标点符号</div>
+                </div>
+            </div>
+            
+            <!-- 智能输入部分 -->
+            <div class="help-section" id="smart-input-tab">
+                <h4>智能输入功能</h4>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-magic"></i></div>
+                    <div>启用智能输入后，在新行开头输入特定字符会自动补全为完整符号</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-cog"></i></div>
+                    <div>在设置中可自定义启用/禁用特定符号的智能输入</div>
+                </div>
+                
+                <div class="symbol-examples">
+                    <div class="symbol-example">
+                        <code>1.</code>
+                        <div class="description">输入"1."然后按空格 → 自动开始有序列表</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>-</code>
+                        <div class="description">输入"-"然后按空格 → 自动开始无序列表</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>*</code>
+                        <div class="description">输入"*"然后按空格 → 自动开始无序列表</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>- [</code>
+                        <div class="description">输入"- ["然后按空格 → 自动补全为任务项</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>></code>
+                        <div class="description">输入">"然后按空格 → 自动开始引用块</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>#</code>
+                        <div class="description">输入"#"然后按空格 → 自动开始一级标题</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>##</code>
+                        <div class="description">输入"##"然后按空格 → 自动开始二级标题</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>###</code>
+                        <div class="description">输入"###"然后按空格 → 自动开始三级标题</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 符号选择器部分 -->
+            <div class="help-section" id="symbol-selector-tab">
+                <h4>符号选择器功能</h4>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-list"></i></div>
+                    <div><strong>打开选择器：</strong>在编辑器中按<span class="shortcut-key">Tab</span>键打开符号选择器</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-arrow-up"></i></div>
+                    <div><strong>导航选择：</strong>使用<span class="shortcut-key">Tab</span>键在符号列表中向下切换选择</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-arrow-down"></i></div>
+                    <div><strong>反向导航：</strong>使用<span class="shortcut-key">Shift</span> + <span class="shortcut-key">Tab</span>在符号列表中向上切换选择</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-space-shuttle"></i></div>
+                    <div><strong>插入符号：</strong>按<span class="shortcut-key">空格</span>键插入当前选中的符号</div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-times"></i></div>
+                    <div><strong>关闭选择器：</strong>按<span class="shortcut-key">Esc</span>键或点击编辑器其他位置关闭选择器</div>
+                </div>
+                
+                <div class="symbol-examples">
+                    <div class="symbol-example">
+                        <code># 一级标题</code>
+                        <div class="description">Markdown一级标题</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>- 无序列表</code>
+                        <div class="description">无序列表项</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>1. 有序列表</code>
+                        <div class="description">有序列表项（数字自动递增）</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>- [ ] 任务</code>
+                        <div class="description">未完成任务项</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>> 引用</code>
+                        <div class="description">引用块内容</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>```代码块```</code>
+                        <div class="description">代码块（包含开始和结束标记）</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>---</code>
+                        <div class="description">水平分割线</div>
+                    </div>
+                    <div class="symbol-example">
+                        <code>**粗体**</code>
+                        <div class="description">粗体文本标记</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Markdown基础部分 -->
+            <div class="help-section" id="markdown-tab">
+                <h4>Markdown基础语法</h4>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-heading"></i></div>
+                    <div>标题: <code># 一级标题</code>, <code>## 二级标题</code>, <code>### 三级标题</code></div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-list"></i></div>
+                    <div>列表: <code>- 无序列表</code>, <code>1. 有序列表</code></div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-tasks"></i></div>
+                    <div>任务: <code>- [ ] 未完成</code>, <code>- [x] 已完成</code></div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-bold"></i></div>
+                    <div>粗体: <code>**粗体文字**</code></div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-italic"></i></div>
+                    <div>斜体: <code>*斜体文字*</code></div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-code"></i></div>
+                    <div>代码: <code>`行内代码`</code>, <code>```代码块```</code></div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-quote-right"></i></div>
+                    <div>引用: <code>> 引用文字</code></div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-link"></i></div>
+                    <div>链接: <code>[链接文本](https://example.com)</code></div>
+                </div>
+                <div class="help-item">
+                    <div class="help-icon"><i class="fas fa-image"></i></div>
+                    <div>图片: <code>![图片描述](图片地址)</code></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 应用状态
+        const state = {
+            notes: [],
+            activeNoteId: null,
+            isPreviewMode: false,
+            sidebarVisible: window.innerWidth > 768,
+            version: '2.0',
+            currentUser: null,
+            settings: {
+                smartInputEnabled: true,
+                autoSaveEnabled: true,
+                tabSymbolSelector: true,
+                headingSymbols: true,
+                listSymbols: true,
+                taskSymbols: true,
+                quoteSymbols: true,
+                realTimeSearch: true,
+                searchHighlight: true,
+                integrityCheck: true,
+                independentView: true,
+                autoLogout: true,
+                // 新增设置
+                userStatusVisible: true,
+                appTitleVisible: true,
+                autoSaveInterval: 180000, // 3分钟
+                themeColor: '#4f46e5',
+                fontSize: '16px'
+            },
+            searchQuery: '',
+            searchResults: [],
+            // 符号选择器状态
+            symbolSelector: {
+                visible: false,
+                selectedIndex: 0,
+                symbols: [
+                    { symbol: '# ', description: '一级标题', icon: 'fas fa-heading' },
+                    { symbol: '## ', description: '二级标题', icon: 'fas fa-heading' },
+                    { symbol: '### ', description: '三级标题', icon: 'fas fa-heading' },
+                    { symbol: '- ', description: '无序列表', icon: 'fas fa-list' },
+                    { symbol: '* ', description: '无序列表(星号)', icon: 'fas fa-list' },
+                    { symbol: '1. ', description: '有序列表(自动递增)', icon: 'fas fa-list-ol' },
+                    { symbol: '- [ ] ', description: '未完成任务', icon: 'fas fa-square' },
+                    { symbol: '- [x] ', description: '已完成任务', icon: 'fas fa-check-square' },
+                    { symbol: '> ', description: '引用块', icon: 'fas fa-quote-right' },
+                    { symbol: '```\n\n```', description: '代码块', icon: 'fas fa-code' },
+                    { symbol: '**', description: '粗体文本', icon: 'fas fa-bold' },
+                    { symbol: '*', description: '斜体文本', icon: 'fas fa-italic' },
+                    { symbol: '`', description: '行内代码', icon: 'fas fa-code' },
+                    { symbol: '---', description: '水平分割线', icon: 'fas fa-minus' },
+                    { symbol: '![图片描述](图片地址)', description: '插入图片', icon: 'fas fa-image' },
+                    { symbol: '[链接文本](链接地址)', description: '插入链接', icon: 'fas fa-link' }
+                ]
+            },
+            // 用户数据
+            users: {},
+            // 自动登出计时器
+            autoLogoutTimer: null
+        };
+        
+        // 符号映射表（用于智能输入）
+        const symbolMap = {
+            '1.': { text: '1. ', enabled: () => state.settings.listSymbols },
+            '-': { text: '- ', enabled: () => state.settings.listSymbols },
+            '*': { text: '* ', enabled: () => state.settings.listSymbols },
+            '- [': { text: '- [ ] ', enabled: () => state.settings.taskSymbols },
+            '>': { text: '> ', enabled: () => state.settings.quoteSymbols },
+            '#': { text: '# ', enabled: () => state.settings.headingSymbols },
+            '##': { text: '## ', enabled: () => state.settings.headingSymbols },
+            '###': { text: '### ', enabled: () => state.settings.headingSymbols },
+            '####': { text: '#### ', enabled: () => state.settings.headingSymbols },
+            '#####': { text: '##### ', enabled: () => state.settings.headingSymbols },
+            '######': { text: '###### ', enabled: () => state.settings.headingSymbols }
+        };
+        
+        // DOM 元素
+        const elements = {
+            // 登录页面元素
+            loginContainer: document.getElementById('loginContainer'),
+            appContainer: document.getElementById('appContainer'),
+            loginForm: document.getElementById('loginForm'),
+            username: document.getElementById('username'),
+            password: document.getElementById('password'),
+            loginBtn: document.getElementById('loginBtn'),
+            loginError: document.getElementById('loginError'),
+            loginSuccess: document.getElementById('loginSuccess'),
+            registerLink: document.getElementById('registerLink'),
+            forgotPasswordLink: document.getElementById('forgotPasswordLink'),
+            deleteAccountLink: document.getElementById('deleteAccountLink'),
+            
+            // 注册对话框元素
+            registerDialog: document.getElementById('registerDialog'),
+            closeRegisterBtn: document.getElementById('closeRegisterBtn'),
+            registerForm: document.getElementById('registerForm'),
+            registerUsername: document.getElementById('registerUsername'),
+            registerPassword: document.getElementById('registerPassword'),
+            registerConfirmPassword: document.getElementById('registerConfirmPassword'),
+            registerEmail: document.getElementById('registerEmail'),
+            cancelRegisterBtn: document.getElementById('cancelRegisterBtn'),
+            confirmRegisterBtn: document.getElementById('confirmRegisterBtn'),
+            
+            // 忘记密码对话框元素
+            forgotPasswordDialog: document.getElementById('forgotPasswordDialog'),
+            closeForgotPasswordBtn: document.getElementById('closeForgotPasswordBtn'),
+            forgotPasswordForm: document.getElementById('forgotPasswordForm'),
+            forgotUsername: document.getElementById('forgotUsername'),
+            newPassword: document.getElementById('newPassword'),
+            confirmNewPassword: document.getElementById('confirmNewPassword'),
+            forgotPasswordError: document.getElementById('forgotPasswordError'),
+            cancelForgotPasswordBtn: document.getElementById('cancelForgotPasswordBtn'),
+            confirmForgotPasswordBtn: document.getElementById('confirmForgotPasswordBtn'),
+            
+            // 注销账号对话框元素
+            deleteAccountDialog: document.getElementById('deleteAccountDialog'),
+            closeDeleteAccountBtn: document.getElementById('closeDeleteAccountBtn'),
+            deleteAccountForm: document.getElementById('deleteAccountForm'),
+            deleteAccountName: document.getElementById('deleteAccountName'),
+            deleteAccountPassword: document.getElementById('deleteAccountPassword'),
+            deleteAccountError: document.getElementById('deleteAccountError'),
+            cancelDeleteAccountBtn: document.getElementById('cancelDeleteAccountBtn'),
+            confirmDeleteAccountBtn: document.getElementById('confirmDeleteAccountBtn'),
+            
+            // 主应用元素
+            sidebar: document.getElementById('sidebar'),
+            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+            newNoteBtn: document.getElementById('newNoteBtn'),
+            notesList: document.getElementById('notesList'),
+            noteTitleInput: document.getElementById('noteTitleInput'),
+            noteEditor: document.getElementById('noteEditor'),
+            viewToggleBtn: document.getElementById('viewToggleBtn'),
+            deleteNoteBtn: document.getElementById('deleteNoteBtn'),
+            saveNoteBtn: document.getElementById('saveNoteBtn'),
+            editorContainer: document.getElementById('editorContainer'),
+            previewContainer: document.getElementById('previewContainer'),
+            emptyState: document.getElementById('emptyState'),
+            statusMessage: document.getElementById('statusMessage'),
+            deleteConfirm: document.getElementById('deleteConfirm'),
+            cancelDeleteBtn: document.getElementById('cancelDeleteBtn'),
+            confirmDeleteBtn: document.getElementById('confirmDeleteBtn'),
+            aboutBtn: document.getElementById('aboutBtn'),
+            aboutDialog: document.getElementById('aboutDialog'),
+            closeAboutBtn: document.getElementById('closeAboutBtn'),
+            settingsBtn: document.getElementById('settingsBtn'),
+            settingsDialog: document.getElementById('settingsDialog'),
+            closeSettingsBtn: document.getElementById('closeSettingsBtn'),
+            helpBtn: document.getElementById('helpBtn'),
+            helpDialog: document.getElementById('helpDialog'),
+            closeHelpBtn: document.getElementById('closeHelpBtn'),
+            toolbar: document.getElementById('toolbar'),
+            helpTabs: document.getElementById('helpTabs'),
+            settingsTabs: document.getElementById('settingsTabs'),
+            symbolSelector: document.getElementById('symbolSelector'),
+            // 搜索相关元素
+            searchInput: document.getElementById('searchInput'),
+            clearSearchBtn: document.getElementById('clearSearchBtn'),
+            searchStats: document.getElementById('searchStats'),
+            // 字数统计元素
+            wordCount: document.getElementById('wordCount'),
+            totalNotes: document.getElementById('totalNotes'),
+            totalWords: document.getElementById('totalWords'),
+            // 用户相关元素
+            userAvatar: document.getElementById('userAvatar'),
+            userName: document.getElementById('userName'),
+            userEmail: document.getElementById('userEmail'),
+            logoutBtn: document.getElementById('logoutBtn'),
+            // 设置选项
+            smartInputToggle: document.getElementById('smartInputToggle'),
+            autoSaveToggle: document.getElementById('autoSaveToggle'),
+            tabSymbolSelectorToggle: document.getElementById('tabSymbolSelectorToggle'),
+            headingSymbolsToggle: document.getElementById('headingSymbolsToggle'),
+            listSymbolsToggle: document.getElementById('listSymbolsToggle'),
+            taskSymbolsToggle: document.getElementById('taskSymbolsToggle'),
+            quoteSymbolsToggle: document.getElementById('quoteSymbolsToggle'),
+            integrityCheckToggle: document.getElementById('integrityCheckToggle'),
+            realTimeSearchToggle: document.getElementById('realTimeSearchToggle'),
+            searchHighlightToggle: document.getElementById('searchHighlightToggle'),
+            independentViewToggle: document.getElementById('independentViewToggle'),
+            autoLogoutToggle: document.getElementById('autoLogoutToggle'),
+            // 新增设置选项
+            userStatusToggle: document.getElementById('userStatusToggle'),
+            appTitleToggle: document.getElementById('appTitleToggle'),
+            saveIntervalSelect: document.getElementById('saveIntervalSelect'),
+            themeColorSelect: document.getElementById('themeColorSelect'),
+            fontSizeSelect: document.getElementById('fontSizeSelect')
+        };
+        
+        // ==================== 用户管理函数 ====================
+        
+        // 加载用户数据
+        function loadUsers() {
+            try {
+                const usersData = localStorage.getItem('noteUsers');
+                if (usersData) {
+                    state.users = JSON.parse(usersData);
+                }
+            } catch (error) {
+                console.error('加载用户数据失败:', error);
+                state.users = {};
+            }
+        }
+        
+        // 保存用户数据
+        function saveUsers() {
+            localStorage.setItem('noteUsers', JSON.stringify(state.users));
+        }
+        
+        // 注册新用户
+        function registerUser(username, password, email = '') {
+            if (username.length < 4 || username.length > 20) {
+                return { success: false, message: '账号长度需在4-20位之间' };
+            }
+            
+            if (state.users[username]) {
+                return { success: false, message: '账号已存在' };
+            }
+            
+            if (password.length < 6) {
+                return { success: false, message: '密码长度不能少于6位' };
+            }
+            
+            // 创建用户数据
+            state.users[username] = {
+                password: hashPassword(password),
+                email: email,
+                createdAt: new Date().toISOString(),
+                notes: [],
+                settings: {
+                    smartInputEnabled: true,
+                    autoSaveEnabled: true,
+                    tabSymbolSelector: true,
+                    headingSymbols: true,
+                    listSymbols: true,
+                    taskSymbols: true,
+                    quoteSymbols: true,
+                    realTimeSearch: true,
+                    searchHighlight: true,
+                    integrityCheck: true,
+                    independentView: true,
+                    autoLogout: true,
+                    userStatusVisible: true,
+                    appTitleVisible: true,
+                    autoSaveInterval: 180000,
+                    themeColor: '#4f46e5',
+                    fontSize: '16px'
+                }
+            };
+            
+            saveUsers();
+            return { success: true, message: '注册成功' };
+        }
+        
+        // 登录用户
+        function loginUser(username, password) {
+            const user = state.users[username];
+            
+            if (!user) {
+                return { success: false, message: '账号不存在' };
+            }
+            
+            if (user.password !== hashPassword(password)) {
+                return { success: false, message: '密码错误' };
+            }
+            
+            state.currentUser = username;
+            return { success: true, message: '登录成功' };
+        }
+        
+        // 重置密码
+        function resetPassword(username, newPassword) {
+            const user = state.users[username];
+            
+            if (!user) {
+                return { success: false, message: '账号不存在' };
+            }
+            
+            if (newPassword.length < 6) {
+                return { success: false, message: '密码长度不能少于6位' };
+            }
+            
+            user.password = hashPassword(newPassword);
+            saveUsers();
+            return { success: true, message: '密码重置成功' };
+        }
+        
+        // 注销账号（删除账号）
+        function deleteAccount(username, password) {
+            const user = state.users[username];
+            
+            if (!user) {
+                return { success: false, message: '账号不存在' };
+            }
+            
+            if (user.password !== hashPassword(password)) {
+                return { success: false, message: '密码错误' };
+            }
+            
+            // 删除用户数据
+            delete state.users[username];
+            saveUsers();
+            
+            // 如果当前用户是该账号，登出
+            if (state.currentUser === username) {
+                logoutUser();
+            }
+            
+            return { success: true, message: '账号已成功注销' };
+        }
+        
+        // 简单密码哈希函数
+        function hashPassword(password) {
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                const char = password.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString(36);
+        }
+        
+        // 更新用户头像
+        function updateUserAvatar() {
+            if (!state.currentUser) return;
+            
+            const firstChar = state.currentUser.charAt(0).toUpperCase();
+            elements.userAvatar.textContent = firstChar;
+        }
+        
+        // 更新用户信息显示
+        function updateUserInfo() {
+            if (!state.currentUser) return;
+            
+            const user = state.users[state.currentUser];
+            elements.userName.textContent = state.currentUser;
+            elements.userEmail.textContent = user.email || '未设置邮箱';
+            updateUserAvatar();
+        }
+        
+        // 登出用户
+        function logoutUser() {
+            // 保存当前用户数据
+            saveCurrentUserData();
+            
+            // 清除用户状态
+            state.currentUser = null;
+            state.notes = [];
+            state.activeNoteId = null;
+            
+            // 停止自动登出计时器
+            if (state.autoLogoutTimer) {
+                clearTimeout(state.autoLogoutTimer);
+                state.autoLogoutTimer = null;
+            }
+            
+            // 切换到登录界面
+            elements.appContainer.style.display = 'none';
+            elements.loginContainer.style.display = 'flex';
+            
+            // 清空登录表单
+            elements.username.value = '';
+            elements.password.value = '';
+            elements.loginError.style.display = 'none';
+            elements.loginSuccess.style.display = 'none';
+            
+            showLoginMessage('已成功登出', 'success');
+        }
+        
+        // 重置自动登出计时器
+        function resetAutoLogoutTimer() {
+            if (!state.settings.autoLogout || !state.currentUser) return;
+            
+            if (state.autoLogoutTimer) {
+                clearTimeout(state.autoLogoutTimer);
+            }
+            
+            // 设置30分钟后自动登出
+            state.autoLogoutTimer = setTimeout(() => {
+                if (state.currentUser) {
+                    logoutUser();
+                    showLoginMessage('由于长时间无操作，已自动登出', 'success');
+                }
+            }, 30 * 60 * 1000); // 30分钟
+        }
+        
+        // ==================== 用户数据管理 ====================
+        
+        // 加载当前用户数据
+        function loadCurrentUserData() {
+            if (!state.currentUser) return;
+            
+            const user = state.users[state.currentUser];
+            if (!user) return;
+            
+            // 加载笔记
+            state.notes = user.notes || [];
+            
+            // 加载用户设置
+            if (user.settings) {
+                state.settings = { ...state.settings, ...user.settings };
+            }
+        }
+        
+        // 保存当前用户数据
+        function saveCurrentUserData() {
+            if (!state.currentUser) return;
+            
+            const user = state.users[state.currentUser];
+            if (!user) return;
+            
+            // 保存笔记
+            user.notes = state.notes;
+            
+            // 保存用户设置
+            user.settings = state.settings;
+            
+            saveUsers();
+        }
+        
+        // ==================== 登录界面函数 ====================
+        
+        // 显示登录消息
+        function showLoginMessage(message, type = 'error') {
+            if (type === 'error') {
+                elements.loginError.textContent = message;
+                elements.loginError.style.display = 'block';
+                elements.loginSuccess.style.display = 'none';
+            } else {
+                elements.loginSuccess.textContent = message;
+                elements.loginSuccess.style.display = 'block';
+                elements.loginError.style.display = 'none';
+            }
+            
+            // 3秒后自动隐藏消息
+            setTimeout(() => {
+                elements.loginError.style.display = 'none';
+                elements.loginSuccess.style.display = 'none';
+            }, 3000);
+        }
+        
+        // 显示加载动画
+        function showLoginLoading(show) {
+            if (show) {
+                elements.loginBtn.disabled = true;
+                elements.loginBtn.classList.add('login-btn-loading');
+            } else {
+                elements.loginBtn.disabled = false;
+                elements.loginBtn.classList.remove('login-btn-loading');
+            }
+        }
+        
+        // 显示对话框
+        function showDialog(dialog) {
+            dialog.classList.add('active');
+        }
+        
+        // 隐藏对话框
+        function hideDialog(dialog) {
+            dialog.classList.remove('active');
+        }
+        
+        // ==================== 核心功能函数 ====================
+        
+        // 计算数据完整性哈希
+        function calculateIntegrityHash(data) {
+            const str = JSON.stringify(data);
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString(36);
+        }
+        
+        // 验证数据完整性
+        function verifyDataIntegrity() {
+            if (!state.settings.integrityCheck) return true;
+            
+            const storedHash = localStorage.getItem('noteIntegrityHash');
+            if (!storedHash) return true;
+            
+            const currentData = {
+                notes: state.notes,
+                settings: state.settings,
+                version: state.version
+            };
+            
+            const currentHash = calculateIntegrityHash(currentData);
+            return storedHash === currentHash;
+        }
+        
+        // 保存数据完整性哈希
+        function saveIntegrityHash() {
+            if (!state.settings.integrityCheck) return;
+            
+            const data = {
+                notes: state.notes,
+                settings: state.settings,
+                version: state.version
+            };
+            
+            const hash = calculateIntegrityHash(data);
+            localStorage.setItem('noteIntegrityHash', hash);
+        }
+        
+        // 字数统计函数
+        function countWords(text) {
+            if (!text) return 0;
+            return text.replace(/\s+/g, '').length;
+        }
+        
+        function updateWordCount() {
+            // 全局统计
+            const totalNotes = state.notes.length;
+            let totalWords = 0;
+            
+            state.notes.forEach(note => {
+                totalWords += countWords(note.title) + countWords(note.content);
+            });
+            
+            elements.totalNotes.textContent = totalNotes;
+            elements.totalWords.textContent = totalWords.toLocaleString();
+        }
+        
+        // 搜索功能函数
+        function performSearch(query) {
+            state.searchQuery = query.trim();
+            
+            if (!state.searchQuery) {
+                state.searchResults = [];
+                elements.clearSearchBtn.classList.remove('visible');
+                elements.searchStats.classList.remove('visible');
+                renderNotesList();
+                return;
+            }
+            
+            const results = [];
+            const lowerQuery = state.searchQuery.toLowerCase();
+            
+            state.notes.forEach((note, index) => {
+                const inTitle = note.title && note.title.toLowerCase().includes(lowerQuery);
+                const inContent = note.content && note.content.toLowerCase().includes(lowerQuery);
+                
+                if (inTitle || inContent) {
+                    results.push({
+                        note,
+                        index,
+                        inTitle,
+                        inContent
+                    });
+                }
+            });
+            
+            state.searchResults = results;
+            elements.clearSearchBtn.classList.add('visible');
+            elements.searchStats.classList.add('visible');
+            elements.searchStats.textContent = `找到 ${results.length} 个笔记`;
+            
+            renderNotesList();
+        }
+        
+        function highlightText(text, query) {
+            if (!state.settings.searchHighlight || !query || !text) return text;
+            
+            // 转义特殊字符
+            const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escapedQuery})`, 'gi');
+            return text.replace(regex, '<span class="search-highlight">$1</span>');
+        }
+        
+        function clearSearch() {
+            state.searchQuery = '';
+            elements.searchInput.value = '';
+            state.searchResults = [];
+            elements.clearSearchBtn.classList.remove('visible');
+            elements.searchStats.classList.remove('visible');
+            renderNotesList();
+            elements.searchInput.focus();
+        }
+        
+        // 初始化应用
+        async function initApp() {
+            // 加载用户数据
+            loadUsers();
+            
+            // 检查是否有上次登录的用户
+            const lastUser = localStorage.getItem('lastUser');
+            if (lastUser && state.users[lastUser]) {
+                elements.username.value = lastUser;
+                elements.password.focus();
+            }
+            
+            // 设置登录事件监听器
+            setupLoginEventListeners();
+            
+            // 初始显示登录界面
+            elements.loginContainer.style.display = 'flex';
+            elements.appContainer.style.display = 'none';
+        }
+        
+        // 初始化主应用
+        function initMainApp() {
+            // 加载当前用户数据
+            loadCurrentUserData();
+            
+            // 验证数据完整性
+            if (!verifyDataIntegrity()) {
+                if (confirm('检测到数据可能被篡改或损坏。是否恢复默认设置？')) {
+                    resetData();
+                } else {
+                    showStatus('数据完整性检查失败，继续使用可能存在风险');
+                }
+            }
+            
+            // 应用设置
+            applySettings();
+            
+            renderNotesList();
+            updateWordCount();
+            updateUserInfo();
+            
+            // 如果存在笔记，显示第一个
+            if (state.notes.length > 0) {
+                setActiveNote(state.notes[0].id);
+            } else {
+                showEmptyState();
+            }
+            
+            setupEventListeners();
+            setupResponsiveBehavior();
+            setupKeyboardShortcuts();
+            loadSettings();
+            
+            // 添加页面卸载时的保存监听
+            window.addEventListener('beforeunload', saveAllData);
+            window.addEventListener('pagehide', saveAllData);
+            
+            // 初始显示状态消息
+            setTimeout(() => {
+                showStatus('应用已加载完成 ✓');
+            }, 1000);
+            
+            // 启动自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 应用设置到UI
+        function applySettings() {
+            // 应用主题颜色
+            document.documentElement.style.setProperty('--primary-color', state.settings.themeColor);
+            
+            // 应用字体大小
+            document.querySelectorAll('.note-editor, .preview-container').forEach(el => {
+                el.style.fontSize = state.settings.fontSize;
+            });
+            
+            // 应用UI元素可见性
+            const sidebarHeader = document.querySelector('.sidebar-header');
+            if (sidebarHeader) {
+                sidebarHeader.style.display = state.settings.appTitleVisible ? 'block' : 'none';
+            }
+            
+            const userInfo = document.querySelector('.user-info');
+            if (userInfo) {
+                userInfo.style.display = state.settings.userStatusVisible ? 'flex' : 'none';
+            }
+        }
+        
+        // 重置数据
+        function resetData() {
+            state.notes = [];
+            state.activeNoteId = null;
+            saveCurrentUserData();
+            renderNotesList();
+            showEmptyState();
+            showStatus('数据已重置');
+        }
+        
+        // 保存所有数据
+        function saveAllData() {
+            saveCurrentUserData();
+            saveIntegrityHash();
+        }
+        
+        // 保存设置
+        function saveSettings() {
+            // 设置保存在用户数据中，通过saveCurrentUserData保存
+        }
+        
+        // 设置登录事件监听器
+        function setupLoginEventListeners() {
+            // 登录表单提交
+            elements.loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                handleLogin();
+            });
+            
+            // 注册链接
+            elements.registerLink.addEventListener('click', () => {
+                showDialog(elements.registerDialog);
+                elements.registerUsername.focus();
+            });
+            
+            // 忘记密码链接
+            elements.forgotPasswordLink.addEventListener('click', () => {
+                showDialog(elements.forgotPasswordDialog);
+                elements.forgotUsername.focus();
+            });
+            
+            // 注销账号链接
+            elements.deleteAccountLink.addEventListener('click', () => {
+                const username = elements.username.value.trim();
+                if (!username) {
+                    showLoginMessage('请先输入要注销的账号');
+                    return;
+                }
+                
+                elements.deleteAccountName.textContent = username;
+                showDialog(elements.deleteAccountDialog);
+                elements.deleteAccountPassword.focus();
+            });
+            
+            // 注册对话框
+            elements.closeRegisterBtn.addEventListener('click', () => hideDialog(elements.registerDialog));
+            elements.cancelRegisterBtn.addEventListener('click', () => hideDialog(elements.registerDialog));
+            elements.registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                handleRegister();
+            });
+            
+            // 忘记密码对话框
+            elements.closeForgotPasswordBtn.addEventListener('click', () => hideDialog(elements.forgotPasswordDialog));
+            elements.cancelForgotPasswordBtn.addEventListener('click', () => hideDialog(elements.forgotPasswordDialog));
+            elements.forgotPasswordForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                handleForgotPassword();
+            });
+            
+            // 注销账号对话框
+            elements.closeDeleteAccountBtn.addEventListener('click', () => hideDialog(elements.deleteAccountDialog));
+            elements.cancelDeleteAccountBtn.addEventListener('click', () => hideDialog(elements.deleteAccountDialog));
+            elements.deleteAccountForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                handleDeleteAccount();
+            });
+            
+            // 点击对话框外部关闭对话框
+            document.querySelectorAll('.dialog-overlay').forEach(dialog => {
+                dialog.addEventListener('click', (e) => {
+                    if (e.target === dialog) {
+                        dialog.classList.remove('active');
+                    }
+                });
+            });
+        }
+        
+        // 处理登录
+        function handleLogin() {
+            const username = elements.username.value.trim();
+            const password = elements.password.value.trim();
+            
+            if (!username || !password) {
+                showLoginMessage('请输入账号和密码');
+                return;
+            }
+            
+            // 显示加载动画
+            showLoginLoading(true);
+            
+            // 模拟登录延迟
+            setTimeout(() => {
+                const result = loginUser(username, password);
+                
+                if (result.success) {
+                    // 保存上次登录用户
+                    localStorage.setItem('lastUser', username);
+                    
+                    // 切换到主应用界面
+                    elements.loginContainer.style.display = 'none';
+                    elements.appContainer.style.display = 'flex';
+                    
+                    // 初始化主应用
+                    initMainApp();
+                    
+                    showStatus('登录成功 ✓');
+                } else {
+                    showLoginMessage(result.message);
+                }
+                
+                // 隐藏加载动画
+                showLoginLoading(false);
+            }, 800); // 800ms延迟模拟登录过程
+        }
+        
+        // 处理注册
+        function handleRegister() {
+            const username = elements.registerUsername.value.trim();
+            const password = elements.registerPassword.value.trim();
+            const confirmPassword = elements.registerConfirmPassword.value.trim();
+            const email = elements.registerEmail.value.trim();
+            
+            if (!username || !password || !confirmPassword) {
+                elements.loginError.textContent = '请填写所有必填项';
+                elements.loginError.style.display = 'block';
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                elements.loginError.textContent = '两次输入的密码不一致';
+                elements.loginError.style.display = 'block';
+                return;
+            }
+            
+            const result = registerUser(username, password, email);
+            
+            if (result.success) {
+                hideDialog(elements.registerDialog);
+                showLoginMessage(result.message, 'success');
+                
+                // 自动填充登录表单
+                elements.username.value = username;
+                elements.password.value = password;
+                elements.loginBtn.focus();
+                
+                // 清空注册表单
+                elements.registerUsername.value = '';
+                elements.registerPassword.value = '';
+                elements.registerConfirmPassword.value = '';
+                elements.registerEmail.value = '';
+            } else {
+                elements.loginError.textContent = result.message;
+                elements.loginError.style.display = 'block';
+            }
+        }
+        
+        // 处理忘记密码
+        function handleForgotPassword() {
+            const username = elements.forgotUsername.value.trim();
+            const newPassword = elements.newPassword.value.trim();
+            const confirmNewPassword = elements.confirmNewPassword.value.trim();
+            
+            if (!username || !newPassword || !confirmNewPassword) {
+                elements.forgotPasswordError.textContent = '请填写所有必填项';
+                elements.forgotPasswordError.style.display = 'block';
+                return;
+            }
+            
+            if (newPassword !== confirmNewPassword) {
+                elements.forgotPasswordError.textContent = '两次输入的密码不一致';
+                elements.forgotPasswordError.style.display = 'block';
+                return;
+            }
+            
+            const result = resetPassword(username, newPassword);
+            
+            if (result.success) {
+                hideDialog(elements.forgotPasswordDialog);
+                showLoginMessage(result.message, 'success');
+                
+                // 如果重置的是当前登录用户的密码，自动登出
+                if (state.currentUser === username) {
+                    logoutUser();
+                    showLoginMessage('密码已重置，请重新登录', 'success');
+                }
+                
+                // 清空表单
+                elements.forgotUsername.value = '';
+                elements.newPassword.value = '';
+                elements.confirmNewPassword.value = '';
+            } else {
+                elements.forgotPasswordError.textContent = result.message;
+                elements.forgotPasswordError.style.display = 'block';
+            }
+        }
+        
+        // 处理注销账号
+        function handleDeleteAccount() {
+            const username = elements.deleteAccountName.textContent;
+            const password = elements.deleteAccountPassword.value.trim();
+            
+            if (!password) {
+                elements.deleteAccountError.textContent = '请输入密码确认';
+                elements.deleteAccountError.style.display = 'block';
+                return;
+            }
+            
+            const result = deleteAccount(username, password);
+            
+            if (result.success) {
+                hideDialog(elements.deleteAccountDialog);
+                showLoginMessage(result.message, 'success');
+                
+                // 清空登录表单
+                elements.username.value = '';
+                elements.password.value = '';
+                
+                // 清空注销表单
+                elements.deleteAccountPassword.value = '';
+            } else {
+                elements.deleteAccountError.textContent = result.message;
+                elements.deleteAccountError.style.display = 'block';
+            }
+        }
+        
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 新建笔记按钮
+            elements.newNoteBtn.addEventListener('click', createNewNote);
+            
+            // 标题输入
+            elements.noteTitleInput.addEventListener('input', updateNoteTitle);
+            
+            // 内容输入
+            elements.noteEditor.addEventListener('input', handleEditorInput);
+            
+            // 智能输入处理
+            elements.noteEditor.addEventListener('keydown', handleSmartInput);
+            elements.noteEditor.addEventListener('keydown', handleKeydown);
+            
+            // 工具栏按钮
+            elements.viewToggleBtn.addEventListener('click', togglePreviewMode);
+            elements.deleteNoteBtn.addEventListener('click', showDeleteConfirm);
+            elements.saveNoteBtn.addEventListener('click', saveNote);
+            elements.aboutBtn.addEventListener('click', showAboutDialog);
+            elements.settingsBtn.addEventListener('click', showSettingsDialog);
+            elements.helpBtn.addEventListener('click', showHelpDialog);
+            
+            // 登出按钮
+            elements.logoutBtn.addEventListener('click', logoutUser);
+            
+            // 设置选项监听
+            elements.smartInputToggle.addEventListener('change', () => updateSetting('smartInputEnabled', elements.smartInputToggle.checked));
+            elements.autoSaveToggle.addEventListener('change', () => updateSetting('autoSaveEnabled', elements.autoSaveToggle.checked));
+            elements.tabSymbolSelectorToggle.addEventListener('change', () => updateSetting('tabSymbolSelector', elements.tabSymbolSelectorToggle.checked));
+            elements.headingSymbolsToggle.addEventListener('change', () => updateSetting('headingSymbols', elements.headingSymbolsToggle.checked));
+            elements.listSymbolsToggle.addEventListener('change', () => updateSetting('listSymbols', elements.listSymbolsToggle.checked));
+            elements.taskSymbolsToggle.addEventListener('change', () => updateSetting('taskSymbols', elements.taskSymbolsToggle.checked));
+            elements.quoteSymbolsToggle.addEventListener('change', () => updateSetting('quoteSymbols', elements.quoteSymbolsToggle.checked));
+            elements.integrityCheckToggle.addEventListener('change', () => updateSetting('integrityCheck', elements.integrityCheckToggle.checked));
+            elements.realTimeSearchToggle.addEventListener('change', () => updateSetting('realTimeSearch', elements.realTimeSearchToggle.checked));
+            elements.searchHighlightToggle.addEventListener('change', () => updateSetting('searchHighlight', elements.searchHighlightToggle.checked));
+            elements.independentViewToggle.addEventListener('change', () => updateSetting('independentView', elements.independentViewToggle.checked));
+            elements.autoLogoutToggle.addEventListener('change', () => updateSetting('autoLogout', elements.autoLogoutToggle.checked));
+            
+            // 新增设置选项监听
+            elements.userStatusToggle.addEventListener('change', () => updateSetting('userStatusVisible', elements.userStatusToggle.checked));
+            elements.appTitleToggle.addEventListener('change', () => updateSetting('appTitleVisible', elements.appTitleToggle.checked));
+            elements.saveIntervalSelect.addEventListener('change', () => updateSetting('autoSaveInterval', parseInt(elements.saveIntervalSelect.value)));
+            elements.themeColorSelect.addEventListener('change', () => updateSetting('themeColor', elements.themeColorSelect.value));
+            elements.fontSizeSelect.addEventListener('change', () => updateSetting('fontSize', elements.fontSizeSelect.value));
+            
+            // 设置标签页切换
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    switchSettingsTab(tabId);
+                });
+            });
+            
+            // 对话框按钮
+            elements.cancelDeleteBtn.addEventListener('click', hideDeleteConfirm);
+            elements.confirmDeleteBtn.addEventListener('click', deleteActiveNote);
+            elements.closeAboutBtn.addEventListener('click', hideAboutDialog);
+            elements.closeSettingsBtn.addEventListener('click', hideSettingsDialog);
+            elements.closeHelpBtn.addEventListener('click', hideHelpDialog);
+            
+            // 搜索相关事件
+            let searchTimeout;
+            elements.searchInput.addEventListener('input', (e) => {
+                const query = e.target.value;
+                
+                if (state.settings.realTimeSearch) {
+                    // 防抖处理，避免频繁搜索
+                    clearTimeout(searchTimeout);
+                    searchTimeout = setTimeout(() => {
+                        performSearch(query);
+                    }, 300);
+                }
+                
+                // 更新清除按钮状态
+                if (query.trim()) {
+                    elements.clearSearchBtn.classList.add('visible');
+                } else {
+                    elements.clearSearchBtn.classList.remove('visible');
+                }
+                
+                // 重置自动登出计时器
+                resetAutoLogoutTimer();
+            });
+            
+            elements.searchInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !state.settings.realTimeSearch) {
+                    performSearch(e.target.value);
+                }
+                if (e.key === 'Escape') {
+                    clearSearch();
+                }
+                
+                // 重置自动登出计时器
+                resetAutoLogoutTimer();
+            });
+            
+            elements.clearSearchBtn.addEventListener('click', clearSearch);
+            
+            // 移动端菜单按钮
+            elements.mobileMenuBtn.addEventListener('click', toggleSidebar);
+            
+            // 使用说明标签页切换
+            document.querySelectorAll('.help-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.dataset.tab;
+                    switchHelpTab(tabId);
+                });
+            });
+            
+            // 点击编辑器外部关闭符号选择器
+            document.addEventListener('click', (e) => {
+                if (state.symbolSelector.visible && 
+                    !elements.symbolSelector.contains(e.target) && 
+                    e.target !== elements.noteEditor) {
+                    hideSymbolSelector();
+                }
+                
+                // 重置自动登出计时器
+                resetAutoLogoutTimer();
+            });
+            
+            // 点击侧边栏外部关闭侧边栏（移动端）
+            document.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768 && 
+                    state.sidebarVisible && 
+                    !elements.sidebar.contains(e.target) && 
+                    e.target !== elements.mobileMenuBtn) {
+                    toggleSidebar();
+                }
+            });
+            
+            // 预览模式下任务勾选事件委托
+            elements.previewContainer.addEventListener('change', (e) => {
+                if (e.target.classList.contains('task-checkbox')) {
+                    toggleTaskCompletion(e.target);
+                }
+            });
+            
+            // 用户活动监听（用于自动登出）
+            document.addEventListener('mousemove', resetAutoLogoutTimer);
+            document.addEventListener('keydown', resetAutoLogoutTimer);
+            document.addEventListener('click', resetAutoLogoutTimer);
+        }
+        
+        // 编辑器输入处理
+        function handleEditorInput() {
+            updateNoteContent();
+            updateWordCount();
+            
+            // 自动保存功能 - 使用设置的间隔时间
+            if (!state.settings.autoSaveEnabled) return;
+            
+            clearTimeout(window.saveTimeout);
+            window.saveTimeout = setTimeout(() => {
+                saveNote();
+            }, state.settings.autoSaveInterval || 180000);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 键盘按下处理
+        function handleKeydown(e) {
+            // 如果符号选择器可见，处理选择器导航
+            if (state.symbolSelector.visible) {
+                switch(e.key) {
+                    case 'Tab':
+                        e.preventDefault();
+                        if (e.shiftKey) {
+                            navigateSymbolSelector(-1);
+                        } else {
+                            navigateSymbolSelector(1);
+                        }
+                        break;
+                    case ' ':
+                        e.preventDefault();
+                        insertSelectedSymbol();
+                        break;
+                    case 'Escape':
+                        e.preventDefault();
+                        hideSymbolSelector();
+                        break;
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        navigateSymbolSelector(-1);
+                        break;
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        navigateSymbolSelector(1);
+                        break;
+                    case 'Enter':
+                        e.preventDefault();
+                        insertSelectedSymbol();
+                        break;
+                }
+            } else if (e.key === 'Tab' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                // 如果符号选择器不可见且按下了Tab键
+                if (state.settings.tabSymbolSelector) {
+                    e.preventDefault();
+                    showSymbolSelector();
+                }
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 设置键盘快捷键
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', (e) => {
+                // Ctrl+F 聚焦搜索框
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
+                    e.preventDefault();
+                    elements.searchInput.focus();
+                    elements.searchInput.select();
+                    return;
+                }
+                
+                // Ctrl+Shift+N 新建笔记（修复浏览器冲突）
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'n') {
+                    e.preventDefault();
+                    createNewNote();
+                    return;
+                }
+                
+                // 忽略在输入框中的快捷键（除了全局快捷键）
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    // 只处理全局快捷键
+                    if (e.ctrlKey || e.metaKey) {
+                        switch(e.key.toLowerCase()) {
+                            case 'e':
+                                e.preventDefault();
+                                togglePreviewMode();
+                                break;
+                            case 's':
+                                e.preventDefault();
+                                saveNote();
+                                break;
+                            case 'h':
+                                e.preventDefault();
+                                toggleHelpDialog();
+                                break;
+                            case 'd':
+                                e.preventDefault();
+                                showDeleteConfirm();
+                                break;
+                            case 'i':
+                                e.preventDefault();
+                                toggleAboutDialog();
+                                break;
+                        }
+                    }
+                    
+                    return;
+                }
+                
+                // 全局快捷键
+                if (e.ctrlKey || e.metaKey) {
+                    switch(e.key.toLowerCase()) {
+                        case 'e':
+                            e.preventDefault();
+                            togglePreviewMode();
+                            break;
+                        case 's':
+                            e.preventDefault();
+                            saveNote();
+                            break;
+                        case 'h':
+                            e.preventDefault();
+                            toggleHelpDialog();
+                            break;
+                        case 'd':
+                            e.preventDefault();
+                            showDeleteConfirm();
+                            break;
+                        case ',':
+                            e.preventDefault();
+                            toggleSettingsDialog();
+                            break;
+                        case 'i':
+                            e.preventDefault();
+                            toggleAboutDialog();
+                            break;
+                    }
+                }
+                
+                // 重置自动登出计时器
+                resetAutoLogoutTimer();
+            });
+        }
+        
+        // 切换设置标签页
+        function switchSettingsTab(tabId) {
+            document.querySelectorAll('.settings-tab').forEach(tab => {
+                if (tab.dataset.tab === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            document.querySelectorAll('.settings-section').forEach(section => {
+                if (section.id === `${tabId}-tab`) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+        }
+        
+        // 切换使用说明标签页
+        function switchHelpTab(tabId) {
+            document.querySelectorAll('.help-tab').forEach(tab => {
+                if (tab.dataset.tab === tabId) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            document.querySelectorAll('.help-section').forEach(section => {
+                if (section.id === `${tabId}-tab`) {
+                    section.classList.add('active');
+                } else {
+                    section.classList.remove('active');
+                }
+            });
+        }
+        
+        // 响应式行为设置
+        function setupResponsiveBehavior() {
+            updateSidebarVisibility();
+            
+            window.addEventListener('resize', () => {
+                const wasSidebarVisible = state.sidebarVisible;
+                state.sidebarVisible = window.innerWidth > 768;
+                
+                if (wasSidebarVisible !== state.sidebarVisible) {
+                    updateSidebarVisibility();
+                }
+            });
+        }
+        
+        // 更新侧边栏可见性
+        function updateSidebarVisibility() {
+            if (state.sidebarVisible) {
+                elements.sidebar.classList.add('active');
+            } else {
+                elements.sidebar.classList.remove('active');
+            }
+        }
+        
+        // 切换侧边栏（移动端）
+        function toggleSidebar() {
+            state.sidebarVisible = !state.sidebarVisible;
+            updateSidebarVisibility();
+        }
+        
+        // 渲染笔记列表
+        function renderNotesList() {
+            if (state.notes.length === 0) {
+                elements.notesList.innerHTML = '<div style="padding: 20px; text-align: center; color: var(--text-light); font-size: 0.9rem; animation: fadeIn 0.3s;">暂无笔记，点击上方按钮创建</div>';
+                return;
+            }
+            
+            const notesToShow = state.searchResults.length > 0 ? 
+                state.searchResults.map(r => r.note) : 
+                state.notes;
+            
+            elements.notesList.innerHTML = notesToShow.map(note => {
+                const isActive = note.id === state.activeNoteId;
+                const createdDate = formatDateTime(note.createdAt);
+                const updatedDate = formatRelativeTime(note.updatedAt);
+                
+                let noteClass = 'note-item';
+                if (isActive) noteClass += ' active';
+                
+                // 处理标题高亮
+                let displayTitle = note.title || '无标题';
+                if (state.searchQuery && state.settings.searchHighlight) {
+                    displayTitle = highlightText(displayTitle, state.searchQuery);
+                }
+                
+                // 计算当前笔记的字数
+                const noteWordCount = countWords(note.title) + countWords(note.content);
+                
+                // 获取笔记的预览模式状态
+                const isNoteInPreview = note.previewMode || false;
+                
+                return `
+                    <div class="${noteClass}" data-id="${note.id}">
+                        <div class="note-title">${displayTitle}</div>
+                        <div class="note-meta">
+                            <div class="note-date">
+                                <span>${createdDate}</span>
+                                <span class="edit-time">${updatedDate} 
+                                    <i class="fas fa-${isNoteInPreview ? 'eye' : 'edit'}" style="margin-left: 4px; font-size: 0.6rem;"></i>
+                                </span>
+                            </div>
+                            <div class="note-word-count">${noteWordCount.toLocaleString()}字</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // 为每个笔记项添加点击事件
+            document.querySelectorAll('.note-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const noteId = item.dataset.id;
+                    setActiveNote(noteId);
+                    
+                    if (window.innerWidth <= 768) {
+                        toggleSidebar();
+                    }
+                    
+                    // 重置自动登出计时器
+                    resetAutoLogoutTimer();
+                });
+            });
+        }
+        
+        // 格式化日期时间为完整格式
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).replace(/\//g, '-');
+        }
+        
+        // 格式化相对时间（用于编辑时间）
+        function formatRelativeTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                if (diffMins < 60) {
+                    return diffMins <= 1 ? '刚刚' : `${diffMins}分钟前`;
+                }
+                return `${diffHours}小时前`;
+            }
+            
+            if (diffDays === 1) {
+                return '昨天';
+            }
+            
+            if (diffDays < 7) {
+                return `${diffDays}天前`;
+            }
+            
+            return date.toLocaleDateString('zh-CN', {
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        // 创建新笔记
+        function createNewNote() {
+            const now = new Date().toISOString();
+            const newNote = {
+                id: Date.now().toString(),
+                title: '',
+                content: '',
+                createdAt: now,
+                updatedAt: now,
+                previewMode: false
+            };
+            
+            state.notes.unshift(newNote);
+            setActiveNote(newNote.id);
+            renderNotesList();
+            updateWordCount();
+            saveCurrentUserData();
+            showStatus('已创建新笔记');
+            
+            setTimeout(() => {
+                elements.noteTitleInput.focus();
+            }, 100);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 设置活动笔记
+        function setActiveNote(noteId) {
+            state.activeNoteId = noteId;
+            const note = state.notes.find(n => n.id === noteId);
+            
+            if (note) {
+                elements.noteTitleInput.value = note.title;
+                elements.noteEditor.value = note.content;
+                
+                // 设置预览模式状态
+                if (state.settings.independentView) {
+                    // 每个笔记独立保存视图状态
+                    state.isPreviewMode = note.previewMode || false;
+                }
+                
+                // 更新UI状态
+                updateViewUI();
+                updatePreview();
+                
+                elements.emptyState.style.display = 'none';
+                elements.editorContainer.style.display = 'flex';
+                elements.toolbar.classList.remove('hidden');
+                
+                renderNotesList();
+                updateWordCount();
+                
+                // 滚动到编辑器顶部
+                elements.editorContainer.scrollTop = 0;
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 更新笔记标题
+        function updateNoteTitle() {
+            const note = state.notes.find(n => n.id === state.activeNoteId);
+            if (note) {
+                note.title = elements.noteTitleInput.value;
+                note.updatedAt = new Date().toISOString();
+                renderNotesList();
+                updateWordCount();
+                saveCurrentUserData();
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 更新笔记内容
+        function updateNoteContent() {
+            const note = state.notes.find(n => n.id === state.activeNoteId);
+            if (note) {
+                note.content = elements.noteEditor.value;
+                note.updatedAt = new Date().toISOString();
+                
+                if (state.isPreviewMode) {
+                    updatePreview();
+                }
+                
+                renderNotesList();
+                saveCurrentUserData();
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 智能输入处理
+        function handleSmartInput(e) {
+            if (!state.settings.smartInputEnabled) return;
+            
+            const textarea = elements.noteEditor;
+            const cursorPos = textarea.selectionStart;
+            const textBeforeCursor = textarea.value.substring(0, cursorPos);
+            const lines = textBeforeCursor.split('\n');
+            const currentLine = lines[lines.length - 1];
+            
+            if (e.key === ' ' && !e.shiftKey) {
+                for (const [symbol, data] of Object.entries(symbolMap)) {
+                    if (currentLine === symbol && data.enabled()) {
+                        e.preventDefault();
+                        
+                        const textAfterCursor = textarea.value.substring(cursorPos);
+                        const newText = textBeforeCursor.slice(0, -symbol.length) + data.text + textAfterCursor;
+                        
+                        textarea.value = newText;
+                        textarea.selectionStart = textarea.selectionEnd = cursorPos - symbol.length + data.text.length;
+                        
+                        updateNoteContent();
+                        updateWordCount();
+                        break;
+                    }
+                }
+            }
+            
+            if (e.key === 'Enter' && !e.shiftKey) {
+                const listMatch = currentLine.match(/^(\s*)([-*+]|\d+\.)\s+(.*)/);
+                const taskMatch = currentLine.match(/^(\s*)([-*+])\s+\[([ x])\]\s+(.*)/);
+                
+                if (taskMatch) {
+                    e.preventDefault();
+                    const indent = taskMatch[1];
+                    const symbol = taskMatch[2];
+                    const textAfterCursor = textarea.value.substring(cursorPos);
+                    const newText = `${indent}${symbol} [ ] `;
+                    
+                    textarea.value = textBeforeCursor + '\n' + newText + textAfterCursor;
+                    textarea.selectionStart = textarea.selectionEnd = cursorPos + 1 + newText.length;
+                    
+                    updateNoteContent();
+                    updateWordCount();
+                } else if (listMatch) {
+                    e.preventDefault();
+                    const indent = listMatch[1];
+                    let symbol = listMatch[2];
+                    
+                    if (/^\d+\.$/.test(symbol)) {
+                        const num = parseInt(symbol);
+                        symbol = (num + 1) + '.';
+                    }
+                    
+                    const textAfterCursor = textarea.value.substring(cursorPos);
+                    const newText = `${indent}${symbol} `;
+                    
+                    textarea.value = textBeforeCursor + '\n' + newText + textAfterCursor;
+                    textarea.selectionStart = textarea.selectionEnd = cursorPos + 1 + newText.length;
+                    
+                    updateNoteContent();
+                    updateWordCount();
+                }
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 加载设置
+        function loadSettings() {
+            elements.smartInputToggle.checked = state.settings.smartInputEnabled;
+            elements.autoSaveToggle.checked = state.settings.autoSaveEnabled;
+            elements.tabSymbolSelectorToggle.checked = state.settings.tabSymbolSelector;
+            elements.headingSymbolsToggle.checked = state.settings.headingSymbols;
+            elements.listSymbolsToggle.checked = state.settings.listSymbols;
+            elements.taskSymbolsToggle.checked = state.settings.taskSymbols;
+            elements.quoteSymbolsToggle.checked = state.settings.quoteSymbols;
+            elements.integrityCheckToggle.checked = state.settings.integrityCheck;
+            elements.realTimeSearchToggle.checked = state.settings.realTimeSearch;
+            elements.searchHighlightToggle.checked = state.settings.searchHighlight;
+            elements.independentViewToggle.checked = state.settings.independentView;
+            elements.autoLogoutToggle.checked = state.settings.autoLogout;
+            
+            // 加载新增设置
+            elements.userStatusToggle.checked = state.settings.userStatusVisible;
+            elements.appTitleToggle.checked = state.settings.appTitleVisible;
+            elements.saveIntervalSelect.value = state.settings.autoSaveInterval;
+            elements.themeColorSelect.value = state.settings.themeColor;
+            elements.fontSizeSelect.value = state.settings.fontSize;
+            
+            // 应用UI可见性
+            applyUIVisibility();
+        }
+        
+        // 应用UI可见性设置
+        function applyUIVisibility() {
+            // 注意：这里我们只是保存设置，但默认UI保持不变
+            // 用户可以通过设置控制UI元素的显示/隐藏
+        }
+        
+        // 更新设置
+        function updateSetting(key, value) {
+            state.settings[key] = value;
+            saveCurrentUserData();
+            
+            // 立即应用某些设置的更改
+            if (key === 'themeColor' || key === 'fontSize') {
+                applySettings();
+            }
+            
+            // 应用UI可见性更改
+            if (key === 'userStatusVisible' || key === 'appTitleVisible') {
+                applyUIVisibility();
+            }
+            
+            // 如果关闭了自动登出，清除计时器
+            if (key === 'autoLogout' && !value && state.autoLogoutTimer) {
+                clearTimeout(state.autoLogoutTimer);
+                state.autoLogoutTimer = null;
+            }
+            
+            // 如果开启了自动登出，重置计时器
+            if (key === 'autoLogout' && value) {
+                resetAutoLogoutTimer();
+            }
+            
+            const settingNames = {
+                smartInputEnabled: '智能输入',
+                autoSaveEnabled: '自动保存',
+                tabSymbolSelector: 'Tab键符号选择器',
+                headingSymbols: '标题符号',
+                listSymbols: '列表符号',
+                taskSymbols: '任务符号',
+                quoteSymbols: '引用符号',
+                integrityCheck: '数据完整性检查',
+                realTimeSearch: '实时搜索',
+                searchHighlight: '搜索高亮',
+                independentView: '独立笔记视图状态',
+                autoLogout: '自动登出',
+                userStatusVisible: '用户状态指示器',
+                appTitleVisible: '应用标题',
+                autoSaveInterval: '自动保存间隔',
+                themeColor: '主题颜色',
+                fontSize: '字体大小'
+            };
+            
+            const status = typeof value === 'boolean' ? (value ? '启用' : '禁用') : '已更新';
+            showStatus(`${settingNames[key]}${status}`);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 切换预览模式
+        function togglePreviewMode() {
+            state.isPreviewMode = !state.isPreviewMode;
+            
+            // 如果启用了独立视图状态，保存到当前笔记
+            if (state.settings.independentView && state.activeNoteId) {
+                const note = state.notes.find(n => n.id === state.activeNoteId);
+                if (note) {
+                    note.previewMode = state.isPreviewMode;
+                    saveCurrentUserData();
+                }
+            }
+            
+            updateViewUI();
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 更新视图UI
+        function updateViewUI() {
+            if (state.isPreviewMode) {
+                elements.noteEditor.style.display = 'none';
+                elements.previewContainer.style.display = 'block';
+                elements.viewToggleBtn.innerHTML = '<i class="fas fa-edit"></i>';
+                elements.viewToggleBtn.title = '编辑模式 (Ctrl+E)';
+                elements.viewToggleBtn.classList.add('active');
+                updatePreview();
+            } else {
+                elements.noteEditor.style.display = 'block';
+                elements.previewContainer.style.display = 'none';
+                elements.viewToggleBtn.innerHTML = '<i class="fas fa-eye"></i>';
+                elements.viewToggleBtn.title = '预览模式 (Ctrl+E)';
+                elements.viewToggleBtn.classList.remove('active');
+            }
+        }
+        
+        // 更新预览
+        function updatePreview() {
+            const note = state.notes.find(n => n.id === state.activeNoteId);
+            if (note) {
+                let html = convertMarkdownToHtml(note.content);
+                elements.previewContainer.innerHTML = html;
+            }
+        }
+        
+        // 将Markdown转换为HTML
+        function convertMarkdownToHtml(content) {
+            if (!content) return '';
+            
+            let taskIndex = 0;
+            const taskMap = new Map();
+            
+            // 首先处理任务项
+            let processedContent = content
+                // 处理未完成任务
+                .replace(/^- \[ \] (.*$)/gm, (match, taskText) => {
+                    taskIndex++;
+                    taskMap.set(taskIndex, { text: taskText, completed: false });
+                    return `<div class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="task-${taskIndex}" data-index="${taskIndex}">
+                        <label for="task-${taskIndex}" class="task-text">${taskText}</label>
+                    </div>`;
+                })
+                // 处理已完成任务
+                .replace(/^- \[x\] (.*$)/gmi, (match, taskText) => {
+                    taskIndex++;
+                    taskMap.set(taskIndex, { text: taskText, completed: true });
+                    return `<div class="task-item">
+                        <input type="checkbox" class="task-checkbox" id="task-${taskIndex}" checked data-index="${taskIndex}">
+                        <label for="task-${taskIndex}" class="task-text completed">${taskText}</label>
+                    </div>`;
+                });
+            
+            // 然后处理其他Markdown
+            let html = processedContent
+                // 普通无序列表
+                .replace(/^\s*[-*] (?!\[[ x]\])(.*$)/gm, '<li>$1</li>')
+                // 标题
+                .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                // 粗体
+                .replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>')
+                // 斜体
+                .replace(/\*(.*)\*/g, '<em>$1</em>')
+                // 代码块
+                .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                // 行内代码
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                // 引用
+                .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
+                // 有序列表
+                .replace(/^\s*\d+\. (.*$)/gm, '<li>$1</li>')
+                // 链接
+                .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
+                // 图片
+                .replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%; border-radius: var(--radius);">')
+                // 换行
+                .replace(/\n\n/g, '</p><p>')
+                .replace(/\n/g, '<br>');
+            
+            // 包装段落
+            html = html.replace(/(<\/h[1-3]>|<pre>|<\/pre>|<blockquote>|<\/blockquote>|<ul>|<\/ul>|<ol>|<\/ol>)/g, '</p>$1<p>');
+            html = '<p>' + html + '</p>';
+            html = html.replace(/<p><\/p>/g, '');
+            
+            // 处理任务列表
+            if (html.includes('task-item')) {
+                html = html.replace(/(<div class="task-item">.*<\/div>)/s, (match) => {
+                    const tasks = match.match(/<div class="task-item">.*?<\/div>/gs) || [];
+                    return '</p><div class="task-list">' + tasks.join('') + '</div><p>';
+                });
+            }
+            
+            // 处理列表
+            html = html.replace(/<li>.*<\/li>/s, (match) => {
+                if (match.includes('<ul>') || match.includes('<ol>')) {
+                    return match;
+                }
+                return '</p><ul>' + match + '</ul><p>';
+            });
+            
+            return html;
+        }
+        
+        // 切换任务完成状态
+        function toggleTaskCompletion(checkbox) {
+            const note = state.notes.find(n => n.id === state.activeNoteId);
+            if (!note) return;
+            
+            const taskIndex = parseInt(checkbox.dataset.index);
+            const isCompleted = checkbox.checked;
+            
+            const label = checkbox.nextElementSibling;
+            if (isCompleted) {
+                label.classList.add('completed');
+            } else {
+                label.classList.remove('completed');
+            }
+            
+            const lines = note.content.split('\n');
+            let taskCount = 0;
+            let foundTask = false;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const taskMatch = lines[i].match(/^(\s*)([-*+])\s+\[([ x])\]\s+(.*)/);
+                if (taskMatch) {
+                    taskCount++;
+                    
+                    if (taskCount === taskIndex) {
+                        foundTask = true;
+                        if (isCompleted) {
+                            lines[i] = lines[i].replace(/^- \[ \] /, '- [x] ');
+                        } else {
+                            lines[i] = lines[i].replace(/^- \[x\] /i, '- [ ] ');
+                        }
+                        break;
+                    }
+                }
+            }
+            
+            if (foundTask) {
+                note.content = lines.join('\n');
+                note.updatedAt = new Date().toISOString();
+                elements.noteEditor.value = note.content;
+                saveCurrentUserData();
+                renderNotesList();
+                updateWordCount();
+                showStatus(isCompleted ? '任务已完成 ✓' : '任务已取消完成');
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 保存笔记
+        function saveNote() {
+            const note = state.notes.find(n => n.id === state.activeNoteId);
+            if (note) {
+                note.updatedAt = new Date().toISOString();
+                saveCurrentUserData();
+                renderNotesList();
+                showStatus('笔记已保存 ✓');
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 符号选择器相关函数
+        function showSymbolSelector() {
+            state.symbolSelector.visible = true;
+            state.symbolSelector.selectedIndex = 0;
+            renderSymbolSelector();
+            elements.symbolSelector.style.display = 'block';
+            const cursorPos = getCursorCoordinates();
+            elements.symbolSelector.style.left = cursorPos.x + 'px';
+            elements.symbolSelector.style.top = (cursorPos.y + 30) + 'px';
+            adjustSelectorPosition();
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function hideSymbolSelector() {
+            state.symbolSelector.visible = false;
+            elements.symbolSelector.style.display = 'none';
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function renderSymbolSelector() {
+            const symbols = state.symbolSelector.symbols;
+            
+            elements.symbolSelector.innerHTML = symbols.map((symbol, index) => {
+                const isActive = index === state.symbolSelector.selectedIndex;
+                return `
+                    <div class="symbol-item ${isActive ? 'active' : ''}" data-index="${index}">
+                        <i class="${symbol.icon} symbol-icon"></i>
+                        <div class="symbol-text">${symbol.symbol.replace(/\n/g, '↵')}</div>
+                        <div class="symbol-desc">${symbol.description}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.querySelectorAll('.symbol-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const index = parseInt(item.dataset.index);
+                    state.symbolSelector.selectedIndex = index;
+                    renderSymbolSelector();
+                    insertSelectedSymbol();
+                    
+                    // 重置自动登出计时器
+                    resetAutoLogoutTimer();
+                });
+            });
+        }
+        
+        function navigateSymbolSelector(direction) {
+            const symbols = state.symbolSelector.symbols;
+            const newIndex = state.symbolSelector.selectedIndex + direction;
+            
+            if (newIndex >= symbols.length) {
+                state.symbolSelector.selectedIndex = 0;
+            } else if (newIndex < 0) {
+                state.symbolSelector.selectedIndex = symbols.length - 1;
+            } else {
+                state.symbolSelector.selectedIndex = newIndex;
+            }
+            
+            renderSymbolSelector();
+            
+            const selectedItem = elements.symbolSelector.querySelector('.symbol-item.active');
+            if (selectedItem) {
+                selectedItem.scrollIntoView({ block: 'nearest' });
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function insertSelectedSymbol() {
+            const symbols = state.symbolSelector.symbols;
+            const selectedSymbol = symbols[state.symbolSelector.selectedIndex];
+            
+            const textarea = elements.noteEditor;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            
+            textarea.value = textarea.value.substring(0, start) + selectedSymbol.symbol + textarea.value.substring(end);
+            textarea.selectionStart = textarea.selectionEnd = start + selectedSymbol.symbol.length;
+            updateNoteContent();
+            updateWordCount();
+            hideSymbolSelector();
+            textarea.focus();
+            showStatus(`已插入: ${selectedSymbol.description}`);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function getCursorCoordinates() {
+            const textarea = elements.noteEditor;
+            const cursorPos = textarea.selectionStart;
+            const textBeforeCursor = textarea.value.substring(0, cursorPos);
+            const lines = textBeforeCursor.split('\n');
+            const currentLine = lines[lines.length - 1] || '';
+            
+            const tempDiv = document.createElement('div');
+            tempDiv.style.cssText = `
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+                width: ${textarea.clientWidth}px;
+                height: auto;
+                padding: ${getComputedStyle(textarea).padding};
+                border: ${getComputedStyle(textarea).border};
+                font-family: ${getComputedStyle(textarea).fontFamily};
+                font-size: ${getComputedStyle(textarea).fontSize};
+                line-height: ${getComputedStyle(textarea).lineHeight};
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            `;
+            
+            if (lines.length > 1) {
+                const previousLines = lines.slice(0, -1).join('\n');
+                tempDiv.textContent = previousLines + '\n';
+                const lineSpan = document.createElement('span');
+                lineSpan.textContent = currentLine;
+                tempDiv.appendChild(lineSpan);
+            } else {
+                tempDiv.textContent = currentLine;
+            }
+            
+            document.body.appendChild(tempDiv);
+            const textareaRect = textarea.getBoundingClientRect();
+            const tempDivRect = tempDiv.getBoundingClientRect();
+            const lineHeight = parseInt(getComputedStyle(textarea).lineHeight);
+            
+            let x = textareaRect.left + (tempDivRect.width - tempDiv.clientWidth) + 5;
+            let y = textareaRect.top + (lines.length - 1) * lineHeight + 5;
+            
+            document.body.removeChild(tempDiv);
+            
+            x += textarea.scrollLeft;
+            y += textarea.scrollTop;
+            
+            return { x: Math.round(x), y: Math.round(y) };
+        }
+        
+        function adjustSelectorPosition() {
+            const selectorRect = elements.symbolSelector.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            let left = parseInt(elements.symbolSelector.style.left);
+            let top = parseInt(elements.symbolSelector.style.top);
+            
+            if (selectorRect.right > viewportWidth) {
+                left -= (selectorRect.right - viewportWidth + 10);
+            }
+            
+            if (selectorRect.bottom > viewportHeight) {
+                top -= (selectorRect.bottom - viewportHeight + 10);
+            }
+            
+            if (selectorRect.left < 0) {
+                left = 10;
+            }
+            
+            if (selectorRect.top < 0) {
+                top = 10;
+            }
+            
+            elements.symbolSelector.style.left = left + 'px';
+            elements.symbolSelector.style.top = top + 'px';
+        }
+        
+        // 对话框控制函数
+        function showDeleteConfirm() {
+            if (!state.activeNoteId) return;
+            showDialog(elements.deleteConfirm);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function hideDeleteConfirm() {
+            hideDialog(elements.deleteConfirm);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function showAboutDialog() {
+            showDialog(elements.aboutDialog);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function hideAboutDialog() {
+            hideDialog(elements.aboutDialog);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function toggleAboutDialog() {
+            elements.aboutDialog.classList.toggle('active');
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function showSettingsDialog() {
+            showDialog(elements.settingsDialog);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function hideSettingsDialog() {
+            hideDialog(elements.settingsDialog);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function toggleSettingsDialog() {
+            elements.settingsDialog.classList.toggle('active');
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function showHelpDialog() {
+            showDialog(elements.helpDialog);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function hideHelpDialog() {
+            hideDialog(elements.helpDialog);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        function toggleHelpDialog() {
+            elements.helpDialog.classList.toggle('active');
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 删除活动笔记
+        function deleteActiveNote() {
+            if (!state.activeNoteId) return;
+            
+            const noteIndex = state.notes.findIndex(n => n.id === state.activeNoteId);
+            if (noteIndex !== -1) {
+                const deletedNote = state.notes[noteIndex];
+                state.notes.splice(noteIndex, 1);
+                saveCurrentUserData();
+                renderNotesList();
+                updateWordCount();
+                hideDeleteConfirm();
+                
+                if (state.notes.length > 0) {
+                    setActiveNote(state.notes[Math.min(noteIndex, state.notes.length - 1)].id);
+                } else {
+                    showEmptyState();
+                }
+                
+                showStatus(`已删除: ${deletedNote.title || '无标题笔记'}`);
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 显示空状态
+        function showEmptyState() {
+            elements.emptyState.style.display = 'flex';
+            elements.editorContainer.style.display = 'none';
+            elements.toolbar.classList.add('hidden');
+            state.activeNoteId = null;
+            state.isPreviewMode = false;
+            elements.noteTitleInput.value = '';
+            elements.noteEditor.value = '';
+            updateWordCount();
+        }
+        
+        // 显示状态消息
+        function showStatus(message) {
+            elements.statusMessage.textContent = message;
+            elements.statusMessage.classList.add('show');
+            
+            setTimeout(() => {
+                elements.statusMessage.classList.remove('show');
+            }, 2000);
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // 初始化应用
+        initApp();
+    </script>
+</body>
 </html>
