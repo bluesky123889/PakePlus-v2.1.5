@@ -215,6 +215,48 @@
             box-shadow: 0 0 0 3px var(--primary-light);
         }
         
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: var(--text-color);
+        }
+        
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        
+        .checkbox-label input:checked + .custom-checkbox {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .checkbox-label input:checked + .custom-checkbox::after {
+            content: '✓';
+            color: white;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .checkbox-label input {
+            display: none;
+        }
+        
         .login-btn {
             width: 100%;
             background-color: var(--primary-color);
@@ -266,6 +308,8 @@
             justify-content: space-between;
             margin-top: 25px;
             font-size: 0.85rem;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .login-link {
@@ -1076,55 +1120,67 @@
             cursor: not-allowed;
         }
         
-        /* 设置对话框样式 */
-        .settings-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--primary-light);
-            padding-bottom: 10px;
+        /* 重新设计的设置对话框样式 */
+        .settings-dialog {
+            max-width: 800px;
+            max-height: 85vh;
+            padding: 20px;
         }
         
-        .settings-tab {
-            background-color: var(--secondary-color);
-            border: none;
-            padding: 12px 16px;
+        .settings-layout {
+            display: flex;
+            gap: 20px;
+            height: 500px;
+        }
+        
+        .settings-nav {
+            width: 200px;
+            border-right: 1px solid var(--border-color);
+            padding-right: 15px;
+            overflow-y: auto;
+        }
+        
+        .settings-nav-item {
+            padding: 12px 15px;
             border-radius: var(--radius);
+            margin-bottom: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 500;
-            color: var(--text-color);
+            gap: 10px;
             transition: all 0.2s;
-            min-width: 120px;
-            justify-content: center;
+            color: var(--text-color);
+            font-weight: 500;
         }
         
-        .settings-tab:hover {
+        .settings-nav-item:hover {
             background-color: var(--primary-light);
-            transform: translateY(-1px);
+            color: var(--primary-color);
         }
         
-        .settings-tab.active {
+        .settings-nav-item.active {
             background-color: var(--primary-color);
             color: white;
-            transform: translateY(-1px);
         }
         
-        .settings-tab.active .tab-icon {
+        .settings-nav-item.active .nav-icon {
             color: white;
         }
         
-        .tab-icon {
+        .nav-icon {
             color: var(--primary-color);
-            font-size: 1.1rem;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .settings-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
         }
         
         .settings-section {
             display: none;
-            margin: 20px 0;
             animation: fadeIn 0.3s ease;
         }
         
@@ -1134,9 +1190,9 @@
         
         .settings-section h4 {
             color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            padding-bottom: 12px;
             border-bottom: 2px solid var(--primary-light);
         }
         
@@ -1217,128 +1273,61 @@
             transform: translateX(24px);
         }
         
-        /* 动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 重新设计的帮助对话框样式 */
+        .help-dialog {
+            max-width: 900px;
+            max-height: 85vh;
+            padding: 20px;
         }
         
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes slideInRight {
-            from { opacity: 0; transform: translateX(30px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        
-        @keyframes pulse {
-            0% { opacity: 0.8; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0.8; transform: scale(1); }
-        }
-        
-        @keyframes float {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            100% { transform: translate(20px, 20px) rotate(360deg); }
-        }
-        
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
-        /* 删除确认对话框 */
-        .delete-dialog {
-            max-width: 400px;
-        }
-        
-        .delete-dialog h3 {
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-        
-        .delete-dialog p {
-            margin-bottom: 20px;
-            color: var(--text-light);
-            font-size: 0.95rem;
-        }
-        
-        /* 关于对话框 */
-        .about-features {
-            margin: 20px 0;
-        }
-        
-        .feature-item {
+        .help-layout {
             display: flex;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
-            transition: all 0.2s;
+            gap: 20px;
+            height: 500px;
         }
         
-        .feature-item:hover {
-            transform: translateX(5px);
+        .help-nav {
+            width: 200px;
+            border-right: 1px solid var(--border-color);
+            padding-right: 15px;
+            overflow-y: auto;
         }
         
-        .feature-icon {
-            color: var(--primary-color);
-            margin-right: 10px;
-            margin-top: 2px;
-            min-width: 20px;
-        }
-        
-        .about-footer {
-            margin-top: 25px;
-            padding-top: 15px;
-            border-top: 1px solid var(--border-color);
-            font-size: 0.85rem;
-            color: var(--text-light);
-            text-align: center;
-        }
-        
-        /* 使用说明对话框 */
-        .help-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--primary-light);
-            padding-bottom: 10px;
-        }
-        
-        .help-tab {
-            background-color: var(--secondary-color);
-            border: none;
-            padding: 10px 16px;
+        .help-nav-item {
+            padding: 12px 15px;
             border-radius: var(--radius);
+            margin-bottom: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 500;
-            color: var(--text-color);
+            gap: 10px;
             transition: all 0.2s;
+            color: var(--text-color);
+            font-weight: 500;
         }
         
-        .help-tab:hover {
+        .help-nav-item:hover {
             background-color: var(--primary-light);
-            transform: translateY(-1px);
+            color: var(--primary-color);
         }
         
-        .help-tab.active {
+        .help-nav-item.active {
             background-color: var(--primary-color);
             color: white;
-            transform: translateY(-1px);
         }
         
-        .help-tab.active .tab-icon {
+        .help-nav-item.active .nav-icon {
             color: white;
+        }
+        
+        .help-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 10px;
         }
         
         .help-section {
             display: none;
-            margin: 20px 0;
             animation: fadeIn 0.3s ease;
         }
         
@@ -1348,18 +1337,19 @@
         
         .help-section h4 {
             color: var(--primary-color);
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            padding-bottom: 8px;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            padding-bottom: 12px;
             border-bottom: 2px solid var(--primary-light);
         }
         
         .help-item {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-size: 0.95rem;
             display: flex;
             align-items: flex-start;
             transition: all 0.2s;
+            padding: 8px 0;
         }
         
         .help-item:hover {
@@ -1368,7 +1358,7 @@
         
         .help-icon {
             color: var(--primary-color);
-            margin-right: 8px;
+            margin-right: 10px;
             margin-top: 2px;
             min-width: 20px;
         }
@@ -1389,7 +1379,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 10px;
-            margin-top: 10px;
+            margin-top: 15px;
         }
         
         .symbol-example {
@@ -1543,6 +1533,158 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary-color);
         }
+        
+        /* 自定义确认对话框 */
+        .confirm-dialog {
+            max-width: 450px;
+        }
+        
+        .confirm-dialog h3 {
+            color: var(--warning-color);
+            margin-bottom: 15px;
+        }
+        
+        .confirm-dialog p {
+            color: var(--text-color);
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        
+        .confirm-icon {
+            text-align: center;
+            font-size: 3rem;
+            color: var(--warning-color);
+            margin-bottom: 15px;
+        }
+        
+        .user-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin: 15px 0;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 10px;
+        }
+        
+        .user-list-item {
+            padding: 10px;
+            border-radius: var(--radius);
+            margin-bottom: 8px;
+            background-color: var(--secondary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .user-info-small {
+            font-size: 0.9rem;
+        }
+        
+        .user-name-small {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .user-email-small {
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        .delete-user-btn {
+            background: none;
+            border: 1px solid var(--error-color);
+            color: var(--error-color);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        
+        .delete-user-btn:hover {
+            background-color: var(--error-color);
+            color: white;
+        }
+        
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.8; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(20px, 20px) rotate(360deg); }
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 删除笔记确认对话框 */
+        .delete-dialog {
+            max-width: 400px;
+        }
+        
+        .delete-dialog h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .delete-dialog p {
+            margin-bottom: 20px;
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        /* 关于对话框 */
+        .about-features {
+            margin: 20px 0;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        
+        .feature-item:hover {
+            transform: translateX(5px);
+        }
+        
+        .feature-icon {
+            color: var(--primary-color);
+            margin-right: 10px;
+            margin-top: 2px;
+            min-width: 20px;
+        }
+        
+        .about-footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -1645,6 +1787,14 @@
                         <input type="password" class="form-input" id="password" placeholder="请输入您的密码" required>
                     </div>
                     
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="rememberMe">
+                            <span class="custom-checkbox"></span>
+                            记住我
+                        </label>
+                    </div>
+                    
                     <button type="submit" class="login-btn" id="loginBtn">
                         <span class="btn-text">登录</span>
                         <i class="fas fa-sign-in-alt"></i>
@@ -1659,6 +1809,9 @@
                         </a>
                         <a class="login-link" id="deleteAccountLink">
                             <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>注销账号
+                        </a>
+                        <a class="login-link" id="clearUsersLink">
+                            <i class="fas fa-users-slash" style="margin-right: 5px;"></i>清除账号
                         </a>
                     </div>
                 </form>
@@ -1917,7 +2070,41 @@
         </div>
     </div>
     
-    <!-- 删除确认对话框 -->
+    <!-- 清除账号对话框 -->
+    <div class="dialog-overlay" id="clearUsersDialog">
+        <div class="dialog-content clear-users-dialog">
+            <button class="dialog-close-btn" id="closeClearUsersBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-users-slash" style="margin-right: 10px;"></i>清除已登出账号</h3>
+            </div>
+            
+            <p style="margin-bottom: 15px; color: var(--text-light); font-size: 0.9rem;">
+                以下账号当前未登录，可以安全清除。清除后这些账号的所有数据将被永久删除。
+            </p>
+            
+            <div id="usersList" class="user-list">
+                <!-- 用户列表将动态生成 -->
+            </div>
+            
+            <div class="dialog-actions">
+                <button type="button" class="dialog-btn secondary" id="cancelClearUsersBtn">
+                    <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                </button>
+                <button type="button" class="dialog-btn danger" id="confirmClearAllBtn">
+                    <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>清除所有未登录账号
+                </button>
+            </div>
+            
+            <p style="margin-top: 20px; color: var(--warning-color); font-size: 0.8rem; text-align: center;">
+                <i class="fas fa-exclamation-triangle" style="margin-right: 5px;"></i>
+                注意：此操作不可撤销，请谨慎操作
+            </p>
+        </div>
+    </div>
+    
+    <!-- 删除笔记确认对话框 -->
     <div class="dialog-overlay" id="deleteConfirm">
         <div class="dialog-content delete-dialog">
             <h3><i class="fas fa-trash" style="margin-right: 10px;"></i>删除笔记</h3>
@@ -1928,6 +2115,25 @@
                 </button>
                 <button class="dialog-btn danger" id="confirmDeleteBtn">
                     <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>删除
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 自定义确认对话框 -->
+    <div class="dialog-overlay" id="confirmDialog">
+        <div class="dialog-content confirm-dialog">
+            <div class="confirm-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 id="confirmTitle">确认操作</h3>
+            <p id="confirmMessage">您确定要执行此操作吗？</p>
+            <div class="dialog-actions">
+                <button class="dialog-btn secondary" id="cancelConfirmBtn">
+                    <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                </button>
+                <button class="dialog-btn danger" id="confirmActionBtn">
+                    <i class="fas fa-check" style="margin-right: 5px;"></i>确认
                 </button>
             </div>
         </div>
@@ -1988,10 +2194,6 @@
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>数据完整性检查</strong> - 启动时检查本地存储数据是否被篡改</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
                     <div><strong>笔记独立字数统计</strong> - 在笔记列表中显示每个笔记的字数</div>
                 </div>
                 <div class="feature-item">
@@ -2010,6 +2212,14 @@
                     <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
                     <div><strong>注销功能</strong> - 支持安全注销账号，保护用户数据隐私</div>
                 </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>记住登录</strong> - 保存登录信息，下次自动填充</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                    <div><strong>账号管理</strong> - 可查看和清除已登出的账号数据</div>
+                </div>
             </div>
             
             <div class="about-footer">
@@ -2021,7 +2231,7 @@
     
     <!-- 设置对话框 -->
     <div class="dialog-overlay" id="settingsDialog">
-        <div class="dialog-content">
+        <div class="dialog-content settings-dialog">
             <button class="dialog-close-btn" id="closeSettingsBtn" title="关闭">
                 <i class="fas fa-times"></i>
             </button>
@@ -2029,237 +2239,265 @@
                 <h3><i class="fas fa-cog" style="margin-right: 10px;"></i>设置</h3>
             </div>
             
-            <!-- 标签页导航 -->
-            <div class="settings-tabs" id="settingsTabs">
-                <button class="settings-tab active" data-tab="editor">
-                    <i class="fas fa-edit tab-icon"></i> 编辑设置
-                </button>
-                <button class="settings-tab" data-tab="input">
-                    <i class="fas fa-keyboard tab-icon"></i> 输入设置
-                </button>
-                <button class="settings-tab" data-tab="security">
-                    <i class="fas fa-shield-alt tab-icon"></i> 安全设置
-                </button>
-                <button class="settings-tab" data-tab="search">
-                    <i class="fas fa-search tab-icon"></i> 搜索设置
-                </button>
-                <button class="settings-tab" data-tab="account">
-                    <i class="fas fa-user tab-icon"></i> 账户设置
-                </button>
-            </div>
-            
-            <!-- 编辑设置部分 -->
-            <div class="settings-section active" id="editor-tab">
-                <h4>编辑设置</h4>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">智能输入</div>
-                        <div class="setting-description">启用后，在新行输入特定符号会自动补全为完整格式</div>
+            <!-- 设置布局 -->
+            <div class="settings-layout" id="settingsLayout">
+                <!-- 左侧导航 -->
+                <div class="settings-nav" id="settingsNav">
+                    <div class="settings-nav-item active" data-tab="editor">
+                        <i class="fas fa-edit nav-icon"></i> 编辑设置
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="smartInputToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
+                    <div class="settings-nav-item" data-tab="input">
+                        <i class="fas fa-keyboard nav-icon"></i> 输入设置
+                    </div>
+                    <div class="settings-nav-item" data-tab="security">
+                        <i class="fas fa-shield-alt nav-icon"></i> 安全设置
+                    </div>
+                    <div class="settings-nav-item" data-tab="search">
+                        <i class="fas fa-search nav-icon"></i> 搜索设置
+                    </div>
+                    <div class="settings-nav-item" data-tab="account">
+                        <i class="fas fa-user nav-icon"></i> 账户设置
+                    </div>
                 </div>
                 
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">自动保存</div>
-                        <div class="setting-description">编辑内容自动保存，无需手动操作</div>
+                <!-- 右侧内容 -->
+                <div class="settings-content" id="settingsContent">
+                    <!-- 编辑设置部分 -->
+                    <div class="settings-section active" id="editor-section">
+                        <h4>编辑设置</h4>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">智能输入</div>
+                                <div class="setting-description">启用后，在新行输入特定符号会自动补全为完整格式</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="smartInputToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">自动保存</div>
+                                <div class="setting-description">编辑内容自动保存，无需手动操作</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="autoSaveToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">Tab键符号选择器</div>
+                                <div class="setting-description">启用后，按Tab键可调出符号列表进行选择</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="tabSymbolSelectorToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">独立笔记视图状态</div>
+                                <div class="setting-description">每个笔记独立保存编辑/预览模式状态</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="independentViewToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="autoSaveToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">Tab键符号选择器</div>
-                        <div class="setting-description">启用后，按Tab键可调出符号列表进行选择</div>
+                    
+                    <!-- 输入设置部分 -->
+                    <div class="settings-section" id="input-section">
+                        <h4>智能输入符号</h4>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">标题符号 (#, ##, ###)</div>
+                                <div class="setting-description">输入 # 后按空格自动补全为标题</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="headingSymbolsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">列表符号 (-, *, 1.)</div>
+                                <div class="setting-description">输入 - 或 1. 后按空格自动补全为列表</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="listSymbolsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">任务符号 (- [)</div>
+                                <div class="setting-description">输入 - [ 后按空格自动补全为任务项</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="taskSymbolsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">引用符号 (>)</div>
+                                <div class="setting-description">输入 > 后按空格自动补全为引用块</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="quoteSymbolsToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="tabSymbolSelectorToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">独立笔记视图状态</div>
-                        <div class="setting-description">每个笔记独立保存编辑/预览模式状态</div>
+                    
+                    <!-- 安全设置部分 -->
+                    <div class="settings-section" id="security-section">
+                        <h4>安全设置</h4>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">自动登出</div>
+                                <div class="setting-description">30分钟无操作后自动登出</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="autoLogoutToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">记住登录信息</div>
+                                <div class="setting-description">记住登录账号，下次自动填充</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="rememberLoginToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">自动清除未登录账号</div>
+                                <div class="setting-description">30天后自动清除未登录账号数据</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="autoClearUsersToggle">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="independentViewToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <!-- 输入设置部分 -->
-            <div class="settings-section" id="input-tab">
-                <h4>智能输入符号</h4>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">标题符号 (#, ##, ###)</div>
-                        <div class="setting-description">输入 # 后按空格自动补全为标题</div>
+                    
+                    <!-- 搜索设置部分 -->
+                    <div class="settings-section" id="search-section">
+                        <h4>搜索设置</h4>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">实时搜索</div>
+                                <div class="setting-description">输入时实时显示搜索结果</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="realTimeSearchToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">搜索高亮</div>
+                                <div class="setting-description">搜索结果中高亮显示匹配文本</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="searchHighlightToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">搜索历史</div>
+                                <div class="setting-description">保存最近搜索的关键词</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="searchHistoryToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="headingSymbolsToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">列表符号 (-, *, 1.)</div>
-                        <div class="setting-description">输入 - 或 1. 后按空格自动补全为列表</div>
+                    
+                    <!-- 账户设置部分 -->
+                    <div class="settings-section" id="account-section">
+                        <h4>账户设置</h4>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">显示用户状态指示器</div>
+                                <div class="setting-description">在侧边栏显示当前用户状态信息</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="userStatusToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">显示应用标题</div>
+                                <div class="setting-description">在侧边栏显示应用标题和图标</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="appTitleToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">自动保存间隔</div>
+                                <div class="setting-description">自动保存笔记的时间间隔</div>
+                            </div>
+                            <select id="saveIntervalSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
+                                <option value="60000">1分钟</option>
+                                <option value="180000" selected>3分钟</option>
+                                <option value="300000">5分钟</option>
+                                <option value="600000">10分钟</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">主题颜色</div>
+                                <div class="setting-description">选择应用的主题颜色</div>
+                            </div>
+                            <select id="themeColorSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
+                                <option value="#4f46e5">默认蓝色</option>
+                                <option value="#10b981">绿色</option>
+                                <option value="#f59e0b">橙色</option>
+                                <option value="#ef4444">红色</option>
+                                <option value="#8b5cf6">紫色</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">编辑器字体大小</div>
+                                <div class="setting-description">调整编辑器文本大小</div>
+                            </div>
+                            <select id="fontSizeSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
+                                <option value="14px">小</option>
+                                <option value="16px" selected>中</option>
+                                <option value="18px">大</option>
+                                <option value="20px">特大</option>
+                            </select>
+                        </div>
                     </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="listSymbolsToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">任务符号 (- [)</div>
-                        <div class="setting-description">输入 - [ 后按空格自动补全为任务项</div>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="taskSymbolsToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">引用符号 (>)</div>
-                        <div class="setting-description">输入 > 后按空格自动补全为引用块</div>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="quoteSymbolsToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <!-- 安全设置部分 -->
-            <div class="settings-section" id="security-tab">
-                <h4>安全设置</h4>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">数据完整性检查</div>
-                        <div class="setting-description">启动时检查本地存储数据是否被篡改</div>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="integrityCheckToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">自动登出</div>
-                        <div class="setting-description">30分钟无操作后自动登出</div>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="autoLogoutToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <!-- 搜索设置部分 -->
-            <div class="settings-section" id="search-tab">
-                <h4>搜索设置</h4>
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">实时搜索</div>
-                        <div class="setting-description">输入时实时显示搜索结果</div>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="realTimeSearchToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">搜索高亮</div>
-                        <div class="setting-description">搜索结果中高亮显示匹配文本</div>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="searchHighlightToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-            </div>
-            
-            <!-- 账户设置部分 -->
-            <div class="settings-section" id="account-tab">
-                <h4>账户设置</h4>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">显示用户状态指示器</div>
-                        <div class="setting-description">在侧边栏显示当前用户状态信息</div>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="userStatusToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">显示应用标题</div>
-                        <div class="setting-description">在侧边栏显示应用标题和图标</div>
-                    </div>
-                    <label class="toggle-switch">
-                        <input type="checkbox" class="toggle-checkbox" id="appTitleToggle" checked>
-                        <span class="toggle-slider"></span>
-                    </label>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">自动保存间隔</div>
-                        <div class="setting-description">自动保存笔记的时间间隔</div>
-                    </div>
-                    <select id="saveIntervalSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
-                        <option value="60000">1分钟</option>
-                        <option value="180000" selected>3分钟</option>
-                        <option value="300000">5分钟</option>
-                        <option value="600000">10分钟</option>
-                    </select>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">主题颜色</div>
-                        <div class="setting-description">选择应用的主题颜色</div>
-                    </div>
-                    <select id="themeColorSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
-                        <option value="#4f46e5">默认蓝色</option>
-                        <option value="#10b981">绿色</option>
-                        <option value="#f59e0b">橙色</option>
-                        <option value="#ef4444">红色</option>
-                        <option value="#8b5cf6">紫色</option>
-                    </select>
-                </div>
-                
-                <div class="setting-item">
-                    <div class="setting-info">
-                        <div class="setting-title">编辑器字体大小</div>
-                        <div class="setting-description">调整编辑器文本大小</div>
-                    </div>
-                    <select id="fontSizeSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
-                        <option value="14px">小</option>
-                        <option value="16px" selected>中</option>
-                        <option value="18px">大</option>
-                        <option value="20px">特大</option>
-                    </select>
                 </div>
             </div>
         </div>
@@ -2267,7 +2505,7 @@
     
     <!-- 使用说明对话框 -->
     <div class="dialog-overlay" id="helpDialog">
-        <div class="dialog-content">
+        <div class="dialog-content help-dialog">
             <button class="dialog-close-btn" id="closeHelpBtn" title="关闭">
                 <i class="fas fa-times"></i>
             </button>
@@ -2275,273 +2513,319 @@
                 <h3><i class="fas fa-question-circle" style="margin-right: 10px;"></i>使用说明</h3>
             </div>
             
-            <!-- 标签页导航 -->
-            <div class="help-tabs" id="helpTabs">
-                <button class="help-tab active" data-tab="shortcuts">
-                    <i class="fas fa-keyboard tab-icon"></i> 快捷键
-                </button>
-                <button class="help-tab" data-tab="search">
-                    <i class="fas fa-search tab-icon"></i> 搜索功能
-                </button>
-                <button class="help-tab" data-tab="wordcount">
-                    <i class="fas fa-chart-bar tab-icon"></i> 字数统计
-                </button>
-                <button class="help-tab" data-tab="smart-input">
-                    <i class="fas fa-magic tab-icon"></i> 智能输入
-                </button>
-                <button class="help-tab" data-tab="symbol-selector">
-                    <i class="fas fa-list tab-icon"></i> 符号选择器
-                </button>
-                <button class="help-tab" data-tab="markdown">
-                    <i class="fas fa-code tab-icon"></i> Markdown语法
-                </button>
-            </div>
-            
-            <!-- 快捷键部分 -->
-            <div class="help-section active" id="shortcuts-tab">
-                <h4>快捷键</h4>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">F</span> - 快速聚焦到搜索框</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">E</span> - 切换编辑/预览模式</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">S</span> - 保存当前笔记</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">H</span> - 打开使用说明</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">Shift</span> + <span class="shortcut-key">N</span> - 新建笔记</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">D</span> - 删除当前笔记</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">,</span> - 打开设置</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">I</span> - 打开关于信息</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><span class="shortcut-key">Tab</span> - 打开符号选择器</div>
-                </div>
-            </div>
-            
-            <!-- 搜索功能部分 -->
-            <div class="help-section" id="search-tab">
-                <h4>搜索功能</h4>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-search"></i></div>
-                    <div><strong>快速搜索</strong> - 在侧边栏底部的搜索框中输入关键词，实时搜索所有笔记</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-keyboard"></i></div>
-                    <div><strong>快捷键</strong> - 按 <span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">F</span> 快速聚焦到搜索框</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-bolt"></i></div>
-                    <div><strong>实时搜索</strong> - 输入时实时显示搜索结果，无需按回车</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-highlighter"></i></div>
-                    <div><strong>高亮显示</strong> - 搜索结果中高亮显示匹配的文本</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-filter"></i></div>
-                    <div><strong>搜索范围</strong> - 同时搜索笔记标题和内容</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-chart-bar"></i></div>
-                    <div><strong>统计信息</strong> - 显示搜索到的笔记数量和匹配结果</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-times"></i></div>
-                    <div><strong>清除搜索</strong> - 点击搜索框右侧的X按钮清除搜索关键词</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-cog"></i></div>
-                    <div><strong>设置选项</strong> - 在设置中可以启用/禁用实时搜索和高亮功能</div>
-                </div>
-            </div>
-            
-            <!-- 字数统计部分 -->
-            <div class="help-section" id="wordcount-tab">
-                <h4>字数统计功能</h4>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-chart-bar"></i></div>
-                    <div><strong>全局统计</strong> - 在侧边栏底部显示笔记总数和总字数</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-file-alt"></i></div>
-                    <div><strong>单篇统计</strong> - 在笔记列表中显示每个笔记的单独字数</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-sync"></i></div>
-                    <div><strong>实时更新</strong> - 编辑笔记时字数统计实时更新</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-calculator"></i></div>
-                    <div><strong>计算规则</strong> - 字数统计包括汉字、字母、数字和标点符号</div>
-                </div>
-            </div>
-            
-            <!-- 智能输入部分 -->
-            <div class="help-section" id="smart-input-tab">
-                <h4>智能输入功能</h4>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-magic"></i></div>
-                    <div>启用智能输入后，在新行开头输入特定字符会自动补全为完整符号</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-cog"></i></div>
-                    <div>在设置中可自定义启用/禁用特定符号的智能输入</div>
+            <!-- 帮助布局 -->
+            <div class="help-layout" id="helpLayout">
+                <!-- 左侧导航 -->
+                <div class="help-nav" id="helpNav">
+                    <div class="help-nav-item active" data-tab="shortcuts">
+                        <i class="fas fa-keyboard nav-icon"></i> 快捷键
+                    </div>
+                    <div class="help-nav-item" data-tab="search">
+                        <i class="fas fa-search nav-icon"></i> 搜索功能
+                    </div>
+                    <div class="help-nav-item" data-tab="wordcount">
+                        <i class="fas fa-chart-bar nav-icon"></i> 字数统计
+                    </div>
+                    <div class="help-nav-item" data-tab="smart-input">
+                        <i class="fas fa-magic nav-icon"></i> 智能输入
+                    </div>
+                    <div class="help-nav-item" data-tab="symbol-selector">
+                        <i class="fas fa-list nav-icon"></i> 符号选择器
+                    </div>
+                    <div class="help-nav-item" data-tab="markdown">
+                        <i class="fas fa-code nav-icon"></i> Markdown语法
+                    </div>
+                    <div class="help-nav-item" data-tab="user-management">
+                        <i class="fas fa-users nav-icon"></i> 用户管理
+                    </div>
                 </div>
                 
-                <div class="symbol-examples">
-                    <div class="symbol-example">
-                        <code>1.</code>
-                        <div class="description">输入"1."然后按空格 → 自动开始有序列表</div>
+                <!-- 右侧内容 -->
+                <div class="help-content" id="helpContent">
+                    <!-- 快捷键部分 -->
+                    <div class="help-section active" id="shortcuts-section">
+                        <h4>快捷键</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">F</span> - 快速聚焦到搜索框</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">E</span> - 切换编辑/预览模式</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">S</span> - 保存当前笔记</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">H</span> - 打开使用说明</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">Shift</span> + <span class="shortcut-key">N</span> - 新建笔记</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">D</span> - 删除当前笔记</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">,</span> - 打开设置</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">I</span> - 打开关于信息</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Tab</span> - 打开符号选择器</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><span class="shortcut-key">Esc</span> - 关闭当前对话框或符号选择器</div>
+                        </div>
                     </div>
-                    <div class="symbol-example">
-                        <code>-</code>
-                        <div class="description">输入"-"然后按空格 → 自动开始无序列表</div>
+                    
+                    <!-- 搜索功能部分 -->
+                    <div class="help-section" id="search-section">
+                        <h4>搜索功能</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-search"></i></div>
+                            <div><strong>快速搜索</strong> - 在侧边栏底部的搜索框中输入关键词，实时搜索所有笔记</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-keyboard"></i></div>
+                            <div><strong>快捷键</strong> - 按 <span class="shortcut-key">Ctrl</span> + <span class="shortcut-key">F</span> 快速聚焦到搜索框</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-bolt"></i></div>
+                            <div><strong>实时搜索</strong> - 输入时实时显示搜索结果，无需按回车</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-highlighter"></i></div>
+                            <div><strong>高亮显示</strong> - 搜索结果中高亮显示匹配的文本</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-filter"></i></div>
+                            <div><strong>搜索范围</strong> - 同时搜索笔记标题和内容</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-chart-bar"></i></div>
+                            <div><strong>统计信息</strong> - 显示搜索到的笔记数量和匹配结果</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-times"></i></div>
+                            <div><strong>清除搜索</strong> - 点击搜索框右侧的X按钮清除搜索关键词</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-cog"></i></div>
+                            <div><strong>设置选项</strong> - 在设置中可以启用/禁用实时搜索和高亮功能</div>
+                        </div>
                     </div>
-                    <div class="symbol-example">
-                        <code>*</code>
-                        <div class="description">输入"*"然后按空格 → 自动开始无序列表</div>
+                    
+                    <!-- 字数统计部分 -->
+                    <div class="help-section" id="wordcount-section">
+                        <h4>字数统计功能</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-chart-bar"></i></div>
+                            <div><strong>全局统计</strong> - 在侧边栏底部显示笔记总数和总字数</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-file-alt"></i></div>
+                            <div><strong>单篇统计</strong> - 在笔记列表中显示每个笔记的单独字数</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-sync"></i></div>
+                            <div><strong>实时更新</strong> - 编辑笔记时字数统计实时更新</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-calculator"></i></div>
+                            <div><strong>计算规则</strong> - 字数统计包括汉字、字母、数字和标点符号</div>
+                        </div>
                     </div>
-                    <div class="symbol-example">
-                        <code>- [</code>
-                        <div class="description">输入"- ["然后按空格 → 自动补全为任务项</div>
+                    
+                    <!-- 智能输入部分 -->
+                    <div class="help-section" id="smart-input-section">
+                        <h4>智能输入功能</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-magic"></i></div>
+                            <div>启用智能输入后，在新行开头输入特定字符会自动补全为完整符号</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-cog"></i></div>
+                            <div>在设置中可自定义启用/禁用特定符号的智能输入</div>
+                        </div>
+                        
+                        <div class="symbol-examples">
+                            <div class="symbol-example">
+                                <code>1.</code>
+                                <div class="description">输入"1."然后按空格 → 自动开始有序列表</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>-</code>
+                                <div class="description">输入"-"然后按空格 → 自动开始无序列表</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>*</code>
+                                <div class="description">输入"*"然后按空格 → 自动开始无序列表</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>- [</code>
+                                <div class="description">输入"- ["然后按空格 → 自动补全为任务项</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>></code>
+                                <div class="description">输入">"然后按空格 → 自动开始引用块</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>#</code>
+                                <div class="description">输入"#"然后按空格 → 自动开始一级标题</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>##</code>
+                                <div class="description">输入"##"然后按空格 → 自动开始二级标题</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>###</code>
+                                <div class="description">输入"###"然后按空格 → 自动开始三级标题</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="symbol-example">
-                        <code>></code>
-                        <div class="description">输入">"然后按空格 → 自动开始引用块</div>
+                    
+                    <!-- 符号选择器部分 -->
+                    <div class="help-section" id="symbol-selector-section">
+                        <h4>符号选择器功能</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-list"></i></div>
+                            <div><strong>打开选择器：</strong>在编辑器中按<span class="shortcut-key">Tab</span>键打开符号选择器</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-arrow-up"></i></div>
+                            <div><strong>导航选择：</strong>使用<span class="shortcut-key">Tab</span>键在符号列表中向下切换选择</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-arrow-down"></i></div>
+                            <div><strong>反向导航：</strong>使用<span class="shortcut-key">Shift</span> + <span class="shortcut-key">Tab</span>在符号列表中向上切换选择</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-space-shuttle"></i></div>
+                            <div><strong>插入符号：</strong>按<span class="shortcut-key">空格</span>键插入当前选中的符号</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-times"></i></div>
+                            <div><strong>关闭选择器：</strong>按<span class="shortcut-key">Esc</span>键或点击编辑器其他位置关闭选择器</div>
+                        </div>
+                        
+                        <div class="symbol-examples">
+                            <div class="symbol-example">
+                                <code># 一级标题</code>
+                                <div class="description">Markdown一级标题</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>- 无序列表</code>
+                                <div class="description">无序列表项</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>1. 有序列表</code>
+                                <div class="description">有序列表项（数字自动递增）</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>- [ ] 任务</code>
+                                <div class="description">未完成任务项</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>> 引用</code>
+                                <div class="description">引用块内容</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>```代码块```</code>
+                                <div class="description">代码块（包含开始和结束标记）</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>---</code>
+                                <div class="description">水平分割线</div>
+                            </div>
+                            <div class="symbol-example">
+                                <code>**粗体**</code>
+                                <div class="description">粗体文本标记</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="symbol-example">
-                        <code>#</code>
-                        <div class="description">输入"#"然后按空格 → 自动开始一级标题</div>
+                    
+                    <!-- Markdown基础部分 -->
+                    <div class="help-section" id="markdown-section">
+                        <h4>Markdown基础语法</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-heading"></i></div>
+                            <div>标题: <code># 一级标题</code>, <code>## 二级标题</code>, <code>### 三级标题</code></div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-list"></i></div>
+                            <div>列表: <code>- 无序列表</code>, <code>1. 有序列表</code></div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-tasks"></i></div>
+                            <div>任务: <code>- [ ] 未完成</code>, <code>- [x] 已完成</code></div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-bold"></i></div>
+                            <div>粗体: <code>**粗体文字**</code></div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-italic"></i></div>
+                            <div>斜体: <code>*斜体文字*</code></div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-code"></i></div>
+                            <div>代码: <code>`行内代码`</code>, <code>```代码块```</code></div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-quote-right"></i></div>
+                            <div>引用: <code>> 引用文字</code></div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-link"></i></div>
+                            <div>链接: <code>[链接文本](https://example.com)</code></div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-image"></i></div>
+                            <div>图片: <code>![图片描述](图片地址)</code></div>
+                        </div>
                     </div>
-                    <div class="symbol-example">
-                        <code>##</code>
-                        <div class="description">输入"##"然后按空格 → 自动开始二级标题</div>
+                    
+                    <!-- 用户管理部分 -->
+                    <div class="help-section" id="user-management-section">
+                        <h4>用户管理功能</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-user-plus"></i></div>
+                            <div><strong>注册账号</strong> - 支持多用户创建，每个用户数据独立存储</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-lock"></i></div>
+                            <div><strong>记住我</strong> - 登录时勾选"记住我"，下次自动填充账号</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-trash-alt"></i></div>
+                            <div><strong>注销账号</strong> - 支持安全注销当前账号，保护数据隐私</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-users-slash"></i></div>
+                            <div><strong>清除已登出账号</strong> - 可以查看和清除已登出账号的数据</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-key"></i></div>
+                            <div><strong>重置密码</strong> - 忘记密码时可以重置账号密码</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div><strong>数据安全</strong> - 所有用户数据存储在浏览器本地，完全保护隐私</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-shield-alt"></i></div>
+                            <div><strong>安全保护</strong> - 自动登出功能保护账号安全</div>
+                        </div>
                     </div>
-                    <div class="symbol-example">
-                        <code>###</code>
-                        <div class="description">输入"###"然后按空格 → 自动开始三级标题</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 符号选择器部分 -->
-            <div class="help-section" id="symbol-selector-tab">
-                <h4>符号选择器功能</h4>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-list"></i></div>
-                    <div><strong>打开选择器：</strong>在编辑器中按<span class="shortcut-key">Tab</span>键打开符号选择器</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-arrow-up"></i></div>
-                    <div><strong>导航选择：</strong>使用<span class="shortcut-key">Tab</span>键在符号列表中向下切换选择</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-arrow-down"></i></div>
-                    <div><strong>反向导航：</strong>使用<span class="shortcut-key">Shift</span> + <span class="shortcut-key">Tab</span>在符号列表中向上切换选择</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-space-shuttle"></i></div>
-                    <div><strong>插入符号：</strong>按<span class="shortcut-key">空格</span>键插入当前选中的符号</div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-times"></i></div>
-                    <div><strong>关闭选择器：</strong>按<span class="shortcut-key">Esc</span>键或点击编辑器其他位置关闭选择器</div>
-                </div>
-                
-                <div class="symbol-examples">
-                    <div class="symbol-example">
-                        <code># 一级标题</code>
-                        <div class="description">Markdown一级标题</div>
-                    </div>
-                    <div class="symbol-example">
-                        <code>- 无序列表</code>
-                        <div class="description">无序列表项</div>
-                    </div>
-                    <div class="symbol-example">
-                        <code>1. 有序列表</code>
-                        <div class="description">有序列表项（数字自动递增）</div>
-                    </div>
-                    <div class="symbol-example">
-                        <code>- [ ] 任务</code>
-                        <div class="description">未完成任务项</div>
-                    </div>
-                    <div class="symbol-example">
-                        <code>> 引用</code>
-                        <div class="description">引用块内容</div>
-                    </div>
-                    <div class="symbol-example">
-                        <code>```代码块```</code>
-                        <div class="description">代码块（包含开始和结束标记）</div>
-                    </div>
-                    <div class="symbol-example">
-                        <code>---</code>
-                        <div class="description">水平分割线</div>
-                    </div>
-                    <div class="symbol-example">
-                        <code>**粗体**</code>
-                        <div class="description">粗体文本标记</div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Markdown基础部分 -->
-            <div class="help-section" id="markdown-tab">
-                <h4>Markdown基础语法</h4>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-heading"></i></div>
-                    <div>标题: <code># 一级标题</code>, <code>## 二级标题</code>, <code>### 三级标题</code></div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-list"></i></div>
-                    <div>列表: <code>- 无序列表</code>, <code>1. 有序列表</code></div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-tasks"></i></div>
-                    <div>任务: <code>- [ ] 未完成</code>, <code>- [x] 已完成</code></div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-bold"></i></div>
-                    <div>粗体: <code>**粗体文字**</code></div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-italic"></i></div>
-                    <div>斜体: <code>*斜体文字*</code></div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-code"></i></div>
-                    <div>代码: <code>`行内代码`</code>, <code>```代码块```</code></div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-quote-right"></i></div>
-                    <div>引用: <code>> 引用文字</code></div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-link"></i></div>
-                    <div>链接: <code>[链接文本](https://example.com)</code></div>
-                </div>
-                <div class="help-item">
-                    <div class="help-icon"><i class="fas fa-image"></i></div>
-                    <div>图片: <code>![图片描述](图片地址)</code></div>
                 </div>
             </div>
         </div>
@@ -2566,9 +2850,11 @@
                 quoteSymbols: true,
                 realTimeSearch: true,
                 searchHighlight: true,
-                integrityCheck: true,
                 independentView: true,
                 autoLogout: true,
+                rememberLogin: true,
+                autoClearUsers: false,
+                searchHistory: true,
                 // 新增设置
                 userStatusVisible: true,
                 appTitleVisible: true,
@@ -2604,7 +2890,11 @@
             // 用户数据
             users: {},
             // 自动登出计时器
-            autoLogoutTimer: null
+            autoLogoutTimer: null,
+            // 记住的登录信息
+            rememberedUser: null,
+            // 确认对话框回调
+            confirmCallback: null
         };
         
         // 符号映射表（用于智能输入）
@@ -2630,12 +2920,14 @@
             loginForm: document.getElementById('loginForm'),
             username: document.getElementById('username'),
             password: document.getElementById('password'),
+            rememberMe: document.getElementById('rememberMe'),
             loginBtn: document.getElementById('loginBtn'),
             loginError: document.getElementById('loginError'),
             loginSuccess: document.getElementById('loginSuccess'),
             registerLink: document.getElementById('registerLink'),
             forgotPasswordLink: document.getElementById('forgotPasswordLink'),
             deleteAccountLink: document.getElementById('deleteAccountLink'),
+            clearUsersLink: document.getElementById('clearUsersLink'),
             
             // 注册对话框元素
             registerDialog: document.getElementById('registerDialog'),
@@ -2669,6 +2961,20 @@
             cancelDeleteAccountBtn: document.getElementById('cancelDeleteAccountBtn'),
             confirmDeleteAccountBtn: document.getElementById('confirmDeleteAccountBtn'),
             
+            // 清除账号对话框元素
+            clearUsersDialog: document.getElementById('clearUsersDialog'),
+            closeClearUsersBtn: document.getElementById('closeClearUsersBtn'),
+            usersList: document.getElementById('usersList'),
+            cancelClearUsersBtn: document.getElementById('cancelClearUsersBtn'),
+            confirmClearAllBtn: document.getElementById('confirmClearAllBtn'),
+            
+            // 自定义确认对话框元素
+            confirmDialog: document.getElementById('confirmDialog'),
+            confirmTitle: document.getElementById('confirmTitle'),
+            confirmMessage: document.getElementById('confirmMessage'),
+            cancelConfirmBtn: document.getElementById('cancelConfirmBtn'),
+            confirmActionBtn: document.getElementById('confirmActionBtn'),
+            
             // 主应用元素
             sidebar: document.getElementById('sidebar'),
             mobileMenuBtn: document.getElementById('mobileMenuBtn'),
@@ -2696,9 +3002,6 @@
             helpDialog: document.getElementById('helpDialog'),
             closeHelpBtn: document.getElementById('closeHelpBtn'),
             toolbar: document.getElementById('toolbar'),
-            helpTabs: document.getElementById('helpTabs'),
-            settingsTabs: document.getElementById('settingsTabs'),
-            symbolSelector: document.getElementById('symbolSelector'),
             // 搜索相关元素
             searchInput: document.getElementById('searchInput'),
             clearSearchBtn: document.getElementById('clearSearchBtn'),
@@ -2712,6 +3015,12 @@
             userName: document.getElementById('userName'),
             userEmail: document.getElementById('userEmail'),
             logoutBtn: document.getElementById('logoutBtn'),
+            // 设置导航和内容
+            settingsNav: document.getElementById('settingsNav'),
+            settingsContent: document.getElementById('settingsContent'),
+            // 帮助导航和内容
+            helpNav: document.getElementById('helpNav'),
+            helpContent: document.getElementById('helpContent'),
             // 设置选项
             smartInputToggle: document.getElementById('smartInputToggle'),
             autoSaveToggle: document.getElementById('autoSaveToggle'),
@@ -2720,11 +3029,13 @@
             listSymbolsToggle: document.getElementById('listSymbolsToggle'),
             taskSymbolsToggle: document.getElementById('taskSymbolsToggle'),
             quoteSymbolsToggle: document.getElementById('quoteSymbolsToggle'),
-            integrityCheckToggle: document.getElementById('integrityCheckToggle'),
             realTimeSearchToggle: document.getElementById('realTimeSearchToggle'),
             searchHighlightToggle: document.getElementById('searchHighlightToggle'),
             independentViewToggle: document.getElementById('independentViewToggle'),
             autoLogoutToggle: document.getElementById('autoLogoutToggle'),
+            rememberLoginToggle: document.getElementById('rememberLoginToggle'),
+            autoClearUsersToggle: document.getElementById('autoClearUsersToggle'),
+            searchHistoryToggle: document.getElementById('searchHistoryToggle'),
             // 新增设置选项
             userStatusToggle: document.getElementById('userStatusToggle'),
             appTitleToggle: document.getElementById('appTitleToggle'),
@@ -2753,6 +3064,45 @@
             localStorage.setItem('noteUsers', JSON.stringify(state.users));
         }
         
+        // 加载记住的登录信息
+        function loadRememberedUser() {
+            try {
+                const remembered = localStorage.getItem('rememberedUser');
+                if (remembered) {
+                    state.rememberedUser = JSON.parse(remembered);
+                    if (state.rememberedUser && state.rememberedUser.username) {
+                        elements.username.value = state.rememberedUser.username;
+                        elements.rememberMe.checked = true;
+                        elements.password.focus();
+                    }
+                }
+            } catch (error) {
+                console.error('加载记住的用户失败:', error);
+                state.rememberedUser = null;
+            }
+        }
+        
+        // 保存记住的登录信息
+        function saveRememberedUser() {
+            if (elements.rememberMe.checked && elements.username.value.trim()) {
+                state.rememberedUser = {
+                    username: elements.username.value.trim(),
+                    rememberDate: new Date().toISOString()
+                };
+                localStorage.setItem('rememberedUser', JSON.stringify(state.rememberedUser));
+            } else {
+                state.rememberedUser = null;
+                localStorage.removeItem('rememberedUser');
+            }
+        }
+        
+        // 清除记住的登录信息
+        function clearRememberedUser() {
+            state.rememberedUser = null;
+            localStorage.removeItem('rememberedUser');
+            elements.rememberMe.checked = false;
+        }
+        
         // 注册新用户
         function registerUser(username, password, email = '') {
             if (username.length < 4 || username.length > 20) {
@@ -2772,6 +3122,7 @@
                 password: hashPassword(password),
                 email: email,
                 createdAt: new Date().toISOString(),
+                lastLogin: null,
                 notes: [],
                 settings: {
                     smartInputEnabled: true,
@@ -2783,9 +3134,11 @@
                     quoteSymbols: true,
                     realTimeSearch: true,
                     searchHighlight: true,
-                    integrityCheck: true,
                     independentView: true,
                     autoLogout: true,
+                    rememberLogin: true,
+                    autoClearUsers: false,
+                    searchHistory: true,
                     userStatusVisible: true,
                     appTitleVisible: true,
                     autoSaveInterval: 180000,
@@ -2809,6 +3162,10 @@
             if (user.password !== hashPassword(password)) {
                 return { success: false, message: '密码错误' };
             }
+            
+            // 更新最后登录时间
+            user.lastLogin = new Date().toISOString();
+            saveUsers();
             
             state.currentUser = username;
             return { success: true, message: '登录成功' };
@@ -2855,6 +3212,46 @@
             return { success: true, message: '账号已成功注销' };
         }
         
+        // 清除未登录的账号
+        function clearLoggedOutUsers() {
+            const loggedOutUsers = [];
+            const currentTime = new Date();
+            
+            for (const username in state.users) {
+                if (username !== state.currentUser) {
+                    loggedOutUsers.push(username);
+                }
+            }
+            
+            // 删除未登录账号
+            loggedOutUsers.forEach(username => {
+                delete state.users[username];
+            });
+            
+            saveUsers();
+            return loggedOutUsers.length;
+        }
+        
+        // 获取未登录账号列表
+        function getLoggedOutUsers() {
+            const loggedOutUsers = [];
+            
+            for (const username in state.users) {
+                if (username !== state.currentUser) {
+                    const user = state.users[username];
+                    loggedOutUsers.push({
+                        username: username,
+                        email: user.email || '未设置邮箱',
+                        createdAt: user.createdAt,
+                        lastLogin: user.lastLogin,
+                        noteCount: user.notes ? user.notes.length : 0
+                    });
+                }
+            }
+            
+            return loggedOutUsers;
+        }
+        
         // 简单密码哈希函数
         function hashPassword(password) {
             let hash = 0;
@@ -2889,6 +3286,9 @@
             // 保存当前用户数据
             saveCurrentUserData();
             
+            // 清除记住的登录信息
+            clearRememberedUser();
+            
             // 清除用户状态
             state.currentUser = null;
             state.notes = [];
@@ -2907,6 +3307,7 @@
             // 清空登录表单
             elements.username.value = '';
             elements.password.value = '';
+            elements.rememberMe.checked = false;
             elements.loginError.style.display = 'none';
             elements.loginSuccess.style.display = 'none';
             
@@ -2964,6 +3365,33 @@
             saveUsers();
         }
         
+        // ==================== 自定义确认对话框 ====================
+        
+        // 显示确认对话框
+        function showConfirmDialog(title, message, callback) {
+            elements.confirmTitle.textContent = title;
+            elements.confirmMessage.textContent = message;
+            state.confirmCallback = callback;
+            showDialog(elements.confirmDialog);
+        }
+        
+        // 隐藏确认对话框
+        function hideConfirmDialog() {
+            hideDialog(elements.confirmDialog);
+            state.confirmCallback = null;
+        }
+        
+        // 初始化确认对话框事件
+        function initConfirmDialog() {
+            elements.cancelConfirmBtn.addEventListener('click', hideConfirmDialog);
+            elements.confirmActionBtn.addEventListener('click', () => {
+                if (state.confirmCallback) {
+                    state.confirmCallback();
+                }
+                hideConfirmDialog();
+            });
+        }
+        
         // ==================== 登录界面函数 ====================
         
         // 显示登录消息
@@ -3007,49 +3435,6 @@
         }
         
         // ==================== 核心功能函数 ====================
-        
-        // 计算数据完整性哈希
-        function calculateIntegrityHash(data) {
-            const str = JSON.stringify(data);
-            let hash = 0;
-            for (let i = 0; i < str.length; i++) {
-                const char = str.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-            return hash.toString(36);
-        }
-        
-        // 验证数据完整性
-        function verifyDataIntegrity() {
-            if (!state.settings.integrityCheck) return true;
-            
-            const storedHash = localStorage.getItem('noteIntegrityHash');
-            if (!storedHash) return true;
-            
-            const currentData = {
-                notes: state.notes,
-                settings: state.settings,
-                version: state.version
-            };
-            
-            const currentHash = calculateIntegrityHash(currentData);
-            return storedHash === currentHash;
-        }
-        
-        // 保存数据完整性哈希
-        function saveIntegrityHash() {
-            if (!state.settings.integrityCheck) return;
-            
-            const data = {
-                notes: state.notes,
-                settings: state.settings,
-                version: state.version
-            };
-            
-            const hash = calculateIntegrityHash(data);
-            localStorage.setItem('noteIntegrityHash', hash);
-        }
         
         // 字数统计函数
         function countWords(text) {
@@ -3131,12 +3516,11 @@
             // 加载用户数据
             loadUsers();
             
-            // 检查是否有上次登录的用户
-            const lastUser = localStorage.getItem('lastUser');
-            if (lastUser && state.users[lastUser]) {
-                elements.username.value = lastUser;
-                elements.password.focus();
-            }
+            // 加载记住的登录信息
+            loadRememberedUser();
+            
+            // 初始化确认对话框
+            initConfirmDialog();
             
             // 设置登录事件监听器
             setupLoginEventListeners();
@@ -3150,15 +3534,6 @@
         function initMainApp() {
             // 加载当前用户数据
             loadCurrentUserData();
-            
-            // 验证数据完整性
-            if (!verifyDataIntegrity()) {
-                if (confirm('检测到数据可能被篡改或损坏。是否恢复默认设置？')) {
-                    resetData();
-                } else {
-                    showStatus('数据完整性检查失败，继续使用可能存在风险');
-                }
-            }
             
             // 应用设置
             applySettings();
@@ -3180,8 +3555,8 @@
             loadSettings();
             
             // 添加页面卸载时的保存监听
-            window.addEventListener('beforeunload', saveAllData);
-            window.addEventListener('pagehide', saveAllData);
+            window.addEventListener('beforeunload', saveCurrentUserData);
+            window.addEventListener('pagehide', saveCurrentUserData);
             
             // 初始显示状态消息
             setTimeout(() => {
@@ -3224,17 +3599,6 @@
             showStatus('数据已重置');
         }
         
-        // 保存所有数据
-        function saveAllData() {
-            saveCurrentUserData();
-            saveIntegrityHash();
-        }
-        
-        // 保存设置
-        function saveSettings() {
-            // 设置保存在用户数据中，通过saveCurrentUserData保存
-        }
-        
         // 设置登录事件监听器
         function setupLoginEventListeners() {
             // 登录表单提交
@@ -3268,6 +3632,11 @@
                 elements.deleteAccountPassword.focus();
             });
             
+            // 清除账号链接
+            elements.clearUsersLink.addEventListener('click', () => {
+                showClearUsersDialog();
+            });
+            
             // 注册对话框
             elements.closeRegisterBtn.addEventListener('click', () => hideDialog(elements.registerDialog));
             elements.cancelRegisterBtn.addEventListener('click', () => hideDialog(elements.registerDialog));
@@ -3290,6 +3659,13 @@
             elements.deleteAccountForm.addEventListener('submit', (e) => {
                 e.preventDefault();
                 handleDeleteAccount();
+            });
+            
+            // 清除账号对话框
+            elements.closeClearUsersBtn.addEventListener('click', () => hideDialog(elements.clearUsersDialog));
+            elements.cancelClearUsersBtn.addEventListener('click', () => hideDialog(elements.clearUsersDialog));
+            elements.confirmClearAllBtn.addEventListener('click', () => {
+                handleClearAllUsers();
             });
             
             // 点击对话框外部关闭对话框
@@ -3320,8 +3696,8 @@
                 const result = loginUser(username, password);
                 
                 if (result.success) {
-                    // 保存上次登录用户
-                    localStorage.setItem('lastUser', username);
+                    // 保存记住的登录信息
+                    saveRememberedUser();
                     
                     // 切换到主应用界面
                     elements.loginContainer.style.display = 'none';
@@ -3450,6 +3826,94 @@
             }
         }
         
+        // 显示清除账号对话框
+        function showClearUsersDialog() {
+            const loggedOutUsers = getLoggedOutUsers();
+            
+            if (loggedOutUsers.length === 0) {
+                showLoginMessage('没有可清除的未登录账号');
+                return;
+            }
+            
+            // 渲染用户列表
+            renderUsersList(loggedOutUsers);
+            showDialog(elements.clearUsersDialog);
+        }
+        
+        // 渲染用户列表
+        function renderUsersList(users) {
+            if (users.length === 0) {
+                elements.usersList.innerHTML = '<div style="text-align: center; color: var(--text-light); padding: 20px;">没有未登录的账号</div>';
+                return;
+            }
+            
+            elements.usersList.innerHTML = users.map(user => {
+                const createdDate = formatDate(user.createdAt);
+                const lastLogin = user.lastLogin ? formatDate(user.lastLogin) : '从未登录';
+                
+                return `
+                    <div class="user-list-item">
+                        <div class="user-info-small">
+                            <div class="user-name-small">${user.username}</div>
+                            <div class="user-email-small">${user.email} • ${user.noteCount}篇笔记</div>
+                            <div style="font-size: 0.7rem; color: var(--text-light); margin-top: 2px;">
+                                创建于: ${createdDate} • 最后登录: ${lastLogin}
+                            </div>
+                        </div>
+                        <button class="delete-user-btn" data-username="${user.username}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            // 添加删除按钮事件
+            elements.usersList.querySelectorAll('.delete-user-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const username = btn.dataset.username;
+                    
+                    showConfirmDialog(
+                        '删除账号',
+                        `确定要删除账号 "${username}" 的所有数据吗？此操作不可撤销。`,
+                        () => {
+                            delete state.users[username];
+                            saveUsers();
+                            showClearUsersDialog(); // 重新加载列表
+                            showLoginMessage(`已删除账号: ${username}`, 'success');
+                        }
+                    );
+                });
+            });
+        }
+        
+        // 处理清除所有未登录账号
+        function handleClearAllUsers() {
+            const userCount = Object.keys(state.users).length - (state.currentUser ? 1 : 0);
+            
+            if (userCount <= 0) {
+                hideDialog(elements.clearUsersDialog);
+                showLoginMessage('没有可清除的未登录账号', 'success');
+                return;
+            }
+            
+            showConfirmDialog(
+                '清除所有未登录账号',
+                `确定要清除所有 ${userCount} 个未登录账号的数据吗？此操作不可撤销。`,
+                () => {
+                    const clearedCount = clearLoggedOutUsers();
+                    hideDialog(elements.clearUsersDialog);
+                    showLoginMessage(`已成功清除 ${clearedCount} 个未登录账号的数据`, 'success');
+                }
+            );
+        }
+        
+        // 格式化日期
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN');
+        }
+        
         // 设置事件监听器
         function setupEventListeners() {
             // 新建笔记按钮
@@ -3484,11 +3948,13 @@
             elements.listSymbolsToggle.addEventListener('change', () => updateSetting('listSymbols', elements.listSymbolsToggle.checked));
             elements.taskSymbolsToggle.addEventListener('change', () => updateSetting('taskSymbols', elements.taskSymbolsToggle.checked));
             elements.quoteSymbolsToggle.addEventListener('change', () => updateSetting('quoteSymbols', elements.quoteSymbolsToggle.checked));
-            elements.integrityCheckToggle.addEventListener('change', () => updateSetting('integrityCheck', elements.integrityCheckToggle.checked));
             elements.realTimeSearchToggle.addEventListener('change', () => updateSetting('realTimeSearch', elements.realTimeSearchToggle.checked));
             elements.searchHighlightToggle.addEventListener('change', () => updateSetting('searchHighlight', elements.searchHighlightToggle.checked));
             elements.independentViewToggle.addEventListener('change', () => updateSetting('independentView', elements.independentViewToggle.checked));
             elements.autoLogoutToggle.addEventListener('change', () => updateSetting('autoLogout', elements.autoLogoutToggle.checked));
+            elements.rememberLoginToggle.addEventListener('change', () => updateSetting('rememberLogin', elements.rememberLoginToggle.checked));
+            elements.autoClearUsersToggle.addEventListener('change', () => updateSetting('autoClearUsers', elements.autoClearUsersToggle.checked));
+            elements.searchHistoryToggle.addEventListener('change', () => updateSetting('searchHistory', elements.searchHistoryToggle.checked));
             
             // 新增设置选项监听
             elements.userStatusToggle.addEventListener('change', () => updateSetting('userStatusVisible', elements.userStatusToggle.checked));
@@ -3497,12 +3963,22 @@
             elements.themeColorSelect.addEventListener('change', () => updateSetting('themeColor', elements.themeColorSelect.value));
             elements.fontSizeSelect.addEventListener('change', () => updateSetting('fontSize', elements.fontSizeSelect.value));
             
-            // 设置标签页切换
-            document.querySelectorAll('.settings-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabId = tab.dataset.tab;
+            // 设置导航点击事件
+            elements.settingsNav.addEventListener('click', (e) => {
+                const navItem = e.target.closest('.settings-nav-item');
+                if (navItem) {
+                    const tabId = navItem.dataset.tab;
                     switchSettingsTab(tabId);
-                });
+                }
+            });
+            
+            // 帮助导航点击事件
+            elements.helpNav.addEventListener('click', (e) => {
+                const navItem = e.target.closest('.help-nav-item');
+                if (navItem) {
+                    const tabId = navItem.dataset.tab;
+                    switchHelpTab(tabId);
+                }
             });
             
             // 对话框按钮
@@ -3552,14 +4028,6 @@
             
             // 移动端菜单按钮
             elements.mobileMenuBtn.addEventListener('click', toggleSidebar);
-            
-            // 使用说明标签页切换
-            document.querySelectorAll('.help-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const tabId = tab.dataset.tab;
-                    switchHelpTab(tabId);
-                });
-            });
             
             // 点击编辑器外部关闭符号选择器
             document.addEventListener('click', (e) => {
@@ -3745,16 +4213,18 @@
         
         // 切换设置标签页
         function switchSettingsTab(tabId) {
-            document.querySelectorAll('.settings-tab').forEach(tab => {
-                if (tab.dataset.tab === tabId) {
-                    tab.classList.add('active');
+            // 更新导航项状态
+            elements.settingsNav.querySelectorAll('.settings-nav-item').forEach(item => {
+                if (item.dataset.tab === tabId) {
+                    item.classList.add('active');
                 } else {
-                    tab.classList.remove('active');
+                    item.classList.remove('active');
                 }
             });
             
-            document.querySelectorAll('.settings-section').forEach(section => {
-                if (section.id === `${tabId}-tab`) {
+            // 更新内容区显示
+            elements.settingsContent.querySelectorAll('.settings-section').forEach(section => {
+                if (section.id === `${tabId}-section`) {
                     section.classList.add('active');
                 } else {
                     section.classList.remove('active');
@@ -3762,18 +4232,20 @@
             });
         }
         
-        // 切换使用说明标签页
+        // 切换帮助标签页
         function switchHelpTab(tabId) {
-            document.querySelectorAll('.help-tab').forEach(tab => {
-                if (tab.dataset.tab === tabId) {
-                    tab.classList.add('active');
+            // 更新导航项状态
+            elements.helpNav.querySelectorAll('.help-nav-item').forEach(item => {
+                if (item.dataset.tab === tabId) {
+                    item.classList.add('active');
                 } else {
-                    tab.classList.remove('active');
+                    item.classList.remove('active');
                 }
             });
             
-            document.querySelectorAll('.help-section').forEach(section => {
-                if (section.id === `${tabId}-tab`) {
+            // 更新内容区显示
+            elements.helpContent.querySelectorAll('.help-section').forEach(section => {
+                if (section.id === `${tabId}-section`) {
                     section.classList.add('active');
                 } else {
                     section.classList.remove('active');
@@ -4088,11 +4560,13 @@
             elements.listSymbolsToggle.checked = state.settings.listSymbols;
             elements.taskSymbolsToggle.checked = state.settings.taskSymbols;
             elements.quoteSymbolsToggle.checked = state.settings.quoteSymbols;
-            elements.integrityCheckToggle.checked = state.settings.integrityCheck;
             elements.realTimeSearchToggle.checked = state.settings.realTimeSearch;
             elements.searchHighlightToggle.checked = state.settings.searchHighlight;
             elements.independentViewToggle.checked = state.settings.independentView;
             elements.autoLogoutToggle.checked = state.settings.autoLogout;
+            elements.rememberLoginToggle.checked = state.settings.rememberLogin;
+            elements.autoClearUsersToggle.checked = state.settings.autoClearUsers;
+            elements.searchHistoryToggle.checked = state.settings.searchHistory;
             
             // 加载新增设置
             elements.userStatusToggle.checked = state.settings.userStatusVisible;
@@ -4137,6 +4611,11 @@
                 resetAutoLogoutTimer();
             }
             
+            // 如果关闭了记住登录，清除信息
+            if (key === 'rememberLogin' && !value) {
+                clearRememberedUser();
+            }
+            
             const settingNames = {
                 smartInputEnabled: '智能输入',
                 autoSaveEnabled: '自动保存',
@@ -4145,11 +4624,13 @@
                 listSymbols: '列表符号',
                 taskSymbols: '任务符号',
                 quoteSymbols: '引用符号',
-                integrityCheck: '数据完整性检查',
                 realTimeSearch: '实时搜索',
                 searchHighlight: '搜索高亮',
                 independentView: '独立笔记视图状态',
                 autoLogout: '自动登出',
+                rememberLogin: '记住登录',
+                autoClearUsers: '自动清除未登录账号',
+                searchHistory: '搜索历史',
                 userStatusVisible: '用户状态指示器',
                 appTitleVisible: '应用标题',
                 autoSaveInterval: '自动保存间隔',
