@@ -215,6 +215,71 @@
             box-shadow: 0 0 0 3px var(--primary-light);
         }
         
+        /* 自定义文件上传样式 */
+        .file-upload-container {
+            position: relative;
+            width: 100%;
+        }
+        
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 2;
+        }
+        
+        .file-upload-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            background-color: #f9fafb;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .file-upload-label:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .file-upload-label.drag-over {
+            background-color: var(--primary-light);
+            border-color: var(--primary-color);
+            border-style: dashed;
+        }
+        
+        .file-upload-text {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+        
+        .file-upload-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .file-name {
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: 500;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
         .checkbox-group {
             display: flex;
             align-items: center;
@@ -318,6 +383,9 @@
             cursor: pointer;
             transition: all 0.2s;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         
         .login-link:hover {
@@ -365,8 +433,14 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
             z-index: 10;
+            flex-shrink: 0;
+        }
+        
+        .sidebar-hidden .sidebar {
+            transform: translateX(-100%);
+            margin-left: -300px;
         }
         
         .sidebar-header {
@@ -388,15 +462,34 @@
             font-size: 1.8rem;
         }
         
-        .version-badge {
+        /* 新增：侧边栏控制按钮 */
+        .sidebar-controls {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: rgba(255, 255, 255, 0.2);
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            font-weight: 600;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .sidebar-toggle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .sidebar-toggle-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
         }
         
         .user-info {
@@ -428,11 +521,6 @@
         .user-name {
             font-weight: 600;
             font-size: 0.9rem;
-        }
-        
-        .user-email {
-            font-size: 0.75rem;
-            opacity: 0.9;
         }
         
         .logout-btn {
@@ -638,16 +726,56 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            transition: margin-left 0.3s ease;
+        }
+        
+        /* 新增：侧边栏隐藏时的工具栏样式 */
+        .sidebar-hidden .toolbar {
+            padding-left: 20px;
+        }
+        
+        .sidebar-hidden .main-content {
+            margin-left: 0;
+        }
+        
+        /* 新增：侧边栏显示按钮 */
+        .show-sidebar-btn {
+            display: none;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            z-index: 10;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+        
+        .show-sidebar-btn:hover {
+            background-color: var(--primary-dark);
+            transform: scale(1.05);
+        }
+        
+        .sidebar-hidden .show-sidebar-btn {
+            display: flex;
         }
         
         .toolbar {
-            padding: 12px 20px;
+            padding: 12px 20px 12px 60px;
             background-color: white;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: all 0.3s;
+            position: relative;
         }
         
         .note-title-input {
@@ -659,6 +787,7 @@
             padding: 5px 10px;
             background-color: transparent;
             transition: all 0.2s;
+            margin-left: 40px;
         }
         
         .note-title-input:focus {
@@ -726,7 +855,7 @@
         
         .editor-container {
             flex: 1;
-            padding: 15px;
+            padding: 15px 20px;
             overflow-y: auto;
             position: relative;
         }
@@ -842,7 +971,6 @@
             accent-color: var(--completed-color);
             cursor: pointer;
             flex-shrink: 0;
-            margin-top: 1px;
             transition: all 0.2s;
         }
         
@@ -932,6 +1060,7 @@
                 max-width: 320px;
                 transform: translateX(-100%);
                 box-shadow: var(--shadow);
+                z-index: 1000;
             }
             
             .sidebar.active {
@@ -944,6 +1073,7 @@
             
             .note-title-input {
                 font-size: 1.2rem;
+                margin-left: 0;
             }
             
             .editor-container {
@@ -969,6 +1099,23 @@
                 right: 35px;
                 top: 10px;
             }
+            
+            .sidebar-controls {
+                display: none;
+            }
+            
+            .show-sidebar-btn {
+                left: 10px;
+                top: 10px;
+            }
+            
+            .sidebar-hidden .toolbar {
+                padding-left: 60px;
+            }
+            
+            .toolbar {
+                padding: 12px 10px 12px 60px;
+            }
         }
         
         /* 状态消息 */
@@ -984,7 +1131,7 @@
             box-shadow: var(--shadow);
             opacity: 0;
             transition: all 0.3s;
-            z-index: 100;
+            z-index: 1100;
             text-align: center;
             min-width: 200px;
             max-width: 80%;
@@ -1417,14 +1564,14 @@
         
         /* 符号选择器样式 */
         .symbol-selector {
-            position: absolute;
+            position: fixed;
             background-color: white;
             border: 1px solid var(--border-color);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             max-height: 250px;
             overflow-y: auto;
-            z-index: 1000;
+            z-index: 10000;
             display: none;
             min-width: 300px;
             animation: fadeIn 0.2s ease;
@@ -1534,27 +1681,9 @@
             background: var(--primary-color);
         }
         
-        /* 自定义确认对话框 */
-        .confirm-dialog {
+        /* 清除账号对话框 */
+        .clear-users-dialog {
             max-width: 450px;
-        }
-        
-        .confirm-dialog h3 {
-            color: var(--warning-color);
-            margin-bottom: 15px;
-        }
-        
-        .confirm-dialog p {
-            color: var(--text-color);
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-        }
-        
-        .confirm-icon {
-            text-align: center;
-            font-size: 3rem;
-            color: var(--warning-color);
-            margin-bottom: 15px;
         }
         
         .user-list {
@@ -1585,11 +1714,6 @@
             color: var(--primary-color);
         }
         
-        .user-email-small {
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-        
         .delete-user-btn {
             background: none;
             border: 1px solid var(--error-color);
@@ -1604,6 +1728,80 @@
         .delete-user-btn:hover {
             background-color: var(--error-color);
             color: white;
+        }
+        
+        /* 导入导出按钮样式 */
+        .import-export-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* 导出格式选择样式 */
+        .export-format-selector {
+            margin: 15px 0;
+            padding: 15px;
+            background-color: var(--secondary-color);
+            border-radius: var(--radius);
+        }
+        
+        .export-format-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .export-format-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .format-option {
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .format-radio {
+            display: none;
+        }
+        
+        .format-label {
+            display: block;
+            padding: 12px 15px;
+            background-color: white;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .format-radio:checked + .format-label {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .format-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .format-icon {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .format-text {
+            font-size: 0.9rem;
+        }
+        
+        /* 导出选项对话框 - 提高z-index确保不被遮挡 */
+        .export-dialog {
+            max-width: 450px;
+            z-index: 1001;
         }
         
         /* 动画 */
@@ -1637,7 +1835,7 @@
             to { transform: rotate(360deg); }
         }
         
-        /* 删除笔记确认对话框 */
+        /* 删除确认对话框 */
         .delete-dialog {
             max-width: 400px;
         }
@@ -1653,7 +1851,7 @@
             font-size: 0.95rem;
         }
         
-        /* 关于对话框 */
+        /* 关于对话框 - 简化版 */
         .about-features {
             margin: 20px 0;
         }
@@ -1685,6 +1883,137 @@
             color: var(--text-light);
             text-align: center;
         }
+        
+        /* 导入进度条样式 */
+        .import-progress {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: var(--secondary-color);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-light);
+        }
+        
+        /* 导入结果样式 */
+        .import-results {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: var(--radius);
+            background-color: var(--secondary-color);
+            display: none;
+        }
+        
+        .import-results.success {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid var(--success-color);
+        }
+        
+        .import-results.error {
+            background-color: rgba(239, 68, 68, 0.1);
+            border-left: 3px solid var(--error-color);
+        }
+        
+        .results-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+        
+        .results-list {
+            list-style-type: none;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+        
+        .results-list li {
+            margin-bottom: 4px;
+            padding-left: 15px;
+            position: relative;
+        }
+        
+        .results-list li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+        }
+        
+        /* 侧边栏隐藏状态 */
+        .sidebar-hidden .sidebar {
+            transform: translateX(-100%);
+            margin-left: -300px;
+        }
+        
+        .sidebar-hidden .sidebar-toggle-btn i {
+            transform: rotate(180deg);
+        }
+        
+        .sidebar-hidden .main-content {
+            margin-left: 0;
+        }
+        
+        /* 主内容区域扩展 */
+        .main-content.expanded {
+            margin-left: 0;
+        }
+        
+        /* 导入文件预览 */
+        .file-preview {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: var(--secondary-color);
+            border-radius: var(--radius);
+            border: 1px dashed var(--border-color);
+            font-size: 0.85rem;
+            color: var(--text-light);
+            display: none;
+        }
+        
+        .file-preview h5 {
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .file-preview-content {
+            max-height: 100px;
+            overflow-y: auto;
+            padding: 5px;
+            background-color: white;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+        
+        /* 导入进度指示器 */
+        .import-loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .import-loading i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
     </style>
 </head>
 <body>
@@ -1706,51 +2035,61 @@
                 <div class="features-list">
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="feature-text">
-                            <h4>安全隐私</h4>
-                            <p>所有数据存储在本地，完全保护您的隐私</p>
-                        </div>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
                             <i class="fas fa-magic"></i>
                         </div>
                         <div class="feature-text">
-                            <h4>智能编辑</h4>
-                            <p>支持Markdown语法，智能补全和符号选择器</p>
+                            <h4>智能输入</h4>
+                            <p>支持Markdown符号自动补全，提升编辑效率</p>
                         </div>
                     </div>
                     
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <i class="fas fa-search"></i>
+                            <i class="fas fa-shield-alt"></i>
                         </div>
                         <div class="feature-text">
-                            <h4>快速搜索</h4>
-                            <p>实时搜索笔记内容，快速找到所需信息</p>
+                            <h4>数据安全</h4>
+                            <p>本地存储、账号隔离与注销功能，全面保护隐私</p>
                         </div>
                     </div>
                     
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <i class="fas fa-chart-bar"></i>
+                            <i class="fas fa-tasks"></i>
                         </div>
                         <div class="feature-text">
-                            <h4>字数统计</h4>
-                            <p>实时统计笔记字数，掌握写作进度</p>
+                            <h4>任务管理</h4>
+                            <p>预览模式支持直接勾选，高效管理待办事项</p>
                         </div>
                     </div>
                     
                     <div class="feature-item">
                         <div class="feature-icon">
-                            <i class="fas fa-sync-alt"></i>
+                            <i class="fas fa-mobile-alt"></i>
                         </div>
                         <div class="feature-text">
-                            <h4>多设备同步</h4>
-                            <p>通过浏览器数据同步功能，实现多设备访问</p>
+                            <h4>跨端适配</h4>
+                            <p>响应式设计完美兼容桌面和移动设备</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>一键预览</h4>
+                            <p>实时切换编辑与预览模式，所见即所得</p>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-keyboard"></i>
+                        </div>
+                        <div class="feature-text">
+                            <h4>快捷操作</h4>
+                            <p>完整快捷键和符号选择器，简化编辑流程</p>
                         </div>
                     </div>
                 </div>
@@ -1802,16 +2141,16 @@
                     
                     <div class="login-links">
                         <a class="login-link" id="registerLink">
-                            <i class="fas fa-user-plus" style="margin-right: 5px;"></i>注册账号
+                            <i class="fas fa-user-plus"></i>注册账号
                         </a>
                         <a class="login-link" id="forgotPasswordLink">
-                            <i class="fas fa-key" style="margin-right: 5px;"></i>忘记密码
+                            <i class="fas fa-key"></i>忘记密码
                         </a>
                         <a class="login-link" id="deleteAccountLink">
-                            <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>注销账号
+                            <i class="fas fa-trash-alt"></i>注销账号
                         </a>
                         <a class="login-link" id="clearUsersLink">
-                            <i class="fas fa-users-slash" style="margin-right: 5px;"></i>清除账号
+                            <i class="fas fa-users-slash"></i>清除已登出账号
                         </a>
                     </div>
                 </form>
@@ -1821,6 +2160,11 @@
     
     <!-- 主应用界面 -->
     <div class="app-container" id="appContainer">
+        <!-- 侧边栏显示按钮 -->
+        <button class="show-sidebar-btn" id="showSidebarBtn" title="显示侧边栏">
+            <i class="fas fa-bars"></i>
+        </button>
+        
         <!-- 侧边栏 -->
         <div class="sidebar" id="sidebar">
             <div class="sidebar-header">
@@ -1828,14 +2172,19 @@
                     <i class="fas fa-bars"></i>
                 </button>
                 <h1><i class="fas fa-book"></i> 精简笔记</h1>
-                <div class="version-badge">v2.0</div>
+                
+                <!-- 新增：侧边栏控制按钮 -->
+                <div class="sidebar-controls">
+                    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="隐藏/显示侧边栏">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
                 
                 <!-- 用户信息 -->
                 <div class="user-info">
                     <div class="user-avatar" id="userAvatar"></div>
                     <div class="user-details">
                         <div class="user-name" id="userName">用户</div>
-                        <div class="user-email" id="userEmail">未设置邮箱</div>
                     </div>
                     <button class="logout-btn" id="logoutBtn" title="退出登录">
                         <i class="fas fa-sign-out-alt"></i>
@@ -1926,6 +2275,57 @@
     <!-- 状态消息 -->
     <div class="status-message" id="statusMessage"></div>
     
+    <!-- 导出选项对话框 - 提高z-index确保不被遮挡 -->
+    <div class="dialog-overlay" id="exportDialog" style="z-index: 1001;">
+        <div class="dialog-content export-dialog">
+            <button class="dialog-close-btn" id="closeExportBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-download" style="margin-right: 10px;"></i>导出选项</h3>
+            </div>
+            
+            <p style="margin-bottom: 15px; color: var(--text-color); font-size: 0.95rem;">
+                请选择导出的文件格式：
+            </p>
+            
+            <div class="export-format-selector">
+                <div class="export-format-title">导出格式</div>
+                <div class="export-format-options">
+                    <div class="format-option">
+                        <input type="radio" id="format-json" name="exportFormat" value="json" class="format-radio" checked>
+                        <label for="format-json" class="format-label">
+                            <i class="fas fa-code format-icon"></i>
+                            <span class="format-text">JSON</span>
+                        </label>
+                    </div>
+                    <div class="format-option">
+                        <input type="radio" id="format-txt" name="exportFormat" value="txt" class="format-radio">
+                        <label for="format-txt" class="format-label">
+                            <i class="fas fa-file-alt format-icon"></i>
+                            <span class="format-text">TXT</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin: 20px 0; padding: 12px; background-color: var(--secondary-color); border-radius: var(--radius); font-size: 0.85rem;">
+                <p><strong>格式说明：</strong></p>
+                <p style="margin-top: 8px;">• <strong>JSON</strong>: 完整备份，包含所有元数据，可用于导入恢复</p>
+                <p>• <strong>TXT</strong>: 纯文本格式，仅包含笔记内容，适合阅读和分享</p>
+            </div>
+            
+            <div class="dialog-actions">
+                <button type="button" class="dialog-btn secondary" id="cancelExportBtn">
+                    <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                </button>
+                <button type="button" class="dialog-btn primary" id="confirmExportBtn">
+                    <i class="fas fa-download" style="margin-right: 5px;"></i>导出
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <!-- 注册对话框 -->
     <div class="dialog-overlay" id="registerDialog">
         <div class="dialog-content">
@@ -1956,13 +2356,6 @@
                         <i class="fas fa-lock" style="margin-right: 8px;"></i>确认密码
                     </label>
                     <input type="password" class="form-input" id="registerConfirmPassword" placeholder="请再次输入密码" required>
-                </div>
-                
-                <div class="form-group">
-                    <label class="form-label" for="registerEmail">
-                        <i class="fas fa-envelope" style="margin-right: 8px;"></i>邮箱 (可选)
-                    </label>
-                    <input type="email" class="form-input" id="registerEmail" placeholder="请输入邮箱（用于找回密码）">
                 </div>
                 
                 <div class="dialog-actions">
@@ -2070,7 +2463,7 @@
         </div>
     </div>
     
-    <!-- 清除账号对话框 -->
+    <!-- 清除已登出账号对话框 -->
     <div class="dialog-overlay" id="clearUsersDialog">
         <div class="dialog-content clear-users-dialog">
             <button class="dialog-close-btn" id="closeClearUsersBtn" title="关闭">
@@ -2092,7 +2485,7 @@
                 <button type="button" class="dialog-btn secondary" id="cancelClearUsersBtn">
                     <i class="fas fa-times" style="margin-right: 5px;"></i>取消
                 </button>
-                <button type="button" class="dialog-btn danger" id="confirmClearAllBtn">
+                    <button type="button" class="dialog-btn danger" id="confirmClearAllBtn">
                     <i class="fas fa-trash-alt" style="margin-right: 5px;"></i>清除所有未登录账号
                 </button>
             </div>
@@ -2120,26 +2513,7 @@
         </div>
     </div>
     
-    <!-- 自定义确认对话框 -->
-    <div class="dialog-overlay" id="confirmDialog">
-        <div class="dialog-content confirm-dialog">
-            <div class="confirm-icon">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <h3 id="confirmTitle">确认操作</h3>
-            <p id="confirmMessage">您确定要执行此操作吗？</p>
-            <div class="dialog-actions">
-                <button class="dialog-btn secondary" id="cancelConfirmBtn">
-                    <i class="fas fa-times" style="margin-right: 5px;"></i>取消
-                </button>
-                <button class="dialog-btn danger" id="confirmActionBtn">
-                    <i class="fas fa-check" style="margin-right: 5px;"></i>确认
-                </button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- 关于对话框 -->
+    <!-- 关于对话框 - 简化版 -->
     <div class="dialog-overlay" id="aboutDialog">
         <div class="dialog-content">
             <button class="dialog-close-btn" id="closeAboutBtn" title="关闭">
@@ -2151,80 +2525,29 @@
             
             <p style="margin-bottom: 20px;">一款简洁高效的跨平台笔记应用，支持Markdown、任务清单、智能输入等功能。</p>
             
+            <!-- 简化的功能列表 -->
             <div class="about-features">
                 <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>智能输入</strong> - 支持自动补全Markdown符号，提高编辑效率</div>
+                    <div><strong>智能输入</strong> - 支持Markdown符号自动补全，提升编辑效率</div>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>任务清单</strong> - 支持可勾选的任务列表，可在预览模式下直接操作</div>
+                    <div><strong>数据安全</strong> - 本地存储、账号隔离与注销功能，全面保护隐私</div>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>搜索功能</strong> - 支持按标题和内容搜索笔记，实时高亮显示</div>
+                    <div><strong>多格式导出</strong> - 支持JSON、TXT格式导出</div>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>字数统计</strong> - 显示笔记总字数、笔记总数</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>符号选择器</strong> - 按Tab键调出符号列表，用Tab切换选择，空格键插入</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>本地存储</strong> - 所有数据保存在浏览器本地，保护隐私安全</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>响应式设计</strong> - 完美适配桌面和移动设备</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>实时预览</strong> - 一键切换编辑和预览模式</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>完整快捷键</strong> - 支持Ctrl+E/S/H/N/D/F等快捷键操作</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>视图状态保存</strong> - 为每个笔记独立保存编辑/预览模式状态</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>笔记独立字数统计</strong> - 在笔记列表中显示每个笔记的字数</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>搜索优化</strong> - 修复搜索框按钮位置问题，提升使用体验</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>账号系统</strong> - 支持多用户本地存储，数据隔离安全</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>登录动画</strong> - 优化的登录体验，加载状态指示</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>注销功能</strong> - 支持安全注销账号，保护用户数据隐私</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>记住登录</strong> - 保存登录信息，下次自动填充</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
-                    <div><strong>账号管理</strong> - 可查看和清除已登出的账号数据</div>
+                    <div><strong>跨端适配</strong> - 响应式设计完美兼容桌面和移动设备</div>
                 </div>
             </div>
             
             <div class="about-footer">
                 <p>© 2026 精简笔记应用 v2.0</p>
-                <p style="margin-top: 8px; font-size: 0.8rem;">提示：所有数据存储在本地浏览器，请定期备份重要笔记</p>
+                <p style="margin-top: 8px; font-size: 0.8rem;">提示：所有数据存储在本地浏览器，请定期使用导出功能备份重要笔记</p>
             </div>
         </div>
     </div>
@@ -2257,6 +2580,9 @@
                     </div>
                     <div class="settings-nav-item" data-tab="account">
                         <i class="fas fa-user nav-icon"></i> 账户设置
+                    </div>
+                    <div class="settings-nav-item" data-tab="export">
+                        <i class="fas fa-download nav-icon"></i> 导出设置
                     </div>
                 </div>
                 
@@ -2436,26 +2762,20 @@
                     <div class="settings-section" id="account-section">
                         <h4>账户设置</h4>
                         
+                        <!-- 导入导出按钮 -->
                         <div class="setting-item">
                             <div class="setting-info">
-                                <div class="setting-title">显示用户状态指示器</div>
-                                <div class="setting-description">在侧边栏显示当前用户状态信息</div>
+                                <div class="setting-title">数据导入导出</div>
+                                <div class="setting-description">备份或恢复笔记数据</div>
                             </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" class="toggle-checkbox" id="userStatusToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
-                        </div>
-                        
-                        <div class="setting-item">
-                            <div class="setting-info">
-                                <div class="setting-title">显示应用标题</div>
-                                <div class="setting-description">在侧边栏显示应用标题和图标</div>
+                            <div class="import-export-buttons">
+                                <button class="dialog-btn secondary" id="exportDataBtn" style="margin-right: 8px;">
+                                    <i class="fas fa-download" style="margin-right: 5px;"></i>导出
+                                </button>
+                                <button class="dialog-btn primary" id="importDataBtn">
+                                    <i class="fas fa-upload" style="margin-right: 5px;"></i>导入
+                                </button>
                             </div>
-                            <label class="toggle-switch">
-                                <input type="checkbox" class="toggle-checkbox" id="appTitleToggle" checked>
-                                <span class="toggle-slider"></span>
-                            </label>
                         </div>
                         
                         <div class="setting-item">
@@ -2498,7 +2818,115 @@
                             </select>
                         </div>
                     </div>
+                    
+                    <!-- 导出设置部分 -->
+                    <div class="settings-section" id="export-section">
+                        <h4>导出设置</h4>
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">默认导出格式</div>
+                                <div class="setting-description">选择点击导出按钮时的默认格式</div>
+                            </div>
+                            <select id="defaultExportFormatSelect" style="padding: 6px 12px; border-radius: var(--radius); border: 1px solid var(--border-color); background: white;">
+                                <option value="json">JSON (完整备份)</option>
+                                <option value="txt">TXT (纯文本)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">TXT导出包含元数据</div>
+                                <div class="setting-description">TXT格式导出时包含创建时间和标题</div>
+                            </div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" class="toggle-checkbox" id="txtIncludeMetadataToggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-title">导出文件名前缀</div>
+                                <div class="setting-description">导出文件的自定义前缀</div>
+                            </div>
+                            <input type="text" id="exportFilenamePrefix" class="form-input" value="精简笔记" placeholder="文件名前缀" style="width: 200px; padding: 6px 12px;">
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 导入对话框 - 简化版 -->
+    <div class="dialog-overlay" id="importDialog">
+        <div class="dialog-content">
+            <button class="dialog-close-btn" id="closeImportBtn" title="关闭">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="dialog-header">
+                <h3><i class="fas fa-file-import" style="margin-right: 10px;"></i>导入数据</h3>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-info-circle" style="margin-right: 8px;"></i>注意事项
+                </label>
+                <div style="background-color: var(--secondary-color); padding: 12px; border-radius: var(--radius); margin-bottom: 15px; font-size: 0.9rem;">
+                    <p style="margin-bottom: 8px;">1. 请确保导入的文件是之前从此应用导出的备份文件</p>
+                    <p style="margin-bottom: 8px;">2. <strong>仅支持增量导入</strong>，不会覆盖现有笔记</p>
+                    <p>3. 导入过程会显示详细结果</p>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="importFile">
+                    <i class="fas fa-file" style="margin-right: 8px;"></i>选择备份文件
+                </label>
+                <div class="file-upload-container">
+                    <input type="file" class="file-upload-input" id="importFile" accept=".json">
+                    <label class="file-upload-label" for="importFile" id="fileUploadLabel">
+                        <span class="file-upload-text" id="fileUploadText">选择文件...</span>
+                        <span class="file-upload-button">浏览</span>
+                    </label>
+                    <div class="file-name" id="fileName" style="display: none;">
+                        <i class="fas fa-file-alt" style="color: var(--primary-color);"></i>
+                        <span id="selectedFileName"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 文件预览 -->
+            <div class="file-preview" id="filePreview">
+                <h5>文件预览</h5>
+                <div class="file-preview-content" id="filePreviewContent"></div>
+            </div>
+            
+            <!-- 导入进度 -->
+            <div class="import-progress" id="importProgress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">正在导入...</div>
+            </div>
+            
+            <!-- 导入结果 -->
+            <div class="import-results" id="importResults"></div>
+            
+            <div class="error-message" id="importError"></div>
+            
+            <!-- 导入加载指示器 -->
+            <div class="import-loading" id="importLoading">
+                <i class="fas fa-spinner"></i>
+                <p style="margin-top: 10px;">正在处理文件...</p>
+            </div>
+            
+            <div class="dialog-actions">
+                <button type="button" class="dialog-btn secondary" id="cancelImportBtn">
+                    <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                </button>
+                <button type="button" class="dialog-btn primary" id="confirmImportBtn" disabled>
+                    <i class="fas fa-upload" style="margin-right: 5px;"></i>导入数据
+                </button>
             </div>
         </div>
     </div>
@@ -2535,8 +2963,17 @@
                     <div class="help-nav-item" data-tab="markdown">
                         <i class="fas fa-code nav-icon"></i> Markdown语法
                     </div>
+                    <div class="help-nav-item" data-tab="import-export">
+                        <i class="fas fa-exchange-alt nav-icon"></i> 导入导出
+                    </div>
                     <div class="help-nav-item" data-tab="user-management">
                         <i class="fas fa-users nav-icon"></i> 用户管理
+                    </div>
+                    <div class="help-nav-item" data-tab="sidebar-control">
+                        <i class="fas fa-columns nav-icon"></i> 侧边栏控制
+                    </div>
+                    <div class="help-nav-item" data-tab="export-formats">
+                        <i class="fas fa-file-export nav-icon"></i> 导出格式
                     </div>
                 </div>
                 
@@ -2739,14 +3176,6 @@
                                 <div class="description">引用块内容</div>
                             </div>
                             <div class="symbol-example">
-                                <code>```代码块```</code>
-                                <div class="description">代码块（包含开始和结束标记）</div>
-                            </div>
-                            <div class="symbol-example">
-                                <code>---</code>
-                                <div class="description">水平分割线</div>
-                            </div>
-                            <div class="symbol-example">
                                 <code>**粗体**</code>
                                 <div class="description">粗体文本标记</div>
                             </div>
@@ -2777,20 +3206,37 @@
                             <div>斜体: <code>*斜体文字*</code></div>
                         </div>
                         <div class="help-item">
-                            <div class="help-icon"><i class="fas fa-code"></i></div>
-                            <div>代码: <code>`行内代码`</code>, <code>```代码块```</code></div>
-                        </div>
-                        <div class="help-item">
                             <div class="help-icon"><i class="fas fa-quote-right"></i></div>
                             <div>引用: <code>> 引用文字</code></div>
                         </div>
+                    </div>
+                    
+                    <!-- 导入导出部分 -->
+                    <div class="help-section" id="import-export-section">
+                        <h4>数据导入导出功能</h4>
                         <div class="help-item">
-                            <div class="help-icon"><i class="fas fa-link"></i></div>
-                            <div>链接: <code>[链接文本](https://example.com)</code></div>
+                            <div class="help-icon"><i class="fas fa-download"></i></div>
+                            <div><strong>导出数据</strong> - 将当前账号的所有笔记导出为多种格式文件</div>
                         </div>
                         <div class="help-item">
-                            <div class="help-icon"><i class="fas fa-image"></i></div>
-                            <div>图片: <code>![图片描述](图片地址)</code></div>
+                            <div class="help-icon"><i class="fas fa-upload"></i></div>
+                            <div><strong>导入数据</strong> - 从备份文件恢复笔记数据，仅支持增量导入</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-cog"></i></div>
+                            <div><strong>导入模式</strong> - 仅支持增量导入模式，不会覆盖现有笔记</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-search"></i></div>
+                            <div><strong>文件预览</strong> - 导入前可预览备份文件内容</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-sync-alt"></i></div>
+                            <div><strong>数据迁移</strong> - 可用于在不同设备间迁移笔记数据</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-shield-alt"></i></div>
+                            <div><strong>数据安全</strong> - 导出文件仅包含笔记内容，不包含密码等敏感信息</div>
                         </div>
                     </div>
                     
@@ -2818,12 +3264,70 @@
                             <div><strong>重置密码</strong> - 忘记密码时可以重置账号密码</div>
                         </div>
                         <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-file-export"></i></div>
+                            <div><strong>数据备份</strong> - 使用导入导出功能定期备份重要笔记</div>
+                        </div>
+                        <div class="help-item">
                             <div class="help-icon"><i class="fas fa-exclamation-triangle"></i></div>
                             <div><strong>数据安全</strong> - 所有用户数据存储在浏览器本地，完全保护隐私</div>
                         </div>
                         <div class="help-item">
                             <div class="help-icon"><i class="fas fa-shield-alt"></i></div>
                             <div><strong>安全保护</strong> - 自动登出功能保护账号安全</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 侧边栏控制部分 -->
+                    <div class="help-section" id="sidebar-control-section">
+                        <h4>侧边栏控制功能</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-columns"></i></div>
+                            <div><strong>隐藏/显示侧边栏</strong> - 点击侧边栏右上角的按钮隐藏或显示侧边栏</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-expand"></i></div>
+                            <div><strong>最大化编辑区域</strong> - 隐藏侧边栏可获得更大的编辑空间</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-mobile-alt"></i></div>
+                            <div><strong>移动端适配</strong> - 在移动设备上自动优化侧边栏显示</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-bars"></i></div>
+                            <div><strong>移动端菜单</strong> - 在移动设备上点击菜单按钮打开侧边栏</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-arrows-alt-h"></i></div>
+                            <div><strong>状态记忆</strong> - 侧边栏显示状态会记住，下次打开保持相同状态</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-compress-alt"></i></div>
+                            <div><strong>显示侧边栏按钮</strong> - 侧边栏隐藏时，标题区最左侧会显示按钮用于重新显示侧边栏</div>
+                        </div>
+                    </div>
+                    
+                    <!-- 导出格式部分 -->
+                    <div class="help-section" id="export-formats-section">
+                        <h4>多格式导出功能</h4>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-code"></i></div>
+                            <div><strong>JSON格式</strong> - 完整备份格式，包含所有笔记数据和元信息，可用于数据恢复</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-file-alt"></i></div>
+                            <div><strong>TXT格式</strong> - 纯文本格式，适合阅读和分享，可包含元数据信息</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-cog"></i></div>
+                            <div><strong>导出设置</strong> - 可在设置中配置默认导出格式和导出选项</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-history"></i></div>
+                            <div><strong>批量导出</strong> - 一次导出所有笔记，按选择格式生成文件</div>
+                        </div>
+                        <div class="help-item">
+                            <div class="help-icon"><i class="fas fa-filter"></i></div>
+                            <div><strong>选择性导出</strong> - 当前仅支持全量导出，未来版本将支持按标签筛选导出</div>
                         </div>
                     </div>
                 </div>
@@ -2838,6 +3342,7 @@
             activeNoteId: null,
             isPreviewMode: false,
             sidebarVisible: window.innerWidth > 768,
+            sidebarHidden: false,
             version: '2.0',
             currentUser: null,
             settings: {
@@ -2855,12 +3360,13 @@
                 rememberLogin: true,
                 autoClearUsers: false,
                 searchHistory: true,
-                // 新增设置
-                userStatusVisible: true,
-                appTitleVisible: true,
-                autoSaveInterval: 180000, // 3分钟
+                autoSaveInterval: 180000,
                 themeColor: '#4f46e5',
-                fontSize: '16px'
+                fontSize: '16px',
+                // 更新导出设置
+                defaultExportFormat: 'json',
+                txtIncludeMetadata: true,
+                exportFilenamePrefix: '精简笔记'
             },
             searchQuery: '',
             searchResults: [],
@@ -2878,13 +3384,9 @@
                     { symbol: '- [ ] ', description: '未完成任务', icon: 'fas fa-square' },
                     { symbol: '- [x] ', description: '已完成任务', icon: 'fas fa-check-square' },
                     { symbol: '> ', description: '引用块', icon: 'fas fa-quote-right' },
-                    { symbol: '```\n\n```', description: '代码块', icon: 'fas fa-code' },
                     { symbol: '**', description: '粗体文本', icon: 'fas fa-bold' },
                     { symbol: '*', description: '斜体文本', icon: 'fas fa-italic' },
-                    { symbol: '`', description: '行内代码', icon: 'fas fa-code' },
-                    { symbol: '---', description: '水平分割线', icon: 'fas fa-minus' },
-                    { symbol: '![图片描述](图片地址)', description: '插入图片', icon: 'fas fa-image' },
-                    { symbol: '[链接文本](链接地址)', description: '插入链接', icon: 'fas fa-link' }
+                    { symbol: '---', description: '水平分割线', icon: 'fas fa-minus' }
                 ]
             },
             // 用户数据
@@ -2893,8 +3395,8 @@
             autoLogoutTimer: null,
             // 记住的登录信息
             rememberedUser: null,
-            // 确认对话框回调
-            confirmCallback: null
+            // 导入相关状态
+            importData: null
         };
         
         // 符号映射表（用于智能输入）
@@ -2929,6 +3431,14 @@
             deleteAccountLink: document.getElementById('deleteAccountLink'),
             clearUsersLink: document.getElementById('clearUsersLink'),
             
+            // 导出对话框元素 - 提高z-index确保不被遮挡
+            exportDialog: document.getElementById('exportDialog'),
+            closeExportBtn: document.getElementById('closeExportBtn'),
+            formatJson: document.getElementById('format-json'),
+            formatTxt: document.getElementById('format-txt'),
+            cancelExportBtn: document.getElementById('cancelExportBtn'),
+            confirmExportBtn: document.getElementById('confirmExportBtn'),
+            
             // 注册对话框元素
             registerDialog: document.getElementById('registerDialog'),
             closeRegisterBtn: document.getElementById('closeRegisterBtn'),
@@ -2936,7 +3446,6 @@
             registerUsername: document.getElementById('registerUsername'),
             registerPassword: document.getElementById('registerPassword'),
             registerConfirmPassword: document.getElementById('registerConfirmPassword'),
-            registerEmail: document.getElementById('registerEmail'),
             cancelRegisterBtn: document.getElementById('cancelRegisterBtn'),
             confirmRegisterBtn: document.getElementById('confirmRegisterBtn'),
             
@@ -2961,19 +3470,12 @@
             cancelDeleteAccountBtn: document.getElementById('cancelDeleteAccountBtn'),
             confirmDeleteAccountBtn: document.getElementById('confirmDeleteAccountBtn'),
             
-            // 清除账号对话框元素
+            // 清除已登出账号对话框元素
             clearUsersDialog: document.getElementById('clearUsersDialog'),
             closeClearUsersBtn: document.getElementById('closeClearUsersBtn'),
             usersList: document.getElementById('usersList'),
             cancelClearUsersBtn: document.getElementById('cancelClearUsersBtn'),
             confirmClearAllBtn: document.getElementById('confirmClearAllBtn'),
-            
-            // 自定义确认对话框元素
-            confirmDialog: document.getElementById('confirmDialog'),
-            confirmTitle: document.getElementById('confirmTitle'),
-            confirmMessage: document.getElementById('confirmMessage'),
-            cancelConfirmBtn: document.getElementById('cancelConfirmBtn'),
-            confirmActionBtn: document.getElementById('confirmActionBtn'),
             
             // 主应用元素
             sidebar: document.getElementById('sidebar'),
@@ -3013,7 +3515,6 @@
             // 用户相关元素
             userAvatar: document.getElementById('userAvatar'),
             userName: document.getElementById('userName'),
-            userEmail: document.getElementById('userEmail'),
             logoutBtn: document.getElementById('logoutBtn'),
             // 设置导航和内容
             settingsNav: document.getElementById('settingsNav'),
@@ -3036,12 +3537,41 @@
             rememberLoginToggle: document.getElementById('rememberLoginToggle'),
             autoClearUsersToggle: document.getElementById('autoClearUsersToggle'),
             searchHistoryToggle: document.getElementById('searchHistoryToggle'),
-            // 新增设置选项
-            userStatusToggle: document.getElementById('userStatusToggle'),
-            appTitleToggle: document.getElementById('appTitleToggle'),
+            // 导出设置选项
+            defaultExportFormatSelect: document.getElementById('defaultExportFormatSelect'),
+            txtIncludeMetadataToggle: document.getElementById('txtIncludeMetadataToggle'),
+            exportFilenamePrefix: document.getElementById('exportFilenamePrefix'),
+            // 设置选项
             saveIntervalSelect: document.getElementById('saveIntervalSelect'),
             themeColorSelect: document.getElementById('themeColorSelect'),
-            fontSizeSelect: document.getElementById('fontSizeSelect')
+            fontSizeSelect: document.getElementById('fontSizeSelect'),
+            // 导入导出按钮
+            exportDataBtn: document.getElementById('exportDataBtn'),
+            importDataBtn: document.getElementById('importDataBtn'),
+            // 导入对话框元素
+            importDialog: document.getElementById('importDialog'),
+            closeImportBtn: document.getElementById('closeImportBtn'),
+            importFile: document.getElementById('importFile'),
+            fileUploadLabel: document.getElementById('fileUploadLabel'),
+            fileUploadText: document.getElementById('fileUploadText'),
+            fileName: document.getElementById('fileName'),
+            selectedFileName: document.getElementById('selectedFileName'),
+            importError: document.getElementById('importError'),
+            cancelImportBtn: document.getElementById('cancelImportBtn'),
+            confirmImportBtn: document.getElementById('confirmImportBtn'),
+            // 导入相关元素
+            filePreview: document.getElementById('filePreview'),
+            filePreviewContent: document.getElementById('filePreviewContent'),
+            importProgress: document.getElementById('importProgress'),
+            progressFill: document.getElementById('progressFill'),
+            progressText: document.getElementById('progressText'),
+            importResults: document.getElementById('importResults'),
+            importLoading: document.getElementById('importLoading'),
+            // 符号选择器元素
+            symbolSelector: document.getElementById('symbolSelector'),
+            // 侧边栏控制按钮
+            sidebarToggleBtn: document.getElementById('sidebarToggleBtn'),
+            showSidebarBtn: document.getElementById('showSidebarBtn')
         };
         
         // ==================== 用户管理函数 ====================
@@ -3104,7 +3634,7 @@
         }
         
         // 注册新用户
-        function registerUser(username, password, email = '') {
+        function registerUser(username, password) {
             if (username.length < 4 || username.length > 20) {
                 return { success: false, message: '账号长度需在4-20位之间' };
             }
@@ -3120,7 +3650,6 @@
             // 创建用户数据
             state.users[username] = {
                 password: hashPassword(password),
-                email: email,
                 createdAt: new Date().toISOString(),
                 lastLogin: null,
                 notes: [],
@@ -3139,12 +3668,14 @@
                     rememberLogin: true,
                     autoClearUsers: false,
                     searchHistory: true,
-                    userStatusVisible: true,
-                    appTitleVisible: true,
                     autoSaveInterval: 180000,
                     themeColor: '#4f46e5',
-                    fontSize: '16px'
-                }
+                    fontSize: '16px',
+                    defaultExportFormat: 'json',
+                    txtIncludeMetadata: true,
+                    exportFilenamePrefix: '精简笔记'
+                },
+                sidebarHidden: false
             };
             
             saveUsers();
@@ -3168,6 +3699,12 @@
             saveUsers();
             
             state.currentUser = username;
+            
+            // 加载用户的侧边栏隐藏状态
+            if (user.sidebarHidden !== undefined) {
+                state.sidebarHidden = user.sidebarHidden;
+            }
+            
             return { success: true, message: '登录成功' };
         }
         
@@ -3215,7 +3752,6 @@
         // 清除未登录的账号
         function clearLoggedOutUsers() {
             const loggedOutUsers = [];
-            const currentTime = new Date();
             
             for (const username in state.users) {
                 if (username !== state.currentUser) {
@@ -3241,7 +3777,6 @@
                     const user = state.users[username];
                     loggedOutUsers.push({
                         username: username,
-                        email: user.email || '未设置邮箱',
                         createdAt: user.createdAt,
                         lastLogin: user.lastLogin,
                         noteCount: user.notes ? user.notes.length : 0
@@ -3275,9 +3810,7 @@
         function updateUserInfo() {
             if (!state.currentUser) return;
             
-            const user = state.users[state.currentUser];
             elements.userName.textContent = state.currentUser;
-            elements.userEmail.textContent = user.email || '未设置邮箱';
             updateUserAvatar();
         }
         
@@ -3311,7 +3844,7 @@
             elements.loginError.style.display = 'none';
             elements.loginSuccess.style.display = 'none';
             
-            showLoginMessage('已成功登出', 'success');
+            showStatus('已成功登出');
         }
         
         // 重置自动登出计时器
@@ -3326,7 +3859,7 @@
             state.autoLogoutTimer = setTimeout(() => {
                 if (state.currentUser) {
                     logoutUser();
-                    showLoginMessage('由于长时间无操作，已自动登出', 'success');
+                    showStatus('由于长时间无操作，已自动登出');
                 }
             }, 30 * 60 * 1000); // 30分钟
         }
@@ -3347,6 +3880,12 @@
             if (user.settings) {
                 state.settings = { ...state.settings, ...user.settings };
             }
+            
+            // 加载侧边栏状态
+            if (user.sidebarHidden !== undefined) {
+                state.sidebarHidden = user.sidebarHidden;
+                updateSidebarVisibility();
+            }
         }
         
         // 保存当前用户数据
@@ -3362,34 +3901,490 @@
             // 保存用户设置
             user.settings = state.settings;
             
+            // 保存侧边栏状态
+            user.sidebarHidden = state.sidebarHidden;
+            
             saveUsers();
         }
         
-        // ==================== 自定义确认对话框 ====================
+        // ==================== 侧边栏控制函数 ====================
         
-        // 显示确认对话框
-        function showConfirmDialog(title, message, callback) {
-            elements.confirmTitle.textContent = title;
-            elements.confirmMessage.textContent = message;
-            state.confirmCallback = callback;
-            showDialog(elements.confirmDialog);
+        // 切换侧边栏显示/隐藏
+        function toggleSidebar() {
+            // 移动端使用原来的切换逻辑
+            if (window.innerWidth <= 768) {
+                state.sidebarVisible = !state.sidebarVisible;
+                updateSidebarVisibility();
+                return;
+            }
+            
+            // 桌面端：切换隐藏状态
+            state.sidebarHidden = !state.sidebarHidden;
+            updateSidebarVisibility();
+            
+            // 更新按钮图标
+            const icon = elements.sidebarToggleBtn.querySelector('i');
+            if (state.sidebarHidden) {
+                icon.className = 'fas fa-chevron-right';
+                elements.sidebarToggleBtn.title = '显示侧边栏';
+                showStatus('侧边栏已隐藏');
+            } else {
+                icon.className = 'fas fa-chevron-left';
+                elements.sidebarToggleBtn.title = '隐藏侧边栏';
+                showStatus('侧边栏已显示');
+            }
+            
+            // 保存状态
+            saveCurrentUserData();
         }
         
-        // 隐藏确认对话框
-        function hideConfirmDialog() {
-            hideDialog(elements.confirmDialog);
-            state.confirmCallback = null;
+        // 显示侧边栏
+        function showSidebar() {
+            if (window.innerWidth <= 768) {
+                state.sidebarVisible = true;
+            } else {
+                state.sidebarHidden = false;
+            }
+            updateSidebarVisibility();
+            
+            // 更新按钮图标
+            const icon = elements.sidebarToggleBtn.querySelector('i');
+            icon.className = 'fas fa-chevron-left';
+            elements.sidebarToggleBtn.title = '隐藏侧边栏';
+            
+            // 保存状态
+            saveCurrentUserData();
         }
         
-        // 初始化确认对话框事件
-        function initConfirmDialog() {
-            elements.cancelConfirmBtn.addEventListener('click', hideConfirmDialog);
-            elements.confirmActionBtn.addEventListener('click', () => {
-                if (state.confirmCallback) {
-                    state.confirmCallback();
+        // 更新侧边栏可见性
+        function updateSidebarVisibility() {
+            if (window.innerWidth <= 768) {
+                // 移动端逻辑
+                if (state.sidebarVisible) {
+                    elements.sidebar.classList.add('active');
+                    elements.appContainer.classList.remove('sidebar-hidden');
+                } else {
+                    elements.sidebar.classList.remove('active');
+                    elements.appContainer.classList.remove('sidebar-hidden');
                 }
-                hideConfirmDialog();
+            } else {
+                // 桌面端逻辑
+                if (state.sidebarHidden) {
+                    elements.appContainer.classList.add('sidebar-hidden');
+                } else {
+                    elements.appContainer.classList.remove('sidebar-hidden');
+                }
+                
+                // 移动端菜单按钮在桌面端隐藏
+                elements.mobileMenuBtn.style.display = 'none';
+            }
+        }
+        
+        // ==================== 多格式导出功能 ====================
+        
+        // 显示导出选项对话框
+        function showExportDialog() {
+            // 设置默认选中项
+            const defaultFormat = state.settings.defaultExportFormat || 'json';
+            document.querySelector(`#format-${defaultFormat}`).checked = true;
+            
+            showDialog(elements.exportDialog);
+        }
+        
+        // 导出数据 - 支持多种格式
+        function exportDataWithFormat() {
+            if (!state.currentUser) return;
+            
+            const user = state.users[state.currentUser];
+            if (!user) return;
+            
+            // 获取选中的导出格式
+            const exportFormat = document.querySelector('input[name="exportFormat"]:checked').value;
+            
+            // 准备导出的数据
+            const exportData = {
+                version: state.version,
+                exportDate: new Date().toISOString(),
+                username: state.currentUser,
+                notes: user.notes || [],
+                settings: user.settings || {}
+            };
+            
+            // 根据格式调用不同的导出函数
+            switch (exportFormat) {
+                case 'json':
+                    exportAsJSON(exportData);
+                    break;
+                case 'txt':
+                    exportAsTXT(exportData);
+                    break;
+            }
+            
+            // 关闭对话框
+            hideDialog(elements.exportDialog);
+            showStatus(`${exportFormat.toUpperCase()}格式数据导出成功`);
+        }
+        
+        // 导出为JSON格式
+        function exportAsJSON(exportData) {
+            // 转换为JSON字符串
+            const dataStr = JSON.stringify(exportData, null, 2);
+            
+            // 使用现代浏览器的File System Access API
+            if ('showSaveFilePicker' in window) {
+                exportWithFileSystemAPI(dataStr, 'json');
+            } else {
+                // 回退到传统方法
+                exportWithTraditionalMethod(dataStr, 'json');
+            }
+        }
+        
+        // 导出为TXT格式
+        function exportAsTXT(exportData) {
+            let txtContent = '';
+            
+            // 添加标题和日期
+            if (state.settings.txtIncludeMetadata) {
+                txtContent += `= 精简笔记导出 =\n`;
+                txtContent += `导出时间: ${new Date(exportData.exportDate).toLocaleString()}\n`;
+                txtContent += `用户: ${exportData.username}\n`;
+                txtContent += `笔记数量: ${exportData.notes.length}\n`;
+                txtContent += '='.repeat(40) + '\n\n';
+            }
+            
+            // 添加每个笔记
+            exportData.notes.forEach((note, index) => {
+                if (state.settings.txtIncludeMetadata) {
+                    txtContent += `笔记 ${index + 1}: ${note.title || '无标题'}\n`;
+                    txtContent += `创建时间: ${new Date(note.createdAt).toLocaleString()}\n`;
+                    txtContent += `最后更新: ${new Date(note.updatedAt).toLocaleString()}\n`;
+                    txtContent += '-'.repeat(40) + '\n';
+                }
+                
+                txtContent += note.content + '\n\n';
+                txtContent += '='.repeat(40) + '\n\n';
             });
+            
+            // 使用现代浏览器的File System Access API
+            if ('showSaveFilePicker' in window) {
+                exportWithFileSystemAPI(txtContent, 'txt');
+            } else {
+                // 回退到传统方法
+                exportWithTraditionalMethod(txtContent, 'txt');
+            }
+        }
+        
+        // 使用File System Access API导出（现代浏览器）
+        async function exportWithFileSystemAPI(dataStr, format) {
+            try {
+                const formatInfo = {
+                    json: { extension: '.json', mimeType: 'application/json', description: 'JSON文件' },
+                    txt: { extension: '.txt', mimeType: 'text/plain', description: '文本文件' }
+                };
+                
+                const info = formatInfo[format];
+                const prefix = state.settings.exportFilenamePrefix || '精简笔记';
+                const dateStr = new Date().toISOString().split('T')[0];
+                
+                const options = {
+                    suggestedName: `${prefix}_${state.currentUser}_${dateStr}${info.extension}`,
+                    types: [{
+                        description: info.description,
+                        accept: {
+                            [info.mimeType]: [info.extension]
+                        }
+                    }]
+                };
+                
+                const fileHandle = await window.showSaveFilePicker(options);
+                const writable = await fileHandle.createWritable();
+                await writable.write(dataStr);
+                await writable.close();
+                
+                showStatus(`${format.toUpperCase()}格式数据导出成功`);
+            } catch (err) {
+                // 用户取消或发生错误，回退到传统方法
+                if (err.name !== 'AbortError') {
+                    console.error('文件系统API错误:', err);
+                    exportWithTraditionalMethod(dataStr, format);
+                } else {
+                    showStatus('导出已取消');
+                }
+            }
+        }
+        
+        // 使用传统方法导出（兼容旧浏览器）
+        function exportWithTraditionalMethod(dataStr, format) {
+            const formatInfo = {
+                json: { extension: '.json', mimeType: 'application/json' },
+                txt: { extension: '.txt', mimeType: 'text/plain' }
+            };
+            
+            const info = formatInfo[format];
+            const prefix = state.settings.exportFilenamePrefix || '精简笔记';
+            const dateStr = new Date().toISOString().split('T')[0];
+            
+            const dataBlob = new Blob([dataStr], { type: info.mimeType });
+            
+            // 创建下载链接
+            const downloadLink = document.createElement('a');
+            downloadLink.href = URL.createObjectURL(dataBlob);
+            downloadLink.download = `${prefix}_${state.currentUser}_${dateStr}${info.extension}`;
+            
+            // 触发下载
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+            
+            // 清理URL
+            setTimeout(() => URL.revokeObjectURL(downloadLink.href), 100);
+            
+            showStatus(`${format.toUpperCase()}格式数据导出成功`);
+        }
+        
+        // 显示导入对话框
+        function showImportDialog() {
+            // 清空文件输入
+            elements.importFile.value = '';
+            elements.importError.style.display = 'none';
+            elements.confirmImportBtn.disabled = true;
+            elements.fileName.style.display = 'none';
+            elements.filePreview.style.display = 'none';
+            elements.importProgress.style.display = 'none';
+            elements.importResults.style.display = 'none';
+            elements.importLoading.style.display = 'none';
+            elements.fileUploadText.textContent = '选择文件...';
+            
+            // 重置导入状态
+            state.importData = null;
+            
+            showDialog(elements.importDialog);
+        }
+        
+        // 处理导入文件选择
+        function handleImportFileChange() {
+            const file = elements.importFile.files[0];
+            if (!file) {
+                elements.confirmImportBtn.disabled = true;
+                elements.fileName.style.display = 'none';
+                elements.filePreview.style.display = 'none';
+                elements.fileUploadText.textContent = '选择文件...';
+                return;
+            }
+            
+            // 验证文件类型
+            if (!file.name.endsWith('.json')) {
+                elements.importError.textContent = '请选择JSON格式的文件';
+                elements.importError.style.display = 'block';
+                elements.confirmImportBtn.disabled = true;
+                return;
+            }
+            
+            elements.confirmImportBtn.disabled = false;
+            elements.selectedFileName.textContent = file.name;
+            elements.fileName.style.display = 'flex';
+            elements.fileUploadText.textContent = '已选择文件';
+            elements.importError.style.display = 'none';
+            
+            // 显示加载指示器
+            elements.importLoading.style.display = 'block';
+            
+            // 预览文件内容
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                elements.importLoading.style.display = 'none';
+                
+                try {
+                    const importData = JSON.parse(e.target.result);
+                    
+                    // 验证导入数据格式
+                    if (!importData.notes || !Array.isArray(importData.notes)) {
+                        throw new Error('无效的备份文件格式');
+                    }
+                    
+                    // 保存导入数据
+                    state.importData = importData;
+                    
+                    // 显示文件预览
+                    showFilePreview(importData);
+                    
+                } catch (error) {
+                    console.error('解析文件失败:', error);
+                    elements.importError.textContent = `文件格式错误: ${error.message}`;
+                    elements.importError.style.display = 'block';
+                    elements.confirmImportBtn.disabled = true;
+                }
+            };
+            
+            reader.onerror = function() {
+                elements.importLoading.style.display = 'none';
+                elements.importError.textContent = '读取文件失败';
+                elements.importError.style.display = 'block';
+                elements.confirmImportBtn.disabled = true;
+            };
+            
+            reader.readAsText(file);
+        }
+        
+        // 显示文件预览
+        function showFilePreview(importData) {
+            elements.filePreview.style.display = 'block';
+            
+            const previewContent = `
+                <div>版本: ${importData.version || '未知'}</div>
+                <div>导出时间: ${new Date(importData.exportDate).toLocaleString()}</div>
+                <div>用户名: ${importData.username || '未知'}</div>
+                <div>笔记数量: ${importData.notes.length}</div>
+            `;
+            
+            elements.filePreviewContent.innerHTML = previewContent;
+        }
+        
+        // 设置文件拖放功能
+        function setupFileDragDrop() {
+            const label = elements.fileUploadLabel;
+            
+            // 防止默认拖放行为
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                label.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            // 高亮拖放区域
+            ['dragenter', 'dragover'].forEach(eventName => {
+                label.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                label.addEventListener(eventName, unhighlight, false);
+            });
+            
+            // 处理文件放置
+            label.addEventListener('drop', handleDrop, false);
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            function highlight() {
+                label.classList.add('drag-over');
+            }
+            
+            function unhighlight() {
+                label.classList.remove('drag-over');
+            }
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length > 0) {
+                    // 创建一个新的FileList对象（模拟）
+                    const dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(files[0]);
+                    elements.importFile.files = dataTransfer.files;
+                    
+                    // 触发change事件
+                    const event = new Event('change', { bubbles: true });
+                    elements.importFile.dispatchEvent(event);
+                }
+            }
+        }
+        
+        // 导入数据 - 简化版，只支持增量导入
+        function importData() {
+            if (!state.importData || !state.currentUser) return;
+            
+            const importNotes = state.importData.notes;
+            
+            // 禁用导入按钮
+            elements.confirmImportBtn.disabled = true;
+            elements.cancelImportBtn.disabled = true;
+            
+            // 显示进度条
+            elements.importProgress.style.display = 'block';
+            elements.progressText.textContent = '正在导入...';
+            
+            // 统计信息
+            let importedCount = 0;
+            let totalCount = importNotes.length;
+            
+            // 模拟进度更新
+            const progressInterval = setInterval(() => {
+                if (importedCount >= totalCount) {
+                    clearInterval(progressInterval);
+                    finishImport(importedCount);
+                } else {
+                    const progress = (importedCount / totalCount) * 100;
+                    elements.progressFill.style.width = progress + '%';
+                    elements.progressText.textContent = `正在导入 ${importedCount}/${totalCount}...`;
+                }
+            }, 100);
+            
+            // 模拟导入过程
+            setTimeout(() => {
+                // 增量导入：仅添加新笔记
+                importNotes.forEach((note, index) => {
+                    // 创建新笔记对象，确保有唯一ID
+                    const newNote = { ...note };
+                    newNote.id = Date.now().toString() + index + Math.random().toString(36).substr(2, 9);
+                    
+                    // 添加到笔记列表开头
+                    state.notes.unshift(newNote);
+                    importedCount++;
+                });
+                
+                // 完成导入
+                clearInterval(progressInterval);
+                finishImport(importedCount);
+                
+            }, 1500);
+        }
+        
+        // 完成导入
+        function finishImport(importedCount) {
+            // 更新进度条
+            elements.progressFill.style.width = '100%';
+            elements.progressText.textContent = '导入完成';
+            
+            // 保存数据
+            saveCurrentUserData();
+            
+            // 更新UI
+            renderNotesList();
+            updateWordCount();
+            
+            // 如果有笔记，显示第一个
+            if (state.notes.length > 0) {
+                setActiveNote(state.notes[0].id);
+            } else {
+                showEmptyState();
+            }
+            
+            // 显示导入结果
+            showImportResults(importedCount);
+            
+            // 3秒后关闭对话框
+            setTimeout(() => {
+                hideDialog(elements.importDialog);
+                showStatus(`成功导入 ${importedCount} 篇笔记`);
+            }, 3000);
+        }
+        
+        // 显示导入结果
+        function showImportResults(importedCount) {
+            const resultsHtml = `
+                <div class="results-title">导入结果</div>
+                <ul class="results-list">
+                    <li>成功导入: ${importedCount} 篇笔记</li>
+                    <li>当前总计: ${state.notes.length} 篇笔记</li>
+                </ul>
+            `;
+            
+            elements.importResults.innerHTML = resultsHtml;
+            elements.importResults.classList.add('success');
+            elements.importResults.style.display = 'block';
         }
         
         // ==================== 登录界面函数 ====================
@@ -3519,11 +4514,11 @@
             // 加载记住的登录信息
             loadRememberedUser();
             
-            // 初始化确认对话框
-            initConfirmDialog();
-            
             // 设置登录事件监听器
             setupLoginEventListeners();
+            
+            // 设置文件拖放功能
+            setupFileDragDrop();
             
             // 初始显示登录界面
             elements.loginContainer.style.display = 'flex';
@@ -3542,6 +4537,16 @@
             updateWordCount();
             updateUserInfo();
             
+            // 更新侧边栏控制按钮图标
+            const icon = elements.sidebarToggleBtn.querySelector('i');
+            if (state.sidebarHidden) {
+                icon.className = 'fas fa-chevron-right';
+                elements.sidebarToggleBtn.title = '显示侧边栏';
+            } else {
+                icon.className = 'fas fa-chevron-left';
+                elements.sidebarToggleBtn.title = '隐藏侧边栏';
+            }
+            
             // 如果存在笔记，显示第一个
             if (state.notes.length > 0) {
                 setActiveNote(state.notes[0].id);
@@ -3555,8 +4560,8 @@
             loadSettings();
             
             // 添加页面卸载时的保存监听
-            window.addEventListener('beforeunload', saveCurrentUserData);
-            window.addEventListener('pagehide', saveCurrentUserData);
+            window.addEventListener('beforeunload', saveAllData);
+            window.addEventListener('pagehide', saveAllData);
             
             // 初始显示状态消息
             setTimeout(() => {
@@ -3576,27 +4581,16 @@
             document.querySelectorAll('.note-editor, .preview-container').forEach(el => {
                 el.style.fontSize = state.settings.fontSize;
             });
-            
-            // 应用UI元素可见性
-            const sidebarHeader = document.querySelector('.sidebar-header');
-            if (sidebarHeader) {
-                sidebarHeader.style.display = state.settings.appTitleVisible ? 'block' : 'none';
-            }
-            
-            const userInfo = document.querySelector('.user-info');
-            if (userInfo) {
-                userInfo.style.display = state.settings.userStatusVisible ? 'flex' : 'none';
-            }
         }
         
-        // 重置数据
-        function resetData() {
-            state.notes = [];
-            state.activeNoteId = null;
+        // 保存所有数据
+        function saveAllData() {
             saveCurrentUserData();
-            renderNotesList();
-            showEmptyState();
-            showStatus('数据已重置');
+        }
+        
+        // 保存设置
+        function saveSettings() {
+            // 设置保存在用户数据中，通过saveCurrentUserData保存
         }
         
         // 设置登录事件监听器
@@ -3632,10 +4626,15 @@
                 elements.deleteAccountPassword.focus();
             });
             
-            // 清除账号链接
+            // 清除已登出账号链接
             elements.clearUsersLink.addEventListener('click', () => {
                 showClearUsersDialog();
             });
+            
+            // 导出对话框 - 确保不被遮挡
+            elements.closeExportBtn.addEventListener('click', () => hideDialog(elements.exportDialog));
+            elements.cancelExportBtn.addEventListener('click', () => hideDialog(elements.exportDialog));
+            elements.confirmExportBtn.addEventListener('click', exportDataWithFormat);
             
             // 注册对话框
             elements.closeRegisterBtn.addEventListener('click', () => hideDialog(elements.registerDialog));
@@ -3661,12 +4660,16 @@
                 handleDeleteAccount();
             });
             
-            // 清除账号对话框
+            // 清除已登出账号对话框
             elements.closeClearUsersBtn.addEventListener('click', () => hideDialog(elements.clearUsersDialog));
             elements.cancelClearUsersBtn.addEventListener('click', () => hideDialog(elements.clearUsersDialog));
-            elements.confirmClearAllBtn.addEventListener('click', () => {
-                handleClearAllUsers();
-            });
+            elements.confirmClearAllBtn.addEventListener('click', handleClearAllUsers);
+            
+            // 导入对话框事件
+            elements.closeImportBtn.addEventListener('click', () => hideDialog(elements.importDialog));
+            elements.cancelImportBtn.addEventListener('click', () => hideDialog(elements.importDialog));
+            elements.importFile.addEventListener('change', handleImportFileChange);
+            elements.confirmImportBtn.addEventListener('click', importData);
             
             // 点击对话框外部关闭对话框
             document.querySelectorAll('.dialog-overlay').forEach(dialog => {
@@ -3713,7 +4716,7 @@
                 
                 // 隐藏加载动画
                 showLoginLoading(false);
-            }, 800); // 800ms延迟模拟登录过程
+            }, 800);
         }
         
         // 处理注册
@@ -3721,7 +4724,6 @@
             const username = elements.registerUsername.value.trim();
             const password = elements.registerPassword.value.trim();
             const confirmPassword = elements.registerConfirmPassword.value.trim();
-            const email = elements.registerEmail.value.trim();
             
             if (!username || !password || !confirmPassword) {
                 elements.loginError.textContent = '请填写所有必填项';
@@ -3735,7 +4737,7 @@
                 return;
             }
             
-            const result = registerUser(username, password, email);
+            const result = registerUser(username, password);
             
             if (result.success) {
                 hideDialog(elements.registerDialog);
@@ -3750,7 +4752,6 @@
                 elements.registerUsername.value = '';
                 elements.registerPassword.value = '';
                 elements.registerConfirmPassword.value = '';
-                elements.registerEmail.value = '';
             } else {
                 elements.loginError.textContent = result.message;
                 elements.loginError.style.display = 'block';
@@ -3826,24 +4827,30 @@
             }
         }
         
-        // 显示清除账号对话框
+        // 显示清除已登出账号对话框
         function showClearUsersDialog() {
             const loggedOutUsers = getLoggedOutUsers();
             
+            // 修复：无论是否有用户都显示对话框，但提供不同的提示
             if (loggedOutUsers.length === 0) {
-                showLoginMessage('没有可清除的未登录账号');
-                return;
+                // 渲染空状态
+                renderUsersList([]);
+                // 禁用清除所有按钮
+                elements.confirmClearAllBtn.disabled = true;
+            } else {
+                // 渲染用户列表
+                renderUsersList(loggedOutUsers);
+                // 启用清除所有按钮
+                elements.confirmClearAllBtn.disabled = false;
             }
             
-            // 渲染用户列表
-            renderUsersList(loggedOutUsers);
             showDialog(elements.clearUsersDialog);
         }
         
-        // 渲染用户列表
+        // 渲染用户列表（修复版）
         function renderUsersList(users) {
             if (users.length === 0) {
-                elements.usersList.innerHTML = '<div style="text-align: center; color: var(--text-light); padding: 20px;">没有未登录的账号</div>';
+                elements.usersList.innerHTML = '<div style="text-align: center; color: var(--text-light); padding: 20px;">没有已登出的账号</div>';
                 return;
             }
             
@@ -3855,7 +4862,7 @@
                     <div class="user-list-item">
                         <div class="user-info-small">
                             <div class="user-name-small">${user.username}</div>
-                            <div class="user-email-small">${user.email} • ${user.noteCount}篇笔记</div>
+                            <div class="user-email-small">${user.noteCount}篇笔记</div>
                             <div style="font-size: 0.7rem; color: var(--text-light); margin-top: 2px;">
                                 创建于: ${createdDate} • 最后登录: ${lastLogin}
                             </div>
@@ -3867,52 +4874,448 @@
                 `;
             }).join('');
             
-            // 添加删除按钮事件
+            // 添加删除按钮事件（修复事件委托问题）
             elements.usersList.querySelectorAll('.delete-user-btn').forEach(btn => {
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const username = btn.dataset.username;
-                    
-                    showConfirmDialog(
+                    showCustomConfirm(
                         '删除账号',
                         `确定要删除账号 "${username}" 的所有数据吗？此操作不可撤销。`,
                         () => {
                             delete state.users[username];
                             saveUsers();
-                            showClearUsersDialog(); // 重新加载列表
-                            showLoginMessage(`已删除账号: ${username}`, 'success');
+                            // 重新加载列表
+                            const loggedOutUsers = getLoggedOutUsers();
+                            renderUsersList(loggedOutUsers);
+                            // 如果删除后没有用户了，禁用清除所有按钮
+                            if (loggedOutUsers.length === 0) {
+                                elements.confirmClearAllBtn.disabled = true;
+                            }
+                            showStatus(`已删除账号: ${username}`);
                         }
                     );
                 });
             });
         }
         
-        // 处理清除所有未登录账号
+        // 自定义确认对话框（修复版）
+        function showCustomConfirm(title, message, onConfirm) {
+            // 先移除已存在的对话框
+            const existingDialog = document.getElementById('customConfirmDialog');
+            if (existingDialog) {
+                existingDialog.remove();
+            }
+            
+            // 创建对话框HTML
+            const confirmHtml = `
+                <div class="dialog-overlay active" id="customConfirmDialog" style="display: flex;">
+                    <div class="dialog-content" style="max-width: 400px;">
+                        <div class="dialog-header">
+                            <h3><i class="fas fa-exclamation-triangle" style="margin-right: 10px; color: var(--warning-color);"></i>${title}</h3>
+                        </div>
+                        <p style="margin-bottom: 20px; color: var(--text-color);">${message}</p>
+                        <div class="dialog-actions">
+                            <button type="button" class="dialog-btn secondary" id="customConfirmCancel">
+                                <i class="fas fa-times" style="margin-right: 5px;"></i>取消
+                            </button>
+                            <button type="button" class="dialog-btn danger" id="customConfirmOk">
+                                <i class="fas fa-check" style="margin-right: 5px;"></i>确认
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // 添加到页面
+            document.body.insertAdjacentHTML('beforeend', confirmHtml);
+            
+            const dialog = document.getElementById('customConfirmDialog');
+            
+            // 添加事件监听器
+            const cancelBtn = document.getElementById('customConfirmCancel');
+            const okBtn = document.getElementById('customConfirmOk');
+            
+            const closeDialog = () => {
+                if (dialog && dialog.parentNode) {
+                    dialog.remove();
+                }
+            };
+            
+            cancelBtn.addEventListener('click', closeDialog);
+            
+            okBtn.addEventListener('click', () => {
+                closeDialog();
+                onConfirm();
+            });
+            
+            // 点击外部关闭
+            dialog.addEventListener('click', (e) => {
+                if (e.target === dialog) {
+                    closeDialog();
+                }
+            });
+            
+            // Esc键关闭
+            const handleEscape = (e) => {
+                if (e.key === 'Escape') {
+                    closeDialog();
+                    document.removeEventListener('keydown', handleEscape);
+                }
+            };
+            document.addEventListener('keydown', handleEscape);
+        }
+        
+        // 处理清除所有已登出账号（修复版）
         function handleClearAllUsers() {
-            const userCount = Object.keys(state.users).length - (state.currentUser ? 1 : 0);
+            const loggedOutUsers = getLoggedOutUsers();
+            const userCount = loggedOutUsers.length;
             
             if (userCount <= 0) {
                 hideDialog(elements.clearUsersDialog);
-                showLoginMessage('没有可清除的未登录账号', 'success');
+                showLoginMessage('没有可清除的已登出账号', 'success');
                 return;
             }
             
-            showConfirmDialog(
-                '清除所有未登录账号',
-                `确定要清除所有 ${userCount} 个未登录账号的数据吗？此操作不可撤销。`,
+            showCustomConfirm(
+                '清除所有已登出账号',
+                `确定要清除所有 ${userCount} 个已登出账号的数据吗？此操作不可撤销。`,
                 () => {
                     const clearedCount = clearLoggedOutUsers();
                     hideDialog(elements.clearUsersDialog);
-                    showLoginMessage(`已成功清除 ${clearedCount} 个未登录账号的数据`, 'success');
+                    showStatus(`已成功清除 ${clearedCount} 个已登出账号的数据`);
                 }
             );
         }
         
         // 格式化日期
         function formatDate(dateString) {
+            if (!dateString) return '未知';
             const date = new Date(dateString);
             return date.toLocaleDateString('zh-CN');
         }
+        
+        // 格式化日期时间为完整格式
+        function formatDateTime(dateString) {
+            if (!dateString) return '未知';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).replace(/\//g, '-');
+        }
+        
+        // 格式化相对时间（用于编辑时间）
+        function formatRelativeTime(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diffMs = now - date;
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                if (diffMins < 60) {
+                    return diffMins <= 1 ? '刚刚' : `${diffMins}分钟前`;
+                }
+                return `${diffHours}小时前`;
+            }
+            
+            if (diffDays === 1) {
+                return '昨天';
+            }
+            
+            if (diffDays < 7) {
+                return `${diffDays}天前`;
+            }
+            
+            return date.toLocaleDateString('zh-CN', {
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+        
+        // ==================== 符号选择器修复函数 ====================
+        
+        // 显示符号选择器（修复版）
+        function showSymbolSelector() {
+            const textarea = elements.noteEditor;
+            
+            // 检查编辑器是否获得焦点
+            if (document.activeElement !== textarea) {
+                textarea.focus();
+                setTimeout(() => {
+                    showSymbolSelector();
+                }, 10);
+                return;
+            }
+            
+            state.symbolSelector.visible = true;
+            state.symbolSelector.selectedIndex = 0;
+            renderSymbolSelector();
+            
+            // 显示选择器
+            elements.symbolSelector.style.display = 'block';
+            
+            // 获取光标位置
+            const cursorPos = getCursorCoordinatesFixed();
+            
+            // 设置位置
+            elements.symbolSelector.style.left = cursorPos.x + 'px';
+            elements.symbolSelector.style.top = cursorPos.y + 'px';
+            
+            // 确保在视口内
+            adjustSelectorPosition();
+        }
+        
+        // 修复版：获取光标坐标
+        function getCursorCoordinatesFixed() {
+            const textarea = elements.noteEditor;
+            
+            // 获取textarea在视口中的位置
+            const textareaRect = textarea.getBoundingClientRect();
+            
+            // 创建临时div来测量光标位置
+            const tempDiv = document.createElement('div');
+            const textBeforeCursor = textarea.value.substring(0, textarea.selectionStart);
+            
+            // 获取textarea的样式
+            const textareaStyle = window.getComputedStyle(textarea);
+            
+            // 复制textarea的样式到临时div
+            tempDiv.style.cssText = `
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                font-family: ${textareaStyle.fontFamily};
+                font-size: ${textareaStyle.fontSize};
+                line-height: ${textareaStyle.lineHeight};
+                padding: ${textareaStyle.padding};
+                border: ${textareaStyle.border};
+                width: ${textarea.clientWidth}px;
+            `;
+            
+            // 处理文本：将换行符转换为<br>，空格转换为&nbsp;
+            let htmlContent = '';
+            const lines = textBeforeCursor.split('\n');
+            
+            for (let i = 0; i < lines.length; i++) {
+                if (i > 0) htmlContent += '<br>';
+                htmlContent += lines[i].replace(/ /g, '&nbsp;').replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+            }
+            
+            tempDiv.innerHTML = htmlContent;
+            document.body.appendChild(tempDiv);
+            
+            // 获取临时div的尺寸
+            const tempDivRect = tempDiv.getBoundingClientRect();
+            
+            // 计算光标位置
+            let x = textareaRect.left + (tempDivRect.width % textarea.clientWidth);
+            let y = textareaRect.top + Math.floor(tempDivRect.height / parseInt(textareaStyle.lineHeight)) * parseInt(textareaStyle.lineHeight);
+            
+            // 添加滚动偏移
+            x += textarea.scrollLeft;
+            y += textarea.scrollTop;
+            
+            // 清理临时元素
+            document.body.removeChild(tempDiv);
+            
+            // 添加边距
+            x += 5;
+            y += parseInt(textareaStyle.lineHeight) + 5;
+            
+            // 确保位置在视口内
+            x = Math.max(10, Math.min(x, window.innerWidth - 320));
+            y = Math.max(10, Math.min(y, window.innerHeight - 250));
+            
+            return { x: Math.round(x), y: Math.round(y) };
+        }
+        
+        // 调整选择器位置，确保在视口内
+        function adjustSelectorPosition() {
+            const selectorRect = elements.symbolSelector.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const viewportHeight = window.innerHeight;
+            
+            let left = parseInt(elements.symbolSelector.style.left);
+            let top = parseInt(elements.symbolSelector.style.top);
+            
+            // 检查是否超出右边界
+            if (selectorRect.right > viewportWidth - 10) {
+                left -= (selectorRect.right - viewportWidth + 20);
+            }
+            
+            // 检查是否超出下边界
+            if (selectorRect.bottom > viewportHeight - 10) {
+                top -= (selectorRect.bottom - viewportHeight + 20);
+            }
+            
+            // 检查是否超出左边界
+            if (selectorRect.left < 10) {
+                left = 10;
+            }
+            
+            // 检查是否超出上边界
+            if (selectorRect.top < 10) {
+                top = 10;
+            }
+            
+            elements.symbolSelector.style.left = left + 'px';
+            elements.symbolSelector.style.top = top + 'px';
+        }
+        
+        // 隐藏符号选择器
+        function hideSymbolSelector() {
+            state.symbolSelector.visible = false;
+            elements.symbolSelector.style.display = 'none';
+        }
+        
+        // 渲染符号选择器
+        function renderSymbolSelector() {
+            const symbols = state.symbolSelector.symbols;
+            
+            elements.symbolSelector.innerHTML = symbols.map((symbol, index) => {
+                const isActive = index === state.symbolSelector.selectedIndex;
+                return `
+                    <div class="symbol-item ${isActive ? 'active' : ''}" data-index="${index}">
+                        <i class="${symbol.icon} symbol-icon"></i>
+                        <div class="symbol-text">${symbol.symbol.replace(/\n/g, '↵')}</div>
+                        <div class="symbol-desc">${symbol.description}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            // 添加点击事件
+            document.querySelectorAll('.symbol-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const index = parseInt(item.dataset.index);
+                    state.symbolSelector.selectedIndex = index;
+                    renderSymbolSelector();
+                    insertSelectedSymbol();
+                });
+            });
+        }
+        
+        // 导航符号选择器
+        function navigateSymbolSelector(direction) {
+            const symbols = state.symbolSelector.symbols;
+            const newIndex = state.symbolSelector.selectedIndex + direction;
+            
+            if (newIndex >= symbols.length) {
+                state.symbolSelector.selectedIndex = 0;
+            } else if (newIndex < 0) {
+                state.symbolSelector.selectedIndex = symbols.length - 1;
+            } else {
+                state.symbolSelector.selectedIndex = newIndex;
+            }
+            
+            renderSymbolSelector();
+            
+            // 滚动到选中项
+            const selectedItem = elements.symbolSelector.querySelector('.symbol-item.active');
+            if (selectedItem) {
+                selectedItem.scrollIntoView({ block: 'nearest' });
+            }
+        }
+        
+        // 插入选中的符号
+        function insertSelectedSymbol() {
+            const symbols = state.symbolSelector.symbols;
+            const selectedSymbol = symbols[state.symbolSelector.selectedIndex];
+            
+            const textarea = elements.noteEditor;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            
+            textarea.value = textarea.value.substring(0, start) + selectedSymbol.symbol + textarea.value.substring(end);
+            
+            // 设置光标位置
+            const newCursorPos = start + selectedSymbol.symbol.length;
+            textarea.selectionStart = textarea.selectionEnd = newCursorPos;
+            
+            // 更新笔记内容
+            updateNoteContent();
+            updateWordCount();
+            
+            // 隐藏选择器
+            hideSymbolSelector();
+            
+            // 重新聚焦到编辑器
+            textarea.focus();
+            
+            showStatus(`已插入: ${selectedSymbol.description}`);
+        }
+        
+        // 键盘事件处理（修复版）
+        function handleKeydownFixed(e) {
+            // 如果符号选择器可见，处理选择器导航
+            if (state.symbolSelector.visible) {
+                switch(e.key) {
+                    case 'Tab':
+                        e.preventDefault();
+                        if (e.shiftKey) {
+                            navigateSymbolSelector(-1);
+                        } else {
+                            navigateSymbolSelector(1);
+                        }
+                        return;
+                    
+                    case ' ':
+                        e.preventDefault();
+                        insertSelectedSymbol();
+                        return;
+                    
+                    case 'Escape':
+                        e.preventDefault();
+                        hideSymbolSelector();
+                        return;
+                    
+                    case 'ArrowUp':
+                        e.preventDefault();
+                        navigateSymbolSelector(-1);
+                        return;
+                    
+                    case 'ArrowDown':
+                        e.preventDefault();
+                        navigateSymbolSelector(1);
+                        return;
+                    
+                    case 'Enter':
+                        e.preventDefault();
+                        insertSelectedSymbol();
+                        return;
+                }
+            }
+            
+            // 如果符号选择器不可见且按下了Tab键
+            else if (e.key === 'Tab' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+                // 检查是否在编辑器中
+                if (document.activeElement === elements.noteEditor) {
+                    if (state.settings.tabSymbolSelector) {
+                        e.preventDefault();
+                        showSymbolSelector();
+                        return;
+                    }
+                }
+            }
+            
+            // 原有的智能输入处理
+            if (state.settings.smartInputEnabled) {
+                handleSmartInput(e);
+            }
+            
+            // 重置自动登出计时器
+            resetAutoLogoutTimer();
+        }
+        
+        // ==================== 事件监听器设置 ====================
         
         // 设置事件监听器
         function setupEventListeners() {
@@ -3925,9 +5328,8 @@
             // 内容输入
             elements.noteEditor.addEventListener('input', handleEditorInput);
             
-            // 智能输入处理
-            elements.noteEditor.addEventListener('keydown', handleSmartInput);
-            elements.noteEditor.addEventListener('keydown', handleKeydown);
+            // 键盘事件处理
+            elements.noteEditor.addEventListener('keydown', handleKeydownFixed);
             
             // 工具栏按钮
             elements.viewToggleBtn.addEventListener('click', togglePreviewMode);
@@ -3939,6 +5341,10 @@
             
             // 登出按钮
             elements.logoutBtn.addEventListener('click', logoutUser);
+            
+            // 侧边栏控制按钮
+            elements.sidebarToggleBtn.addEventListener('click', toggleSidebar);
+            elements.showSidebarBtn.addEventListener('click', showSidebar);
             
             // 设置选项监听
             elements.smartInputToggle.addEventListener('change', () => updateSetting('smartInputEnabled', elements.smartInputToggle.checked));
@@ -3956,12 +5362,19 @@
             elements.autoClearUsersToggle.addEventListener('change', () => updateSetting('autoClearUsers', elements.autoClearUsersToggle.checked));
             elements.searchHistoryToggle.addEventListener('change', () => updateSetting('searchHistory', elements.searchHistoryToggle.checked));
             
-            // 新增设置选项监听
-            elements.userStatusToggle.addEventListener('change', () => updateSetting('userStatusVisible', elements.userStatusToggle.checked));
-            elements.appTitleToggle.addEventListener('change', () => updateSetting('appTitleVisible', elements.appTitleToggle.checked));
+            // 导出设置选项监听
+            elements.defaultExportFormatSelect.addEventListener('change', () => updateSetting('defaultExportFormat', elements.defaultExportFormatSelect.value));
+            elements.txtIncludeMetadataToggle.addEventListener('change', () => updateSetting('txtIncludeMetadata', elements.txtIncludeMetadataToggle.checked));
+            elements.exportFilenamePrefix.addEventListener('input', () => updateSetting('exportFilenamePrefix', elements.exportFilenamePrefix.value));
+            
+            // 设置选项监听
             elements.saveIntervalSelect.addEventListener('change', () => updateSetting('autoSaveInterval', parseInt(elements.saveIntervalSelect.value)));
             elements.themeColorSelect.addEventListener('change', () => updateSetting('themeColor', elements.themeColorSelect.value));
             elements.fontSizeSelect.addEventListener('change', () => updateSetting('fontSize', elements.fontSizeSelect.value));
+            
+            // 导入导出按钮监听
+            elements.exportDataBtn.addEventListener('click', showExportDialog);
+            elements.importDataBtn.addEventListener('click', showImportDialog);
             
             // 设置导航点击事件
             elements.settingsNav.addEventListener('click', (e) => {
@@ -4076,52 +5489,6 @@
             window.saveTimeout = setTimeout(() => {
                 saveNote();
             }, state.settings.autoSaveInterval || 180000);
-            
-            // 重置自动登出计时器
-            resetAutoLogoutTimer();
-        }
-        
-        // 键盘按下处理
-        function handleKeydown(e) {
-            // 如果符号选择器可见，处理选择器导航
-            if (state.symbolSelector.visible) {
-                switch(e.key) {
-                    case 'Tab':
-                        e.preventDefault();
-                        if (e.shiftKey) {
-                            navigateSymbolSelector(-1);
-                        } else {
-                            navigateSymbolSelector(1);
-                        }
-                        break;
-                    case ' ':
-                        e.preventDefault();
-                        insertSelectedSymbol();
-                        break;
-                    case 'Escape':
-                        e.preventDefault();
-                        hideSymbolSelector();
-                        break;
-                    case 'ArrowUp':
-                        e.preventDefault();
-                        navigateSymbolSelector(-1);
-                        break;
-                    case 'ArrowDown':
-                        e.preventDefault();
-                        navigateSymbolSelector(1);
-                        break;
-                    case 'Enter':
-                        e.preventDefault();
-                        insertSelectedSymbol();
-                        break;
-                }
-            } else if (e.key === 'Tab' && !e.ctrlKey && !e.metaKey && !e.altKey) {
-                // 如果符号选择器不可见且按下了Tab键
-                if (state.settings.tabSymbolSelector) {
-                    e.preventDefault();
-                    showSymbolSelector();
-                }
-            }
             
             // 重置自动登出计时器
             resetAutoLogoutTimer();
@@ -4258,28 +5625,22 @@
             updateSidebarVisibility();
             
             window.addEventListener('resize', () => {
-                const wasSidebarVisible = state.sidebarVisible;
-                state.sidebarVisible = window.innerWidth > 768;
+                const wasMobile = window.innerWidth <= 768;
+                const isMobile = window.innerWidth <= 768;
                 
-                if (wasSidebarVisible !== state.sidebarVisible) {
+                if (wasMobile !== isMobile) {
+                    if (isMobile) {
+                        // 切换到移动端模式
+                        state.sidebarVisible = false;
+                        elements.mobileMenuBtn.style.display = 'block';
+                    } else {
+                        // 切换到桌面端模式
+                        state.sidebarVisible = true;
+                        elements.mobileMenuBtn.style.display = 'none';
+                    }
                     updateSidebarVisibility();
                 }
             });
-        }
-        
-        // 更新侧边栏可见性
-        function updateSidebarVisibility() {
-            if (state.sidebarVisible) {
-                elements.sidebar.classList.add('active');
-            } else {
-                elements.sidebar.classList.remove('active');
-            }
-        }
-        
-        // 切换侧边栏（移动端）
-        function toggleSidebar() {
-            state.sidebarVisible = !state.sidebarVisible;
-            updateSidebarVisibility();
         }
         
         // 渲染笔记列表
@@ -4345,53 +5706,11 @@
             });
         }
         
-        // 格式化日期时间为完整格式
-        function formatDateTime(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('zh-CN', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit'
-            }).replace(/\//g, '-');
-        }
-        
-        // 格式化相对时间（用于编辑时间）
-        function formatRelativeTime(dateString) {
-            const date = new Date(dateString);
-            const now = new Date();
-            const diffMs = now - date;
-            const diffMins = Math.floor(diffMs / (1000 * 60));
-            const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            
-            if (diffDays === 0) {
-                if (diffMins < 60) {
-                    return diffMins <= 1 ? '刚刚' : `${diffMins}分钟前`;
-                }
-                return `${diffHours}小时前`;
-            }
-            
-            if (diffDays === 1) {
-                return '昨天';
-            }
-            
-            if (diffDays < 7) {
-                return `${diffDays}天前`;
-            }
-            
-            return date.toLocaleDateString('zh-CN', {
-                month: 'short',
-                day: 'numeric'
-            });
-        }
-        
         // 创建新笔记
         function createNewNote() {
             const now = new Date().toISOString();
             const newNote = {
-                id: Date.now().toString(),
+                id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
                 title: '',
                 content: '',
                 createdAt: now,
@@ -4568,21 +5887,15 @@
             elements.autoClearUsersToggle.checked = state.settings.autoClearUsers;
             elements.searchHistoryToggle.checked = state.settings.searchHistory;
             
-            // 加载新增设置
-            elements.userStatusToggle.checked = state.settings.userStatusVisible;
-            elements.appTitleToggle.checked = state.settings.appTitleVisible;
+            // 加载导出设置
+            elements.defaultExportFormatSelect.value = state.settings.defaultExportFormat;
+            elements.txtIncludeMetadataToggle.checked = state.settings.txtIncludeMetadata;
+            elements.exportFilenamePrefix.value = state.settings.exportFilenamePrefix;
+            
+            // 加载其他设置
             elements.saveIntervalSelect.value = state.settings.autoSaveInterval;
             elements.themeColorSelect.value = state.settings.themeColor;
             elements.fontSizeSelect.value = state.settings.fontSize;
-            
-            // 应用UI可见性
-            applyUIVisibility();
-        }
-        
-        // 应用UI可见性设置
-        function applyUIVisibility() {
-            // 注意：这里我们只是保存设置，但默认UI保持不变
-            // 用户可以通过设置控制UI元素的显示/隐藏
         }
         
         // 更新设置
@@ -4593,11 +5906,6 @@
             // 立即应用某些设置的更改
             if (key === 'themeColor' || key === 'fontSize') {
                 applySettings();
-            }
-            
-            // 应用UI可见性更改
-            if (key === 'userStatusVisible' || key === 'appTitleVisible') {
-                applyUIVisibility();
             }
             
             // 如果关闭了自动登出，清除计时器
@@ -4631,11 +5939,12 @@
                 rememberLogin: '记住登录',
                 autoClearUsers: '自动清除未登录账号',
                 searchHistory: '搜索历史',
-                userStatusVisible: '用户状态指示器',
-                appTitleVisible: '应用标题',
                 autoSaveInterval: '自动保存间隔',
                 themeColor: '主题颜色',
-                fontSize: '字体大小'
+                fontSize: '字体大小',
+                defaultExportFormat: '默认导出格式',
+                txtIncludeMetadata: 'TXT导出包含元数据',
+                exportFilenamePrefix: '导出文件名前缀'
             };
             
             const status = typeof value === 'boolean' ? (value ? '启用' : '禁用') : '已更新';
@@ -4731,24 +6040,18 @@
                 .replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>')
                 // 斜体
                 .replace(/\*(.*)\*/g, '<em>$1</em>')
-                // 代码块
-                .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-                // 行内代码
-                .replace(/`(.*?)`/g, '<code>$1</code>')
                 // 引用
                 .replace(/^> (.*$)/gm, '<blockquote>$1</blockquote>')
                 // 有序列表
                 .replace(/^\s*\d+\. (.*$)/gm, '<li>$1</li>')
                 // 链接
                 .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>')
-                // 图片
-                .replace(/!\[([^\]]+)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%; border-radius: var(--radius);">')
                 // 换行
                 .replace(/\n\n/g, '</p><p>')
                 .replace(/\n/g, '<br>');
             
             // 包装段落
-            html = html.replace(/(<\/h[1-3]>|<pre>|<\/pre>|<blockquote>|<\/blockquote>|<ul>|<\/ul>|<ol>|<\/ol>)/g, '</p>$1<p>');
+            html = html.replace(/(<\/h[1-3]>|<blockquote>|<\/blockquote>|<ul>|<\/ul>|<ol>|<\/ol>)/g, '</p>$1<p>');
             html = '<p>' + html + '</p>';
             html = html.replace(/<p><\/p>/g, '');
             
@@ -4817,7 +6120,7 @@
                 showStatus(isCompleted ? '任务已完成 ✓' : '任务已取消完成');
             }
             
-            // 重置自动登出计时器
+            // 重置自动登out计时器
             resetAutoLogoutTimer();
         }
         
@@ -4831,179 +6134,8 @@
                 showStatus('笔记已保存 ✓');
             }
             
-            // 重置自动登出计时器
+            // 重置自动登out计时器
             resetAutoLogoutTimer();
-        }
-        
-        // 符号选择器相关函数
-        function showSymbolSelector() {
-            state.symbolSelector.visible = true;
-            state.symbolSelector.selectedIndex = 0;
-            renderSymbolSelector();
-            elements.symbolSelector.style.display = 'block';
-            const cursorPos = getCursorCoordinates();
-            elements.symbolSelector.style.left = cursorPos.x + 'px';
-            elements.symbolSelector.style.top = (cursorPos.y + 30) + 'px';
-            adjustSelectorPosition();
-            
-            // 重置自动登出计时器
-            resetAutoLogoutTimer();
-        }
-        
-        function hideSymbolSelector() {
-            state.symbolSelector.visible = false;
-            elements.symbolSelector.style.display = 'none';
-            
-            // 重置自动登出计时器
-            resetAutoLogoutTimer();
-        }
-        
-        function renderSymbolSelector() {
-            const symbols = state.symbolSelector.symbols;
-            
-            elements.symbolSelector.innerHTML = symbols.map((symbol, index) => {
-                const isActive = index === state.symbolSelector.selectedIndex;
-                return `
-                    <div class="symbol-item ${isActive ? 'active' : ''}" data-index="${index}">
-                        <i class="${symbol.icon} symbol-icon"></i>
-                        <div class="symbol-text">${symbol.symbol.replace(/\n/g, '↵')}</div>
-                        <div class="symbol-desc">${symbol.description}</div>
-                    </div>
-                `;
-            }).join('');
-            
-            document.querySelectorAll('.symbol-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const index = parseInt(item.dataset.index);
-                    state.symbolSelector.selectedIndex = index;
-                    renderSymbolSelector();
-                    insertSelectedSymbol();
-                    
-                    // 重置自动登出计时器
-                    resetAutoLogoutTimer();
-                });
-            });
-        }
-        
-        function navigateSymbolSelector(direction) {
-            const symbols = state.symbolSelector.symbols;
-            const newIndex = state.symbolSelector.selectedIndex + direction;
-            
-            if (newIndex >= symbols.length) {
-                state.symbolSelector.selectedIndex = 0;
-            } else if (newIndex < 0) {
-                state.symbolSelector.selectedIndex = symbols.length - 1;
-            } else {
-                state.symbolSelector.selectedIndex = newIndex;
-            }
-            
-            renderSymbolSelector();
-            
-            const selectedItem = elements.symbolSelector.querySelector('.symbol-item.active');
-            if (selectedItem) {
-                selectedItem.scrollIntoView({ block: 'nearest' });
-            }
-            
-            // 重置自动登出计时器
-            resetAutoLogoutTimer();
-        }
-        
-        function insertSelectedSymbol() {
-            const symbols = state.symbolSelector.symbols;
-            const selectedSymbol = symbols[state.symbolSelector.selectedIndex];
-            
-            const textarea = elements.noteEditor;
-            const start = textarea.selectionStart;
-            const end = textarea.selectionEnd;
-            
-            textarea.value = textarea.value.substring(0, start) + selectedSymbol.symbol + textarea.value.substring(end);
-            textarea.selectionStart = textarea.selectionEnd = start + selectedSymbol.symbol.length;
-            updateNoteContent();
-            updateWordCount();
-            hideSymbolSelector();
-            textarea.focus();
-            showStatus(`已插入: ${selectedSymbol.description}`);
-            
-            // 重置自动登出计时器
-            resetAutoLogoutTimer();
-        }
-        
-        function getCursorCoordinates() {
-            const textarea = elements.noteEditor;
-            const cursorPos = textarea.selectionStart;
-            const textBeforeCursor = textarea.value.substring(0, cursorPos);
-            const lines = textBeforeCursor.split('\n');
-            const currentLine = lines[lines.length - 1] || '';
-            
-            const tempDiv = document.createElement('div');
-            tempDiv.style.cssText = `
-                position: absolute;
-                top: -9999px;
-                left: -9999px;
-                width: ${textarea.clientWidth}px;
-                height: auto;
-                padding: ${getComputedStyle(textarea).padding};
-                border: ${getComputedStyle(textarea).border};
-                font-family: ${getComputedStyle(textarea).fontFamily};
-                font-size: ${getComputedStyle(textarea).fontSize};
-                line-height: ${getComputedStyle(textarea).lineHeight};
-                white-space: pre-wrap;
-                word-wrap: break-word;
-                overflow-wrap: break-word;
-            `;
-            
-            if (lines.length > 1) {
-                const previousLines = lines.slice(0, -1).join('\n');
-                tempDiv.textContent = previousLines + '\n';
-                const lineSpan = document.createElement('span');
-                lineSpan.textContent = currentLine;
-                tempDiv.appendChild(lineSpan);
-            } else {
-                tempDiv.textContent = currentLine;
-            }
-            
-            document.body.appendChild(tempDiv);
-            const textareaRect = textarea.getBoundingClientRect();
-            const tempDivRect = tempDiv.getBoundingClientRect();
-            const lineHeight = parseInt(getComputedStyle(textarea).lineHeight);
-            
-            let x = textareaRect.left + (tempDivRect.width - tempDiv.clientWidth) + 5;
-            let y = textareaRect.top + (lines.length - 1) * lineHeight + 5;
-            
-            document.body.removeChild(tempDiv);
-            
-            x += textarea.scrollLeft;
-            y += textarea.scrollTop;
-            
-            return { x: Math.round(x), y: Math.round(y) };
-        }
-        
-        function adjustSelectorPosition() {
-            const selectorRect = elements.symbolSelector.getBoundingClientRect();
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            
-            let left = parseInt(elements.symbolSelector.style.left);
-            let top = parseInt(elements.symbolSelector.style.top);
-            
-            if (selectorRect.right > viewportWidth) {
-                left -= (selectorRect.right - viewportWidth + 10);
-            }
-            
-            if (selectorRect.bottom > viewportHeight) {
-                top -= (selectorRect.bottom - viewportHeight + 10);
-            }
-            
-            if (selectorRect.left < 0) {
-                left = 10;
-            }
-            
-            if (selectorRect.top < 0) {
-                top = 10;
-            }
-            
-            elements.symbolSelector.style.left = left + 'px';
-            elements.symbolSelector.style.top = top + 'px';
         }
         
         // 对话框控制函数
